@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Aruvi Fabrics</title>
+  <meta name="description" content="Secure checkout for your Aruvi Fabrics order. Authentic handloom weaves shipped from Pattukkottai across India.">
+  <link rel="icon" type="image/jpeg" href="assets/logo/aruvi-monogram.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: { DEFAULT: '#4A1521', deep: '#380F18', light: '#6A2132' },
+            blush: { DEFAULT: '#E8C5C8', soft: '#F5E6E8' },
+            rose: '#C88D94',
+            paper: { DEFAULT: '#F9F5F0', warm: '#FFFDFC', surface: '#F3ECE2' },
+            ink: { DEFAULT: '#2B2625', muted: '#6E6462', light: '#9B918E' },
+            gold: { DEFAULT: '#C29B38', light: '#E8D39E' }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-paper text-ink antialiased selection:bg-blush selection:text-maroon flex flex-col min-h-screen">
+
+  <!-- HEADER -->
+  <header class="bg-paper-warm border-b border-[#E5DDD3] py-4">
+    <div class="site-container flex items-center justify-between">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 w-auto object-contain">
+      </a>
+      <div class="flex items-center gap-2 text-xs text-ink-muted">
+        <svg class="w-4 h-4 text-[#25D366]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        <span class="font-medium">Secure Checkout</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CHECKOUT CONTENT -->
+  <main class="site-container py-10 sm:py-14 flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+      
+      <!-- LEFT: CUSTOMER & DELIVERY FORMS (7 Columns) -->
+      <div class="lg:col-span-7 space-y-8">
+        
+        <!-- Form -->
+        <form id="checkoutForm" class="space-y-8">
+          
+          <!-- Contact Info -->
+          <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] shadow-sm space-y-4">
+            <h2 class="font-heading text-2xl font-medium text-ink pb-2 border-b border-[#F3ECE2]">1. Contact Information</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="custName" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Full Name *</label>
+                <input type="text" id="custName" required placeholder="e.g. Priya Sundaram" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+              </div>
+              <div>
+                <label for="custPhone" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Mobile / WhatsApp Number *</label>
+                <input type="tel" id="custPhone" required placeholder="+91 98765 43210" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+              </div>
+            </div>
+            <div>
+              <label for="custEmail" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Email Address</label>
+              <input type="email" id="custEmail" placeholder="priya@example.com" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+            </div>
+          </div>
+
+          <!-- Shipping Address -->
+          <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] shadow-sm space-y-4">
+            <h2 class="font-heading text-2xl font-medium text-ink pb-2 border-b border-[#F3ECE2]">2. Delivery Address</h2>
+            <div>
+              <label for="custAddress" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Street Address / Door No. *</label>
+              <input type="text" id="custAddress" required placeholder="House / Flat No., Street Name" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label for="custCity" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">City / Town *</label>
+                <input type="text" id="custCity" required placeholder="Chennai / Pattukkottai" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+              </div>
+              <div>
+                <label for="custState" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">State *</label>
+                <select id="custState" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+                  <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                  <option value="Kerala">Kerala</option>
+                  <option value="Karnataka">Karnataka</option>
+                  <option value="Andhra Pradesh">Andhra Pradesh</option>
+                  <option value="Telangana">Telangana</option>
+                  <option value="Other">Other State</option>
+                </select>
+              </div>
+              <div>
+                <label for="custPin" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">PIN Code *</label>
+                <input type="text" id="custPin" required placeholder="600001" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon">
+              </div>
+            </div>
+            <div>
+              <label for="orderNotes" class="block text-xs font-semibold uppercase tracking-wider text-ink mb-1">Special Delivery Notes (Optional)</label>
+              <textarea id="orderNotes" rows="2" placeholder="e.g. Any custom size adjustment or landmark details" class="w-full bg-paper border border-[#E5DDD3] rounded p-2.5 text-xs text-ink focus:outline-none focus:border-maroon"></textarea>
+            </div>
+          </div>
+
+          <!-- Payment Selection -->
+          <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] shadow-sm space-y-4">
+            <h2 class="font-heading text-2xl font-medium text-ink pb-2 border-b border-[#F3ECE2]">3. Payment Preference</h2>
+            <div class="space-y-3">
+              <label class="flex items-center gap-3 p-3 rounded border border-maroon bg-paper-surface/50 cursor-pointer">
+                <input type="radio" name="paymentMethod" value="WhatsApp & UPI" checked class="text-maroon focus:ring-maroon">
+                <div>
+                  <div class="text-xs font-semibold text-ink">WhatsApp Direct Confirmation & UPI</div>
+                  <div class="text-[11px] text-ink-muted">Verify your sizes with our master tailor on WhatsApp and pay via Google Pay / PhonePe / Paytm</div>
+                </div>
+              </label>
+
+              <label class="flex items-center gap-3 p-3 rounded border border-[#E5DDD3] bg-white cursor-pointer hover:border-maroon">
+                <input type="radio" name="paymentMethod" value="Cash on Delivery" class="text-maroon focus:ring-maroon">
+                <div>
+                  <div class="text-xs font-semibold text-ink">Cash on Delivery (COD)</div>
+                  <div class="text-[11px] text-ink-muted">Pay comfortably upon delivery across eligible PIN codes</div>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-primary w-full py-4 text-xs font-bold tracking-widest uppercase">
+            Place Order & Confirm on WhatsApp
+          </button>
+        </form>
+      </div>
+
+      <!-- RIGHT: ORDER SUMMARY (5 Columns) -->
+      <div class="lg:col-span-5">
+        <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] shadow-sm sticky top-10 space-y-5">
+          <h3 class="font-heading text-xl font-semibold text-ink pb-3 border-b border-[#F3ECE2]">Your Order Summary</h3>
+          
+          <!-- Mini items list -->
+          <div id="checkoutItemsList" class="space-y-3 max-h-72 overflow-y-auto pr-1">
+            <!-- Populated via js -->
+          </div>
+
+          <div class="pt-4 border-t border-[#E5DDD3] space-y-2.5 text-xs text-ink-muted">
+            <div class="flex justify-between">
+              <span>Subtotal</span>
+              <span id="checkoutSubtotal" class="font-semibold text-ink">₹0</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span>Shipping</span>
+              <span class="text-maroon font-semibold uppercase">Free Delivery</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-[#E5DDD3] flex justify-between items-center">
+            <span class="text-sm font-semibold text-ink">Total Due</span>
+            <span id="checkoutTotal" class="font-heading text-2xl font-bold text-maroon">₹0</span>
+          </div>
+
+          <div class="p-3 rounded bg-[#F3ECE2]/80 border border-[#E5DDD3] text-[11px] text-ink-muted space-y-1">
+            <div class="font-semibold text-maroon">Artisan Transparency Notice:</div>
+            <div>We coordinate every order directly with our weaving workshop in Pattukkottai to ensure pristine sizing before dispatch.</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- CONFIRMATION MODAL -->
+  <div id="orderSuccessModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-lg bg-white rounded-xl shadow-2xl border border-[#E5DDD3] p-8 text-center z-10 space-y-4">
+      <div class="w-16 h-16 rounded-full bg-[#25D366]/15 text-[#25D366] flex items-center justify-center mx-auto">
+        <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+      </div>
+      <span class="text-[10px] font-semibold uppercase tracking-widest text-rose">Order Initiated</span>
+      <h3 class="font-heading text-3xl text-ink font-light">Thank You for Choosing Aruvi</h3>
+      <p id="successModalText" class="text-xs text-ink-muted leading-relaxed max-w-sm mx-auto">
+        Your order details have been prepared. Click below to connect with our team on WhatsApp for final shipping dispatch and instant tracking.
+      </p>
+      <div class="pt-4 space-y-3">
+        <a id="successWhatsAppLink" href="#" target="_blank" rel="noopener noreferrer" class="btn-whatsapp w-full py-3.5 text-xs justify-center font-bold">
+          Send Order to WhatsApp Concierge
+        </a>
+        <a href="index.html" class="btn-secondary w-full py-3 text-xs justify-center">
+          Return to Home
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-maroon-deep text-paper-warm border-t border-maroon-light/30 py-8 text-center text-xs text-blush-soft/60">
+    © <span class="current-year">2026</span> Aruvi Fabrics. All rights reserved. Pattukkottai, Tamil Nadu.
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const items = Cart.getItems();
+      const totals = Cart.getTotals();
+      const listEl = document.getElementById("checkoutItemsList");
+      const subtotalEl = document.getElementById("checkoutSubtotal");
+      const totalEl = document.getElementById("checkoutTotal");
+
+      if (items.length === 0) {
+        listEl.innerHTML = `<div class="py-6 text-center text-xs text-ink-muted">No items in bag. <a href="shop.html" class="text-maroon underline">Explore shop</a></div>`;
+      } else {
+        listEl.innerHTML = items.map(item => `
+          <div class="flex items-center justify-between gap-3 py-2 border-b border-[#F3ECE2]">
+            <div class="flex items-center gap-3">
+              <img src="${item.image}" alt="${item.name}" class="w-12 h-14 object-cover rounded bg-[#F3ECE2]">
+              <div>
+                <div class="text-xs font-semibold text-ink">${item.name}</div>
+                <div class="text-[11px] text-ink-muted">Qty: ${item.quantity} · Size: ${item.size}</div>
+              </div>
+            </div>
+            <div class="text-xs font-semibold text-ink">
+              ${item.hasPrice ? `₹${(item.price * item.quantity).toLocaleString('en-IN')}` : `Store price`}
+            </div>
+          </div>
+        `).join("");
+      }
+
+      if (subtotalEl) subtotalEl.textContent = `₹${totals.subtotal.toLocaleString('en-IN')}`;
+      if (totalEl) totalEl.textContent = `₹${totals.total.toLocaleString('en-IN')}`;
+
+      // Form Submit
+      const form = document.getElementById("checkoutForm");
+      if (form) {
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+          const name = document.getElementById("custName").value.trim();
+          const phone = document.getElementById("custPhone").value.trim();
+          const address = document.getElementById("custAddress").value.trim();
+          const city = document.getElementById("custCity").value.trim();
+          const pin = document.getElementById("custPin").value.trim();
+          const notes = document.getElementById("orderNotes").value.trim();
+          const payment = document.querySelector("input[name='paymentMethod']:checked").value;
+
+          const itemsText = items.map(i => `• ${i.name} (Size: ${i.size}, Qty: ${i.quantity}${i.hasPrice ? `, ₹${i.price * i.quantity}` : ''})`).join("\n");
+          
+          const orderMsg = encodeURIComponent(
+            `*NEW ORDER INQUIRY — ARUVI FABRICS*\n\n` +
+            `*Customer:* ${name}\n` +
+            `*Phone:* ${phone}\n` +
+            `*Delivery Address:* ${address}, ${city} - ${pin}\n` +
+            `*Payment Preference:* ${payment}\n` +
+            (notes ? `*Notes:* ${notes}\n` : '') +
+            `\n*Items Ordered:*\n${itemsText}\n\n` +
+            `*Estimated Total:* ₹${totals.total.toLocaleString('en-IN')}`
+          );
+
+          const waLink = document.getElementById("successWhatsAppLink");
+          if (waLink) {
+            waLink.href = `https://wa.me/${ARUVI_CONFIG.whatsappNumber}?text=${orderMsg}`;
+          }
+
+          document.getElementById("orderSuccessModal").classList.remove("hidden");
+        });
+      }
+    });
+  </script>
+</body>
+</html>

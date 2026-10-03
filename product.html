@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details | Aruvi Fabrics</title>
+  <meta name="description" content="Handcrafted ethnic garment from Aruvi Fabrics, Pattukkottai. Authentic pure cotton and soft silk designs with comfortable fit.">
+  <link rel="icon" type="image/jpeg" href="assets/logo/aruvi-monogram.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: { DEFAULT: '#4A1521', deep: '#380F18', light: '#6A2132' },
+            blush: { DEFAULT: '#E8C5C8', soft: '#F5E6E8' },
+            rose: '#C88D94',
+            paper: { DEFAULT: '#F9F5F0', warm: '#FFFDFC', surface: '#F3ECE2' },
+            ink: { DEFAULT: '#2B2625', muted: '#6E6462', light: '#9B918E' },
+            gold: { DEFAULT: '#C29B38', light: '#E8D39E' }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-paper text-ink antialiased selection:bg-blush selection:text-maroon flex flex-col min-h-screen">
+
+  <!-- TOP BAR -->
+  <div class="bg-maroon text-paper-warm text-[11px] sm:text-xs tracking-wider uppercase border-b border-maroon-deep overflow-hidden">
+    <div class="site-container flex items-center justify-between h-9">
+      <div class="flex items-center gap-4">
+        <span>Authentic Handloom Weaves from Pattukkottai</span>
+        <span class="text-blush hidden sm:inline">✦</span>
+        <span class="hidden sm:inline">Free Delivery Across India</span>
+      </div>
+      <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="hover:text-blush transition-colors flex items-center gap-1.5 font-medium">
+        WhatsApp: +91 96775 96136
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-paper-warm border-b border-transparent transition-all duration-300">
+    <div class="site-container">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        <div class="flex items-center gap-2 sm:gap-3 flex-1">
+          <button id="mobileMenuBtn" type="button" class="p-2 -ml-2 text-ink hover:text-maroon transition-colors lg:hidden" aria-label="Open navigation menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <button data-search-trigger type="button" class="flex items-center gap-2 text-ink-muted hover:text-maroon transition-colors p-2 text-xs font-medium tracking-wider uppercase">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+            <span class="hidden md:inline">Search</span>
+          </button>
+        </div>
+
+        <div class="flex-shrink-0 text-center">
+          <a href="index.html" class="inline-block" aria-label="Aruvi Fabrics Home">
+            <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 sm:h-12 w-auto object-contain">
+          </a>
+        </div>
+
+        <div class="flex items-center justify-end gap-1.5 sm:gap-4 flex-1">
+          <a href="about.html" class="hidden sm:flex text-xs uppercase tracking-wider text-ink-muted hover:text-maroon p-2">Our Story</a>
+          <button data-size-chart-trigger type="button" class="hidden md:flex text-xs uppercase tracking-wider text-ink-muted hover:text-maroon p-2">Size Chart</button>
+          <button data-cart-trigger type="button" class="relative p-2 text-ink hover:text-maroon transition-colors flex items-center gap-2" aria-label="Shopping bag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <span class="hidden sm:inline text-xs font-semibold uppercase tracking-wider">Bag</span>
+            <span class="cart-count-badge w-5 h-5 rounded-full bg-maroon text-white text-[10px] font-bold flex items-center justify-center -ml-1">0</span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="hidden lg:flex items-center justify-center border-t border-paper-surface py-3" aria-label="Main Navigation">
+        <ul class="flex items-center gap-8 text-[12px] uppercase tracking-[0.14em] font-medium text-ink-muted">
+          <li><a href="index.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Home</a></li>
+          <li><a href="shop.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors active text-maroon font-semibold">Shop</a></li>
+          <li><a href="category-churidars.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Churidars</a></li>
+          <li><a href="category-maxi.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Maxi</a></li>
+          <li><a href="about.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">About</a></li>
+          <li><a href="contact.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Contact</a></li>
+          <li><a href="size-chart.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors text-rose">Size Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="bg-paper-surface/60 py-3 border-b border-[#E5DDD3]">
+    <div class="site-container">
+      <div class="flex items-center gap-2 text-xs text-ink-light">
+        <a href="index.html" class="hover:text-maroon">Home</a>
+        <span>/</span>
+        <a href="shop.html" class="hover:text-maroon">Shop</a>
+        <span>/</span>
+        <span id="pdpBreadcrumbName" class="text-ink font-medium">Product</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDP MAIN CONTENT -->
+  <main class="site-container py-10 sm:py-16 flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-start">
+      
+      <!-- LEFT: IMAGE GALLERY (7 Columns) -->
+      <div class="lg:col-span-7 flex flex-col-reverse sm:flex-row gap-4">
+        
+        <!-- Vertical Thumbnails -->
+        <div id="pdpThumbnails" class="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-visible pb-2 sm:pb-0 flex-shrink-0">
+          <!-- Populated by js/product.js -->
+        </div>
+
+        <!-- Main Focal Image -->
+        <div class="flex-1 rounded-lg overflow-hidden bg-white border border-[#E5DDD3] shadow-sm relative aspect-[3/4]">
+          <img 
+            id="pdpMainImage" 
+            src="" 
+            alt="Product focal view" 
+            class="w-full h-full object-cover object-top transition-opacity duration-200"
+          >
+          <div class="absolute bottom-4 right-4 bg-white/80 backdrop-blur-sm px-3 py-1 rounded text-[10px] text-ink-muted uppercase tracking-wider font-semibold border border-[#E5DDD3]">
+            Aruvi Pure Weave
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: DETAILS & ACTIONS (5 Columns) -->
+      <div class="lg:col-span-5 space-y-6">
+        
+        <!-- Title & Specs -->
+        <div>
+          <span id="pdpFabric" class="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose block mb-1.5">
+            Pure Fabric · Pattukkottai
+          </span>
+          <h1 id="pdpTitle" class="font-heading text-3xl sm:text-4xl text-ink font-normal leading-tight">
+            Loading product...
+          </h1>
+        </div>
+
+        <!-- Price Area -->
+        <div id="pdpPriceContainer" class="pb-4 border-b border-[#E5DDD3]">
+          <!-- Populated by js/product.js -->
+        </div>
+
+        <!-- Short Description -->
+        <p id="pdpShortDesc" class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          <!-- Populated by js/product.js -->
+        </p>
+
+        <!-- Size Selector -->
+        <div class="pt-2">
+          <div class="flex items-center justify-between mb-2.5">
+            <span class="text-xs font-semibold uppercase tracking-wider text-ink">Select Size:</span>
+            <button data-size-chart-trigger type="button" class="text-xs font-medium text-maroon hover:underline flex items-center gap-1">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+              Size Matrix (Inches)
+            </button>
+          </div>
+          <div id="pdpSizesContainer" class="flex flex-wrap gap-2">
+            <!-- Populated by js/product.js -->
+          </div>
+        </div>
+
+        <!-- Quantity & Add to Cart -->
+        <div class="pt-4 space-y-3">
+          <div class="flex items-center gap-4">
+            
+            <!-- Quantity Counter -->
+            <div class="inline-flex items-center border border-[#E5DDD3] rounded bg-white h-12">
+              <button id="pdpQtyDec" class="w-10 h-full flex items-center justify-center text-ink hover:bg-paper-surface transition-colors" aria-label="Decrease quantity">−</button>
+              <span id="pdpQtyVal" class="w-10 text-center font-semibold text-xs text-ink">1</span>
+              <button id="pdpQtyInc" class="w-10 h-full flex items-center justify-center text-ink hover:bg-paper-surface transition-colors" aria-label="Increase quantity">+</button>
+            </div>
+
+            <!-- Primary Add to Cart -->
+            <button id="pdpAddToCartBtn" type="button" class="btn-primary flex-1 h-12 text-xs">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+              </svg>
+              Add to Bag
+            </button>
+          </div>
+
+          <!-- Direct WhatsApp Order Action -->
+          <a id="pdpWhatsAppBtn" href="#" target="_blank" rel="noopener noreferrer" class="btn-whatsapp w-full h-12 text-xs justify-center">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+              <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+            </svg>
+            Enquire & Order on WhatsApp
+          </a>
+        </div>
+
+        <!-- Value Reassurance Pills -->
+        <div class="grid grid-cols-2 gap-3 pt-4 border-t border-[#E5DDD3] text-[11px] text-ink-muted">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Free Delivery across India</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>30-Day Hassle-Free Returns</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Authentic Weaves Guarantee</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-maroon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span>Bespoke Tailoring Support</span>
+          </div>
+        </div>
+
+        <!-- Specification Accordion Details -->
+        <div class="pt-6 border-t border-[#E5DDD3] space-y-4">
+          <div class="p-4 rounded bg-white border border-[#E5DDD3]">
+            <h4 class="font-heading text-lg font-semibold text-ink mb-2">Artisan Fabric & Details</h4>
+            <p id="pdpFullDesc" class="text-xs text-ink-muted leading-relaxed mb-3"></p>
+            <ul id="pdpDetailsList" class="space-y-1.5 pt-2 border-t border-[#F3ECE2]"></ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RELATED PRODUCTS SECTION -->
+    <section class="mt-20 pt-12 border-t border-[#E5DDD3]" aria-label="You May Also Like">
+      <div class="flex items-center justify-between mb-8">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-rose">Complete The Look</span>
+          <h3 class="font-heading text-2xl sm:text-3xl text-ink font-normal mt-1">Recommended Styles</h3>
+        </div>
+        <a href="shop.html" class="text-xs font-semibold text-maroon hover:underline">View All Collection →</a>
+      </div>
+      <div id="pdpRelatedGrid" class="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
+        <!-- Rendered via js/product.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-maroon-deep text-paper-warm border-t border-maroon-light/30 pt-16 pb-12 mt-auto">
+    <div class="site-container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 w-auto object-contain brightness-0 invert opacity-95 mb-4">
+          <p class="text-xs text-blush-soft/80 leading-relaxed max-w-sm">
+            Handcrafted Indian ethnic wear celebrating authentic pure cotton weaves and celebratory soft silks in Pattukkottai, Tamil Nadu.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-xs text-blush-soft/80">
+            <li><a href="index.html" class="hover:text-white">Home</a></li>
+            <li><a href="shop.html" class="hover:text-white">Shop All</a></li>
+            <li><a href="category-churidars.html" class="hover:text-white">Churidars</a></li>
+            <li><a href="category-maxi.html" class="hover:text-white">Maxi</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Contact</h4>
+          <p class="text-xs text-blush-soft/80 leading-relaxed">
+            Pattukkottai, Tamil Nadu<br>
+            Phone: +91 96775 96136<br>
+            WhatsApp Support Available
+          </p>
+        </div>
+      </div>
+      <div class="pt-8 text-center sm:text-left text-[11px] text-blush-soft/60">
+        © <span class="current-year">2026</span> Aruvi Fabrics. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER & COMMON MODALS -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <div class="flex items-center gap-2">
+        <h3 class="font-heading text-xl font-medium text-ink">Shopping Bag</h3>
+        <span class="cart-count-badge text-xs font-semibold px-2 py-0.5 rounded-full bg-maroon text-white">0</span>
+      </div>
+      <button id="closeCartDrawer" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div id="cartDrawerItems" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+    <div id="cartDrawerFooter" class="p-5 border-t border-[#E5DDD3] bg-paper-warm hidden">
+      <div class="flex justify-between items-center mb-4 text-base font-semibold text-ink">
+        <span>Subtotal</span>
+        <span id="cartDrawerSubtotal" class="font-heading text-xl text-maroon">₹0</span>
+      </div>
+      <a href="checkout.html" class="btn-primary w-full py-3.5 text-center text-xs">Proceed to Checkout</a>
+    </div>
+  </div>
+
+  <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="mobileMenuDrawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-8 w-auto">
+      <button id="closeMobileMenuBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-4">
+      <ul class="space-y-1 text-sm font-medium tracking-wide">
+        <li><a href="index.html" class="block px-6 py-3 text-ink">Home</a></li>
+        <li><a href="shop.html" class="block px-6 py-3 text-ink">Shop All</a></li>
+        <li><a href="category-churidars.html" class="block px-6 py-3 text-ink">Churidars</a></li>
+        <li><a href="category-maxi.html" class="block px-6 py-3 text-ink">Maxi</a></li>
+        <li><a href="about.html" class="block px-6 py-3 text-ink">Our Story</a></li>
+        <li><a href="contact.html" class="block px-6 py-3 text-ink">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SIZE CHART MODAL -->
+  <div id="sizeChartModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div id="sizeChartOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DDD3] max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDD3]">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-rose">Aruvi Fabrics</span>
+          <h3 class="font-heading text-2xl sm:text-3xl text-ink font-medium">Standard Size Matrix (Inches)</h3>
+        </div>
+        <button id="closeSizeChartBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors" aria-label="Close size guide">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-6 overflow-x-auto">
+        <table class="w-full text-left text-xs border border-[#E5DDD3] rounded">
+          <thead class="bg-paper-surface font-semibold text-maroon border-b border-[#E5DDD3]">
+            <tr>
+              <th class="p-3 border-r border-[#E5DDD3]">Size</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Bust (Inches)</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Waist (Inches)</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Hips (Inches)</th>
+              <th class="p-3">Shoulder (Inches)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#E5DDD3] text-ink-muted">
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">XS</td><td class="p-3 border-r border-[#E5DDD3]">34</td><td class="p-3 border-r border-[#E5DDD3]">30</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3">13</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">S</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3 border-r border-[#E5DDD3]">32</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3">13.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">M</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3 border-r border-[#E5DDD3]">34</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3">14</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">L</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3">14.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">XL</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3">15</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">2XL</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3">15.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">3XL</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3">16</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">4XL</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3 border-r border-[#E5DDD3]">50</td><td class="p-3">16.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">5XL</td><td class="p-3 border-r border-[#E5DDD3]">50</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3 border-r border-[#E5DDD3]">52</td><td class="p-3">17</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">6XL</td><td class="p-3 border-r border-[#E5DDD3]">52</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3 border-r border-[#E5DDD3]">54</td><td class="p-3">17.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="searchModal" class="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 hidden opacity-0 scale-95 transition-all duration-300">
+    <div id="searchOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DDD3] overflow-hidden z-10">
+      <div class="p-4 sm:p-5 border-b border-[#E5DDD3] flex items-center gap-3">
+        <svg class="w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <input id="searchInput" type="search" placeholder="Search Churidars, Cotton Short Tops, Soft Silk..." class="w-full text-base sm:text-lg text-ink placeholder:text-ink-light focus:outline-none"/>
+        <button id="closeSearchBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      </div>
+      <div id="searchResults" class="max-h-[60vh] overflow-y-auto p-4 sm:p-5"></div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/product.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aruvi Fabrics | Premium Indian Fashion, Churidars & Handloom Weaves</title>
+  <meta name="description" content="Discover authentic handloom weaves, pure cotton churidars, and festive soft silks crafted with elegance in Pattukkottai, Tamil Nadu. Free shipping across India.">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Aruvi Fabrics | Elegance in Every Thread">
+  <meta property="og:description" content="Authentic pure cotton churidars, soft silks, and handcrafted Indian ethnic wear from Pattukkottai, Tamil Nadu.">
+  <meta property="og:image" content="assets/images/hero-banner-1.png">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="assets/logo/aruvi-monogram.jpg">
+
+  <!-- Google Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: {
+              DEFAULT: '#4A1521',
+              deep: '#380F18',
+              light: '#6A2132'
+            },
+            blush: {
+              DEFAULT: '#E8C5C8',
+              soft: '#F5E6E8'
+            },
+            rose: '#C88D94',
+            paper: {
+              DEFAULT: '#F9F5F0',
+              warm: '#FFFDFC',
+              surface: '#F3ECE2'
+            },
+            ink: {
+              DEFAULT: '#2B2625',
+              muted: '#6E6462',
+              light: '#9B918E'
+            },
+            gold: {
+              DEFAULT: '#C29B38',
+              light: '#E8D39E'
+            }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-paper text-ink antialiased selection:bg-blush selection:text-maroon">
+
+  <!-- =========================================================================
+       1. TOP ANNOUNCEMENT BAR
+       ========================================================================= -->
+  <div class="bg-maroon text-paper-warm text-[11px] sm:text-xs tracking-wider uppercase border-b border-maroon-deep overflow-hidden">
+    <div class="site-container flex items-center justify-between h-9">
+      <div class="flex items-center overflow-hidden w-full sm:w-auto">
+        <div class="animate-ticker flex items-center gap-6 whitespace-nowrap">
+          <span>Authentic Handloom Weaves from Pattukkottai</span>
+          <span class="text-blush">✦</span>
+          <span>Free Standard Delivery Across India</span>
+          <span class="text-blush">✦</span>
+          <span>Secure Payments & 30 Days Returns</span>
+          <span class="text-blush">✦</span>
+          <span>Pure Cotton & Soft Silk Churidars</span>
+          <span class="text-blush">✦</span>
+          <span>Authentic Handloom Weaves from Pattukkottai</span>
+          <span class="text-blush">✦</span>
+          <span>Free Standard Delivery Across India</span>
+        </div>
+      </div>
+      <div class="hidden sm:flex items-center gap-4 flex-shrink-0 text-[11px]">
+        <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="hover:text-blush transition-colors flex items-center gap-1.5 font-medium">
+          <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+          WhatsApp Concierge
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. MAIN LUXURY HEADER
+       ========================================================================= -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-paper-warm border-b border-transparent transition-all duration-300">
+    <div class="site-container">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        
+        <!-- Left: Mobile Menu Trigger + Search -->
+        <div class="flex items-center gap-2 sm:gap-3 flex-1">
+          <button id="mobileMenuBtn" type="button" class="p-2 -ml-2 text-ink hover:text-maroon transition-colors lg:hidden" aria-label="Open navigation menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          
+          <button data-search-trigger type="button" class="flex items-center gap-2 text-ink-muted hover:text-maroon transition-colors p-2 text-xs font-medium tracking-wider uppercase" aria-label="Search collection">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <span class="hidden md:inline">Search</span>
+          </button>
+        </div>
+
+        <!-- Center: Primary Brand Logo -->
+        <div class="flex-shrink-0 text-center">
+          <a href="index.html" class="inline-block focus-visible:outline-none" aria-label="Aruvi Fabrics Home">
+            <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics - Premium Indian Fashion" class="h-10 sm:h-12 w-auto object-contain">
+          </a>
+        </div>
+
+        <!-- Right: Actions (Account, Cart) -->
+        <div class="flex items-center justify-end gap-1.5 sm:gap-4 flex-1">
+          <a href="about.html" class="hidden sm:flex items-center gap-1.5 text-xs uppercase tracking-wider text-ink-muted hover:text-maroon transition-colors p-2">
+            <span>Our Story</span>
+          </a>
+
+          <button data-size-chart-trigger type="button" class="hidden md:flex items-center gap-1.5 text-xs uppercase tracking-wider text-ink-muted hover:text-maroon transition-colors p-2">
+            <span>Size Chart</span>
+          </button>
+
+          <!-- Cart Trigger Button -->
+          <button data-cart-trigger type="button" class="relative p-2 text-ink hover:text-maroon transition-colors flex items-center gap-2" aria-label="Shopping bag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            </svg>
+            <span class="hidden sm:inline text-xs font-semibold uppercase tracking-wider">Bag</span>
+            <span class="cart-count-badge w-5 h-5 rounded-full bg-maroon text-white text-[10px] font-bold flex items-center justify-center -ml-1">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Lower Sub-Navigation Bar (Desktop) -->
+      <nav class="hidden lg:flex items-center justify-center border-t border-paper-surface py-3" aria-label="Main Navigation">
+        <ul class="flex items-center gap-8 text-[12px] uppercase tracking-[0.14em] font-medium text-ink-muted">
+          <li><a href="index.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors active text-maroon font-semibold">Home</a></li>
+          <li><a href="shop.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Shop</a></li>
+          <li><a href="category-churidars.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Churidars</a></li>
+          <li><a href="category-maxi.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Maxi</a></li>
+          <li><a href="about.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">About</a></li>
+          <li><a href="contact.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Contact</a></li>
+          <li><a href="size-chart.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors text-rose">Size Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- =========================================================================
+       3. EDITORIAL HERO CAROUSEL
+       ========================================================================= -->
+  <section class="relative bg-paper-surface overflow-hidden" aria-label="Featured Collections Carousel">
+    <div class="relative w-full aspect-[16/9] sm:aspect-[21/9] min-h-[460px] sm:min-h-[560px] max-h-[720px]">
+      
+      <!-- Slide 1 -->
+      <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-100">
+        <img 
+          src="assets/images/hero-banner-1.png" 
+          alt="Aruvi Fabrics New Arrivals Collection" 
+          class="w-full h-full object-cover object-center"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent flex items-center">
+          <div class="site-container w-full">
+            <div class="max-w-xl text-white">
+              <span class="inline-block text-[11px] uppercase tracking-[0.25em] font-semibold text-blush bg-maroon/60 px-3 py-1 rounded backdrop-blur-sm mb-4">
+                NEW ARRIVALS
+              </span>
+              <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl font-light leading-[1.08] tracking-tight mb-4 text-white">
+                Churidars & Maxis You’ll Love
+              </h1>
+              <p class="text-sm sm:text-base text-paper-warm/90 font-light leading-relaxed mb-8 max-w-md">
+                Beautiful styles. Comfortable fabrics. Designed for every occasion. Handcrafted with traditional pride in Pattukkottai.
+              </p>
+              <div class="flex flex-wrap items-center gap-4">
+                <a href="shop.html" class="btn-primary">
+                  Explore Shop
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </a>
+                <a href="category-churidars.html" class="btn-secondary !text-white !border-white hover:!bg-white hover:!text-maroon">
+                  View Collection
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Slide 2 -->
+      <div class="hero-slide absolute inset-0 transition-opacity duration-700 opacity-0 pointer-events-none">
+        <img 
+          src="assets/images/hero-banner-2.png" 
+          alt="Timeless Handloom Weaves by Aruvi Fabrics" 
+          class="w-full h-full object-cover object-center"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-black/55 via-black/30 to-transparent flex items-center">
+          <div class="site-container w-full">
+            <div class="max-w-xl text-white">
+              <span class="inline-block text-[11px] uppercase tracking-[0.25em] font-semibold text-blush bg-maroon/60 px-3 py-1 rounded backdrop-blur-sm mb-4">
+                HERITAGE CRAFT
+              </span>
+              <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl font-light leading-[1.08] tracking-tight mb-4 text-white">
+                Elegance in Every Thread
+              </h2>
+              <p class="text-sm sm:text-base text-paper-warm/90 font-light leading-relaxed mb-8 max-w-md">
+                Pure cotton fabrics and artisanal soft silks woven for sublime comfort and timeless ethnic grace.
+              </p>
+              <div class="flex flex-wrap items-center gap-4">
+                <a href="category-churidars.html" class="btn-primary">
+                  Shop Churidars
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </a>
+                <a href="about.html" class="btn-secondary !text-white !border-white hover:!bg-white hover:!text-maroon">
+                  Read Our Heritage
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Navigation Arrows -->
+      <button id="heroPrevBtn" type="button" class="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-ink flex items-center justify-center shadow-lg transition-all" aria-label="Previous slide">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+      <button id="heroNextBtn" type="button" class="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/70 hover:bg-white text-ink flex items-center justify-center shadow-lg transition-all" aria-label="Next slide">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      <!-- Carousel Indicator Dots -->
+      <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-2 z-20">
+        <button type="button" class="hero-dot w-8 h-2 rounded-full bg-maroon transition-all" aria-label="Go to slide 1"></button>
+        <button type="button" class="hero-dot w-2 h-2 rounded-full bg-[#D8CEBE] transition-all" aria-label="Go to slide 2"></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       4. TRUST & SERVICE PROMISES BAR
+       ========================================================================= -->
+  <section class="py-8 bg-paper-warm border-y border-[#E5DDD3]" aria-label="Service Promises">
+    <div class="site-container">
+      <div id="trustServiceBar" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Rendered dynamically via js/main.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       5. SHOP BY CATEGORY
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-paper" aria-label="Categories">
+    <div class="site-container">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-[#E5DDD3]">
+        <div>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose">Browse Collections</span>
+          <h2 class="font-heading text-3xl sm:text-4xl text-ink font-normal mt-1">Shop by Category</h2>
+        </div>
+        <a href="shop.html" class="mt-3 sm:mt-0 text-xs font-semibold uppercase tracking-wider text-maroon hover:text-maroon-deep flex items-center gap-1.5 transition-colors">
+          View All Products
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        
+        <!-- Category 1: Churidars (Active) -->
+        <a href="category-churidars.html" class="group relative aspect-[16/10] sm:aspect-[16/9] rounded-lg overflow-hidden block bg-paper-surface border border-[#E5DDD3] shadow-sm">
+          <img 
+            src="assets/images/category-churidars.jpg" 
+            alt="Churidars Collection" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/25 to-transparent flex flex-col justify-end p-6 sm:p-8 text-white">
+            <span class="text-[11px] uppercase tracking-widest text-blush font-semibold mb-1">4 Verified Styles</span>
+            <h3 class="font-heading text-3xl sm:text-4xl font-light text-white mb-2">Churidars</h3>
+            <p class="text-xs sm:text-sm text-paper-warm/80 font-light mb-4 max-w-sm">
+              Pure cotton yardage, Ikkat patterns, and soft silk tailored sets.
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-white group-hover:text-blush transition-colors">
+              <span>Shop Churidars</span>
+              <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+        <!-- Category 2: Maxi (Graceful Coming Soon) -->
+        <a href="category-maxi.html" class="group relative aspect-[16/10] sm:aspect-[16/9] rounded-lg overflow-hidden block bg-paper-surface border border-[#E5DDD3] shadow-sm">
+          <img 
+            src="assets/images/promo-banner-new-arrivals.png" 
+            alt="Maxi Dresses Preview" 
+            class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            loading="lazy"
+          >
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/35 to-transparent flex flex-col justify-end p-6 sm:p-8 text-white">
+            <span class="text-[11px] uppercase tracking-widest text-gold-light font-semibold mb-1">Preview Collection</span>
+            <h3 class="font-heading text-3xl sm:text-4xl font-light text-white mb-2">Maxi</h3>
+            <p class="text-xs sm:text-sm text-paper-warm/80 font-light mb-4 max-w-sm">
+              Relaxed, flowing silhouettes in breathable weaves. New styles are coming soon.
+            </p>
+            <div class="inline-flex items-center gap-2 text-xs uppercase tracking-widest font-semibold text-white group-hover:text-blush transition-colors">
+              <span>Explore Preview</span>
+              <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       6. FEATURED COLLECTION (VERIFIED WOOCOMMERCE INVENTORY)
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-paper-warm border-t border-[#E5DDD3]" aria-label="Featured Collection">
+    <div class="site-container">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 pb-4 border-b border-[#E5DDD3]">
+        <div>
+          <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose">Authentic Inventory</span>
+          <h2 class="font-heading text-3xl sm:text-4xl text-ink font-normal mt-1">Featured Collection</h2>
+          <p class="text-xs text-ink-muted mt-1">Woven with pride in Pattukkottai. Verified active styles.</p>
+        </div>
+        <div class="mt-4 sm:mt-0 flex items-center gap-3">
+          <a href="shop.html" class="btn-secondary !py-2.5 !px-5 !text-xs">
+            View All (4)
+          </a>
+        </div>
+      </div>
+
+      <!-- 4-Column Product Grid -->
+      <div id="homeFeaturedGrid" class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <!-- Rendered dynamically via js/products.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       7. PROMOTIONAL EDITORIAL BANNER
+       ========================================================================= -->
+  <section class="py-12 bg-paper" aria-label="Promotional Announcement">
+    <div class="site-container">
+      <div class="relative rounded-xl overflow-hidden border border-[#E5DDD3] shadow-md bg-paper-surface">
+        <img 
+          src="assets/images/promo-banner-new-arrivals.png" 
+          alt="Aruvi Fabrics New Arrivals Showcase" 
+          class="w-full h-auto object-cover max-h-[420px]"
+          loading="lazy"
+        />
+        <div class="p-6 sm:p-10 bg-white/90 backdrop-blur-md border-t border-[#E5DDD3] flex flex-col md:flex-row items-center justify-between gap-6">
+          <div>
+            <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-maroon">Seasonal Curation</span>
+            <h3 class="font-heading text-2xl sm:text-3xl text-ink font-medium mt-1">Dresses • Kurtas • Gowns • Co-ord Sets</h3>
+            <p class="text-xs sm:text-sm text-ink-muted mt-1 max-w-xl">
+              From everyday office charm to ceremonial family celebrations, discover fabrics that celebrate your individuality.
+            </p>
+          </div>
+          <div class="flex-shrink-0 flex items-center gap-3">
+            <a href="shop.html" class="btn-primary !py-3 !px-6 text-xs">Explore Shop</a>
+            <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="btn-whatsapp !py-3 !px-6 text-xs">
+              WhatsApp Us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       8. HERITAGE & CRAFTSMANSHIP SPOTLIGHT
+       ========================================================================= -->
+  <section class="py-16 sm:py-24 bg-paper-warm border-t border-[#E5DDD3]" aria-label="About Aruvi Fabrics">
+    <div class="site-container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        
+        <!-- Left: Image Duo -->
+        <div class="grid grid-cols-2 gap-4">
+          <div class="aspect-[3/4] rounded-lg overflow-hidden bg-paper-surface border border-[#E5DDD3] shadow-sm">
+            <img src="assets/images/editorial-look-1.jpg" alt="Aruvi Fabrics Traditional Weave" class="w-full h-full object-cover" loading="lazy">
+          </div>
+          <div class="aspect-[3/4] rounded-lg overflow-hidden bg-paper-surface border border-[#E5DDD3] shadow-sm mt-8">
+            <img src="assets/images/editorial-fabric.jpg" alt="Fine Handloom Texture" class="w-full h-full object-cover" loading="lazy">
+          </div>
+        </div>
+
+        <!-- Right: Story Copy -->
+        <div class="lg:pl-6">
+          <span class="text-[11px] font-semibold uppercase tracking-[0.25em] text-rose">Pattukkottai Weaving Legacy</span>
+          <h2 class="font-heading text-3xl sm:text-4xl md:text-5xl font-light text-ink leading-tight mt-2 mb-6">
+            Preserving South Indian Craft, Tailored for the Modern Woman
+          </h2>
+          <p class="text-sm text-ink-muted leading-relaxed mb-4">
+            Rooted in Pattukkottai, Tamil Nadu, <strong>Aruvi Fabrics</strong> was founded with a quiet devotion to authentic natural textiles. We celebrate the sensory beauty of pure combed cotton and lustrous soft silks.
+          </p>
+          <p class="text-sm text-ink-muted leading-relaxed mb-8">
+            Every garment in our collection is crafted with breathable comfort, precise shoulder seam cuts, and durable hand-finishing that endures wash after wash.
+          </p>
+
+          <div class="grid grid-cols-3 gap-6 py-6 border-y border-[#E5DDD3] mb-8 text-center sm:text-left">
+            <div>
+              <div class="font-heading text-3xl sm:text-4xl text-maroon font-semibold">100%</div>
+              <div class="text-[11px] uppercase tracking-wider text-ink-light mt-1">Pure Weaves</div>
+            </div>
+            <div>
+              <div class="font-heading text-3xl sm:text-4xl text-maroon font-semibold">XS–6XL</div>
+              <div class="text-[11px] uppercase tracking-wider text-ink-light mt-1">Inclusive Sizing</div>
+            </div>
+            <div>
+              <div class="font-heading text-3xl sm:text-4xl text-maroon font-semibold">Tamil Nadu</div>
+              <div class="text-[11px] uppercase tracking-wider text-ink-light mt-1">Artisan Heritage</div>
+            </div>
+          </div>
+
+          <a href="about.html" class="btn-primary">
+            Discover Our Story
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       9. OCCASION SHOWCASE: "THE ETHNIC EDIT"
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-paper border-t border-[#E5DDD3]" aria-label="Ethnic Edit">
+    <div class="site-container">
+      <div class="relative rounded-2xl overflow-hidden shadow-lg border border-[#E5DDD3]">
+        <img 
+          src="assets/images/banner-ethnic-edit.png" 
+          alt="The Ethnic Edit - Elegance in Every Thread" 
+          class="w-full h-auto object-cover min-h-[320px] max-h-[500px]"
+          loading="lazy"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-maroon-deep/85 via-maroon/60 to-transparent flex items-center p-8 sm:p-14 text-white">
+          <div class="max-w-md">
+            <span class="text-[11px] uppercase tracking-[0.25em] text-blush font-semibold">The Ethnic Edit</span>
+            <h3 class="font-heading text-3xl sm:text-5xl font-light text-white leading-tight mt-2 mb-4">
+              Elegance in Every Thread
+            </h3>
+            <p class="text-xs sm:text-sm text-paper-warm/85 font-light leading-relaxed mb-6">
+              A contemporary celebration of colour, craft, and timeless Indian style. Handcrafted yardage created for memorable celebrations.
+            </p>
+            <a href="category-churidars.html" class="btn-primary !bg-white !text-maroon !border-white hover:!bg-blush hover:!text-maroon">
+              Explore Collection
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       10. WHATSAPP CONCIERGE & STYLING ASSISTANCE
+       ========================================================================= -->
+  <section class="py-16 bg-[#FFFDFC] border-t border-[#E5DDD3]" aria-label="WhatsApp Concierge">
+    <div class="site-container">
+      <div class="glass-panel rounded-xl p-8 sm:p-12 text-center max-w-2xl mx-auto border border-rose/30 shadow-sm">
+        <div class="w-16 h-16 rounded-full bg-[#25D366]/15 text-[#25D366] flex items-center justify-center mx-auto mb-4">
+          <svg class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+        </div>
+        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose">Direct Support</span>
+        <h3 class="font-heading text-3xl sm:text-4xl text-ink font-light mt-1 mb-3">
+          Need Help Choosing Your Style?
+        </h3>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed mb-6 max-w-md mx-auto">
+          Connect directly with our master stylists in Pattukkottai. Ask about fabric drapes, custom size fittings, and in-store availability.
+        </p>
+        <a href="https://wa.me/919677596136?text=Hello%20Aruvi%20Fabrics%2C%20I%20need%20help%20choosing%20my%20style" target="_blank" rel="noopener noreferrer" class="btn-whatsapp">
+          <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+          Chat on WhatsApp: +91 96775 96136
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       11. INSTAGRAM COMMUNITY LOOKBOOK (@aruvi_fabric)
+       ========================================================================= -->
+  <section class="py-16 bg-paper border-t border-[#E5DDD3]" aria-label="Instagram Community">
+    <div class="site-container">
+      <div class="text-center max-w-xl mx-auto mb-10">
+        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-rose">Follow Our Journey</span>
+        <h2 class="font-heading text-3xl sm:text-4xl text-ink font-normal mt-1">@aruvi_fabric on Instagram</h2>
+        <p class="text-xs text-ink-muted mt-1.5">Daily lookbooks, loom stories, and new fabric drops.</p>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-1.jpg" alt="Aruvi Instagram Post 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-2.jpg" alt="Aruvi Instagram Post 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-3.jpg" alt="Aruvi Instagram Post 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-4.jpg" alt="Aruvi Instagram Post 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-5.jpg" alt="Aruvi Instagram Post 5" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+        <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="group relative aspect-square rounded overflow-hidden bg-paper-surface border border-[#E5DDD3]">
+          <img src="assets/images/instagram/insta-6.jpg" alt="Aruvi Instagram Post 6" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+          <div class="absolute inset-0 bg-maroon/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white">
+            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================================
+       12. LUXURY MULTI-COLUMN FOOTER
+       ========================================================================= -->
+  <footer class="bg-maroon-deep text-paper-warm border-t border-maroon-light/30 pt-16 pb-12" aria-label="Site Footer">
+    <div class="site-container">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
+        
+        <!-- Col 1: Brand Info -->
+        <div class="lg:col-span-2">
+          <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 w-auto object-contain brightness-0 invert opacity-95 mb-4">
+          <p class="text-xs text-blush-soft/80 leading-relaxed max-w-sm mb-6">
+            Handcrafted Indian ethnic wear celebrating authentic pure cotton weaves, Ikkat artistry, and celebratory soft silks. Rooted with dignity in Pattukkottai, Tamil Nadu.
+          </p>
+          <div class="flex items-center gap-3">
+            <a href="https://www.instagram.com/aruvi_fabric/" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-white/10 hover:bg-blush hover:text-maroon flex items-center justify-center transition-colors" aria-label="Instagram">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="w-9 h-9 rounded-full bg-white/10 hover:bg-[#25D366] hover:text-white flex items-center justify-center transition-colors" aria-label="WhatsApp">
+              <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Quick Links -->
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Quick Links</h4>
+          <ul class="space-y-2.5 text-xs text-blush-soft/80">
+            <li><a href="index.html" class="hover:text-white transition-colors">Home</a></li>
+            <li><a href="shop.html" class="hover:text-white transition-colors">Shop All</a></li>
+            <li><a href="category-churidars.html" class="hover:text-white transition-colors">Churidars</a></li>
+            <li><a href="category-maxi.html" class="hover:text-white transition-colors">Maxi (Coming Soon)</a></li>
+            <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+            <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Customer Care -->
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Customer Care</h4>
+          <ul class="space-y-2.5 text-xs text-blush-soft/80">
+            <li><a href="size-chart.html" class="hover:text-white transition-colors">Size Guide (XS–6XL)</a></li>
+            <li><a href="returns.html" class="hover:text-white transition-colors">30 Days Returns & Exchange</a></li>
+            <li><a href="reviews.html" class="hover:text-white transition-colors">Customer Feedback</a></li>
+            <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+            <li><a href="contact.html" class="hover:text-white transition-colors">Shipping Information</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Contact Coordinates -->
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Store Concierge</h4>
+          <div class="space-y-3 text-xs text-blush-soft/80">
+            <div class="flex items-start gap-2.5">
+              <svg class="w-4 h-4 text-blush flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+              <span>Pattukkottai, Tamil Nadu, India</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <svg class="w-4 h-4 text-blush flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <a href="tel:+919677596136" class="hover:text-white transition-colors">+91 96775 96136</a>
+            </div>
+            <div class="flex items-center gap-2.5">
+              <svg class="w-4 h-4 text-blush flex-shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+              <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">+91 96775 96136 (WhatsApp)</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Copyright Bottom Bar -->
+      <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-[11px] text-blush-soft/60 gap-4">
+        <div>
+          © <span class="current-year">2026</span> Aruvi Fabrics. All rights reserved.
+        </div>
+        <div class="flex items-center gap-6">
+          <a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+          <a href="returns.html" class="hover:text-white transition-colors">Returns & Refunds</a>
+          <a href="size-chart.html" class="hover:text-white transition-colors">Size Matrix</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- =========================================================================
+       13. SLIDE-OUT CART DRAWER & OVERLAYS
+       ========================================================================= -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  
+  <div id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <div class="flex items-center gap-2">
+        <h3 class="font-heading text-xl font-medium text-ink">Shopping Bag</h3>
+        <span class="cart-count-badge text-xs font-semibold px-2 py-0.5 rounded-full bg-maroon text-white">0</span>
+      </div>
+      <button id="closeCartDrawer" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors" aria-label="Close bag drawer">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <!-- Items List Container -->
+    <div id="cartDrawerItems" class="flex-1 overflow-y-auto p-5 space-y-4">
+      <!-- Populated dynamically via js/cart.js -->
+    </div>
+
+    <!-- Drawer Footer / Summary -->
+    <div id="cartDrawerFooter" class="p-5 border-t border-[#E5DDD3] bg-paper-warm hidden">
+      <div class="flex justify-between items-center mb-1 text-xs text-ink-muted">
+        <span>Delivery</span>
+        <span class="text-maroon font-semibold uppercase">Free</span>
+      </div>
+      <div class="flex justify-between items-center mb-4 text-base font-semibold text-ink">
+        <span>Subtotal</span>
+        <span id="cartDrawerSubtotal" class="font-heading text-xl text-maroon">₹0</span>
+      </div>
+      <div class="space-y-2.5">
+        <a href="checkout.html" class="btn-primary w-full py-3.5 text-center text-xs">Proceed to Checkout</a>
+        <a href="cart.html" class="btn-secondary w-full py-3 text-center text-xs">View Full Bag</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       14. MOBILE NAVIGATION DRAWER
+       ========================================================================= -->
+  <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+
+  <div id="mobileMenuDrawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-8 w-auto">
+      <button id="closeMobileMenuBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors" aria-label="Close mobile menu">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    
+    <div class="flex-1 overflow-y-auto py-4">
+      <ul class="space-y-1 text-sm font-medium tracking-wide">
+        <li><a href="index.html" class="block px-6 py-3 text-maroon font-semibold hover:bg-paper-surface">Home</a></li>
+        <li><a href="shop.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Shop All (4)</a></li>
+        <li><a href="category-churidars.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Churidars</a></li>
+        <li><a href="category-maxi.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Maxi (Coming Soon)</a></li>
+        <li><a href="about.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Our Story</a></li>
+        <li><a href="size-chart.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Size Guide (XS–6XL)</a></li>
+        <li><a href="reviews.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Reviews</a></li>
+        <li><a href="contact.html" class="block px-6 py-3 text-ink hover:bg-paper-surface hover:text-maroon">Contact & Store</a></li>
+      </ul>
+      
+      <div class="mt-6 px-6 pt-6 border-t border-[#E5DDD3]">
+        <span class="text-[11px] font-semibold uppercase tracking-wider text-rose block mb-2">WhatsApp Concierge</span>
+        <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="btn-whatsapp w-full py-3 text-xs justify-center">
+          Chat on WhatsApp
+        </a>
+      </div>
+    </div>
+
+    <div class="p-5 border-t border-[#E5DDD3] bg-paper text-xs text-ink-muted">
+      Pattukkottai, Tamil Nadu · +91 96775 96136
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       15. GLOBAL SEARCH MODAL
+       ========================================================================= -->
+  <div id="searchModal" class="fixed inset-0 z-50 flex items-start justify-center pt-16 px-4 hidden opacity-0 scale-95 transition-all duration-300">
+    <div id="searchOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DDD3] overflow-hidden z-10">
+      <div class="p-4 sm:p-5 border-b border-[#E5DDD3] flex items-center gap-3">
+        <svg class="w-5 h-5 text-ink-light flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input 
+          id="searchInput" 
+          type="search" 
+          placeholder="Search Cotton Short Top, Soft Silk, Churidars..." 
+          class="w-full text-base sm:text-lg text-ink placeholder:text-ink-light focus:outline-none"
+        />
+        <button id="closeSearchBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors" aria-label="Close search">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="searchResults" class="max-h-[60vh] overflow-y-auto p-4 sm:p-5">
+        <div class="py-8 text-center text-xs text-ink-muted">
+          Type product name or fabric (e.g. "Soft Silk", "Cotton") to search.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       16. GLOBAL SIZE CHART MODAL
+       ========================================================================= -->
+  <div id="sizeChartModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+    <div id="sizeChartOverlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="relative w-full max-w-2xl bg-white rounded-xl shadow-2xl border border-[#E5DDD3] max-h-[90vh] overflow-y-auto z-10 p-6 sm:p-8">
+      <div class="flex items-center justify-between pb-4 border-b border-[#E5DDD3]">
+        <div>
+          <span class="text-[10px] uppercase tracking-widest font-semibold text-rose">Aruvi Fabrics</span>
+          <h3 class="font-heading text-2xl sm:text-3xl text-ink font-medium">Standard Size Matrix (Inches)</h3>
+        </div>
+        <button id="closeSizeChartBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors" aria-label="Close size guide">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="mt-6 overflow-x-auto">
+        <table class="w-full text-left text-xs border border-[#E5DDD3] rounded">
+          <thead class="bg-paper-surface font-semibold text-maroon border-b border-[#E5DDD3]">
+            <tr>
+              <th class="p-3 border-r border-[#E5DDD3]">Size</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Bust (Inches)</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Waist (Inches)</th>
+              <th class="p-3 border-r border-[#E5DDD3]">Hips (Inches)</th>
+              <th class="p-3">Shoulder (Inches)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-[#E5DDD3] text-ink-muted">
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">XS</td><td class="p-3 border-r border-[#E5DDD3]">34</td><td class="p-3 border-r border-[#E5DDD3]">30</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3">13</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">S</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3 border-r border-[#E5DDD3]">32</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3">13.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">M</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3 border-r border-[#E5DDD3]">34</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3">14</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">L</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3 border-r border-[#E5DDD3]">36</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3">14.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">XL</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3 border-r border-[#E5DDD3]">38</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3">15</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">2XL</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3 border-r border-[#E5DDD3]">40</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3">15.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">3XL</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3 border-r border-[#E5DDD3]">42</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3">16</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">4XL</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3 border-r border-[#E5DDD3]">44</td><td class="p-3 border-r border-[#E5DDD3]">50</td><td class="p-3">16.5</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">5XL</td><td class="p-3 border-r border-[#E5DDD3]">50</td><td class="p-3 border-r border-[#E5DDD3]">46</td><td class="p-3 border-r border-[#E5DDD3]">52</td><td class="p-3">17</td></tr>
+            <tr class="hover:bg-paper"><td class="p-3 font-semibold text-ink border-r border-[#E5DDD3]">6XL</td><td class="p-3 border-r border-[#E5DDD3]">52</td><td class="p-3 border-r border-[#E5DDD3]">48</td><td class="p-3 border-r border-[#E5DDD3]">54</td><td class="p-3">17.5</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-[#E5DDD3]">
+        <span class="text-xs text-ink-muted">Need custom bespoke stitching? Talk to us.</span>
+        <a href="size-chart.html" class="text-xs font-semibold uppercase tracking-wider text-maroon hover:underline">
+          View Full Size Chart Page →
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       17. FLOATING WHATSAPP BUTTON
+       ========================================================================= -->
+  <a 
+    href="https://wa.me/919677596136?text=Hello%20Aruvi%20Fabrics%2C%20I%20have%20an%20inquiry%20about%20your%20collection" 
+    target="_blank" 
+    rel="noopener noreferrer" 
+    class="fixed bottom-6 left-6 z-40 w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-[#25D366] text-white shadow-2xl flex items-center justify-center hover:scale-105 hover:bg-[#1EBE5D] transition-all duration-300 focus-visible:outline-none"
+    aria-label="Direct WhatsApp Chat"
+  >
+    <svg class="w-6 h-6 sm:w-7 sm:h-7 fill-current" viewBox="0 0 24 24">
+      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+    </svg>
+  </a>
+
+  <!-- SCRIPTS -->
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/products.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // Render verified products in the featured collection grid
+      Products.renderGrid("homeFeaturedGrid", ARUVI_PRODUCTS);
+    });
+  </script>
+</body>
+</html>

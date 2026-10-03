@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Story & Heritage | Aruvi Fabrics</title>
+  <meta name="description" content="Discover Aruvi Fabrics: our heritage of authentic South Indian handloom weaving in Pattukkottai, Tamil Nadu. Pure cotton, timeless elegance.">
+  <link rel="icon" type="image/jpeg" href="assets/logo/aruvi-monogram.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: { DEFAULT: '#4A1521', deep: '#380F18', light: '#6A2132' },
+            blush: { DEFAULT: '#E8C5C8', soft: '#F5E6E8' },
+            rose: '#C88D94',
+            paper: { DEFAULT: '#F9F5F0', warm: '#FFFDFC', surface: '#F3ECE2' },
+            ink: { DEFAULT: '#2B2625', muted: '#6E6462', light: '#9B918E' },
+            gold: { DEFAULT: '#C29B38', light: '#E8D39E' }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-paper text-ink antialiased selection:bg-blush selection:text-maroon flex flex-col min-h-screen">
+
+  <!-- TOP BAR -->
+  <div class="bg-maroon text-paper-warm text-[11px] sm:text-xs tracking-wider uppercase border-b border-maroon-deep overflow-hidden">
+    <div class="site-container flex items-center justify-between h-9">
+      <div class="flex items-center gap-4">
+        <span>Aruvi Fabrics — Handcrafted in Pattukkottai, Tamil Nadu</span>
+        <span class="text-blush hidden sm:inline">✦</span>
+        <span class="hidden sm:inline">Free Delivery Across India</span>
+      </div>
+      <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="hover:text-blush transition-colors flex items-center gap-1.5 font-medium">
+        WhatsApp: +91 96775 96136
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-paper-warm border-b border-transparent transition-all duration-300">
+    <div class="site-container">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        <div class="flex items-center gap-2 sm:gap-3 flex-1">
+          <button id="mobileMenuBtn" type="button" class="p-2 -ml-2 text-ink hover:text-maroon transition-colors lg:hidden" aria-label="Open navigation menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <a href="shop.html" class="text-xs uppercase tracking-wider text-ink-muted hover:text-maroon transition-colors p-2 hidden sm:inline">Explore Shop</a>
+        </div>
+
+        <div class="flex-shrink-0 text-center">
+          <a href="index.html" class="inline-block" aria-label="Aruvi Fabrics Home">
+            <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 sm:h-12 w-auto object-contain">
+          </a>
+        </div>
+
+        <div class="flex items-center justify-end gap-1.5 sm:gap-4 flex-1">
+          <a href="contact.html" class="text-xs uppercase tracking-wider text-ink-muted hover:text-maroon p-2">Contact</a>
+          <button data-cart-trigger type="button" class="relative p-2 text-ink hover:text-maroon transition-colors flex items-center gap-2" aria-label="Shopping bag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <span class="cart-count-badge w-5 h-5 rounded-full bg-maroon text-white text-[10px] font-bold flex items-center justify-center -ml-1">0</span>
+          </button>
+        </div>
+      </div>
+
+      <nav class="hidden lg:flex items-center justify-center border-t border-paper-surface py-3" aria-label="Main Navigation">
+        <ul class="flex items-center gap-8 text-[12px] uppercase tracking-[0.14em] font-medium text-ink-muted">
+          <li><a href="index.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Home</a></li>
+          <li><a href="shop.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Shop</a></li>
+          <li><a href="category-churidars.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Churidars</a></li>
+          <li><a href="category-maxi.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Maxi</a></li>
+          <li><a href="about.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors active text-maroon font-semibold">About</a></li>
+          <li><a href="contact.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors">Contact</a></li>
+          <li><a href="size-chart.html" class="nav-link-reveal py-1 hover:text-maroon transition-colors text-rose">Size Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="bg-paper-surface py-16 sm:py-20 border-b border-[#E5DDD3]">
+    <div class="site-container max-w-4xl text-center">
+      <span class="text-[11px] font-semibold uppercase tracking-[0.25em] text-rose">Artisan Roots</span>
+      <h1 class="font-heading text-4xl sm:text-5xl md:text-6xl text-ink font-light mt-2 mb-6">
+        Woven with Integrity in Pattukkottai
+      </h1>
+      <p class="text-sm sm:text-base text-ink-muted leading-relaxed font-light max-w-2xl mx-auto">
+        At Aruvi Fabrics, we believe that true luxury lies in authentic natural fibers, skilled handloom craftsmanship, and designs that honor the everyday grace of Indian women.
+      </p>
+    </div>
+  </section>
+
+  <!-- STORY CONTENT -->
+  <main class="site-container py-16 sm:py-24 flex-1">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 sm:gap-16 items-center mb-20">
+      <div class="space-y-5">
+        <span class="text-[11px] font-semibold uppercase tracking-[0.2em] text-maroon">Our Philosophy</span>
+        <h2 class="font-heading text-3xl sm:text-4xl text-ink font-light leading-snug">
+          Fabrics that breathe, drape, and endure.
+        </h2>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          Pattukkottai, located in the fertile Cauvery Delta region of Tamil Nadu, has long been surrounded by rich cultural traditions of craftsmanship. Aruvi Fabrics was born to bring the authentic touch of pure combed cotton, handloom weaves, and celebratory soft silks directly to discerning customers.
+        </p>
+        <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+          We reject fast, disposable polyester in favor of skin-friendly weaves that soften gracefully with every wash. Whether it is our staple Cotton Short Tops or our celebratory Soft Silk ensembles, each piece represents genuine textile dignity.
+        </p>
+      </div>
+      <div class="aspect-[4/3] rounded-xl overflow-hidden bg-paper-surface border border-[#E5DDD3] shadow-md">
+        <img src="assets/images/editorial-fabric.jpg" alt="Aruvi Fabrics Heritage Weave" class="w-full h-full object-cover">
+      </div>
+    </div>
+
+    <!-- 3 Core Pillars -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 py-12 border-y border-[#E5DDD3]">
+      <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] space-y-3">
+        <div class="font-heading text-3xl text-maroon font-semibold">01</div>
+        <h3 class="font-heading text-xl font-medium text-ink">Natural Pure Cottons</h3>
+        <p class="text-xs text-ink-muted leading-relaxed">
+          We exclusively source breathable, combed cotton yarns that stay cool and comfortable through tropical heat and long workdays.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] space-y-3">
+        <div class="font-heading text-3xl text-maroon font-semibold">02</div>
+        <h3 class="font-heading text-xl font-medium text-ink">Inclusive Tailoring</h3>
+        <p class="text-xs text-ink-muted leading-relaxed">
+          We believe elegant ethnic fashion belongs to every body. Our standardized patterns span from XS to 6XL with custom sizing options.
+        </p>
+      </div>
+
+      <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] space-y-3">
+        <div class="font-heading text-3xl text-maroon font-semibold">03</div>
+        <h3 class="font-heading text-xl font-medium text-ink">Artisan Honesty</h3>
+        <p class="text-xs text-ink-muted leading-relaxed">
+          No fake markups or artificial discounts. We present verified inventory with transparent prices and direct WhatsApp customer support.
+        </p>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-20 text-center max-w-xl mx-auto space-y-6">
+      <h3 class="font-heading text-3xl sm:text-4xl text-ink font-light">Experience the Aruvi Touch</h3>
+      <p class="text-xs sm:text-sm text-ink-muted leading-relaxed">
+        Browse our verified collections or connect directly with our workshop in Pattukkottai.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="shop.html" class="btn-primary">Explore Catalog</a>
+        <a href="contact.html" class="btn-secondary">Visit Our Store</a>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-maroon-deep text-paper-warm border-t border-maroon-light/30 pt-16 pb-12 mt-auto">
+    <div class="site-container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 w-auto object-contain brightness-0 invert opacity-95 mb-4">
+          <p class="text-xs text-blush-soft/80 leading-relaxed max-w-sm">
+            Handcrafted Indian ethnic wear celebrating authentic pure cotton weaves and celebratory soft silks in Pattukkottai, Tamil Nadu.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-xs text-blush-soft/80">
+            <li><a href="index.html" class="hover:text-white">Home</a></li>
+            <li><a href="shop.html" class="hover:text-white">Shop All</a></li>
+            <li><a href="category-churidars.html" class="hover:text-white">Churidars</a></li>
+            <li><a href="about.html" class="hover:text-white">About Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Contact</h4>
+          <p class="text-xs text-blush-soft/80 leading-relaxed">
+            Pattukkottai, Tamil Nadu<br>
+            Phone: +91 96775 96136
+          </p>
+        </div>
+      </div>
+      <div class="pt-8 text-center sm:text-left text-[11px] text-blush-soft/60">
+        © <span class="current-year">2026</span> Aruvi Fabrics. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

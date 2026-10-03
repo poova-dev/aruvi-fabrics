@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Bag | Aruvi Fabrics</title>
+  <meta name="description" content="Review your selected Aruvi Fabrics items. Handcrafted pure cotton and soft silk styles from Pattukkottai.">
+  <link rel="icon" type="image/jpeg" href="assets/logo/aruvi-monogram.jpg">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            maroon: { DEFAULT: '#4A1521', deep: '#380F18', light: '#6A2132' },
+            blush: { DEFAULT: '#E8C5C8', soft: '#F5E6E8' },
+            rose: '#C88D94',
+            paper: { DEFAULT: '#F9F5F0', warm: '#FFFDFC', surface: '#F3ECE2' },
+            ink: { DEFAULT: '#2B2625', muted: '#6E6462', light: '#9B918E' },
+            gold: { DEFAULT: '#C29B38', light: '#E8D39E' }
+          },
+          fontFamily: {
+            heading: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-paper text-ink antialiased selection:bg-blush selection:text-maroon flex flex-col min-h-screen">
+
+  <!-- TOP BAR -->
+  <div class="bg-maroon text-paper-warm text-[11px] sm:text-xs tracking-wider uppercase border-b border-maroon-deep overflow-hidden">
+    <div class="site-container flex items-center justify-between h-9">
+      <div class="flex items-center gap-4">
+        <span>Shopping Bag</span>
+        <span class="text-blush hidden sm:inline">✦</span>
+        <span class="hidden sm:inline">Free Delivery Across India</span>
+      </div>
+      <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="hover:text-blush transition-colors flex items-center gap-1.5 font-medium">
+        WhatsApp: +91 96775 96136
+      </a>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header id="mainHeader" class="sticky top-0 z-40 bg-paper-warm border-b border-transparent transition-all duration-300">
+    <div class="site-container">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        <div class="flex items-center gap-2 sm:gap-3 flex-1">
+          <button id="mobileMenuBtn" type="button" class="p-2 -ml-2 text-ink hover:text-maroon transition-colors lg:hidden" aria-label="Open navigation menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M4 6h16M4 12h16M4 18h16" /></svg>
+          </button>
+          <a href="shop.html" class="text-xs uppercase tracking-wider text-ink-muted hover:text-maroon transition-colors p-2 hidden sm:inline">
+            ← Continue Shopping
+          </a>
+        </div>
+
+        <div class="flex-shrink-0 text-center">
+          <a href="index.html" class="inline-block" aria-label="Aruvi Fabrics Home">
+            <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 sm:h-12 w-auto object-contain">
+          </a>
+        </div>
+
+        <div class="flex items-center justify-end gap-1.5 sm:gap-4 flex-1">
+          <button data-cart-trigger type="button" class="relative p-2 text-ink hover:text-maroon transition-colors flex items-center gap-2" aria-label="Shopping bag">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <span class="hidden sm:inline text-xs font-semibold uppercase tracking-wider">Bag</span>
+            <span class="cart-count-badge w-5 h-5 rounded-full bg-maroon text-white text-[10px] font-bold flex items-center justify-center -ml-1">0</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CART MAIN CONTENT -->
+  <main class="site-container py-12 flex-1">
+    <div class="flex items-center justify-between pb-6 mb-8 border-b border-[#E5DDD3]">
+      <h1 class="font-heading text-3xl sm:text-4xl text-ink font-light">Your Shopping Bag</h1>
+      <span id="cartItemCountHeader" class="text-xs font-semibold uppercase tracking-wider text-maroon"></span>
+    </div>
+
+    <!-- 2-Column Cart Grid -->
+    <div id="cartContentContainer" class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      
+      <!-- Cart Items Table / Card List (8 Columns) -->
+      <div class="lg:col-span-8 space-y-4" id="cartPageItemsList">
+        <!-- Rendered dynamically via js -->
+      </div>
+
+      <!-- Order Summary Card (4 Columns) -->
+      <div class="lg:col-span-4" id="cartPageSummary">
+        <div class="p-6 rounded-lg bg-white border border-[#E5DDD3] shadow-sm sticky top-28 space-y-5">
+          <h3 class="font-heading text-xl font-semibold text-ink pb-3 border-b border-[#F3ECE2]">Order Summary</h3>
+          
+          <div class="space-y-3 text-xs text-ink-muted">
+            <div class="flex justify-between">
+              <span>Bag Subtotal</span>
+              <span id="cartPageSubtotal" class="font-semibold text-ink">₹0</span>
+            </div>
+            <div class="flex justify-between items-center">
+              <span>Standard Shipping</span>
+              <span class="text-maroon font-semibold uppercase">Free Delivery</span>
+            </div>
+            <div class="flex justify-between text-[11px] text-ink-light">
+              <span>Taxes</span>
+              <span>Included</span>
+            </div>
+          </div>
+
+          <div class="pt-4 border-t border-[#E5DDD3] flex justify-between items-center">
+            <span class="text-sm font-semibold text-ink">Estimated Total</span>
+            <span id="cartPageTotal" class="font-heading text-2xl font-bold text-maroon">₹0</span>
+          </div>
+
+          <div class="space-y-3 pt-2">
+            <a href="checkout.html" class="btn-primary w-full py-3.5 text-center text-xs">
+              Proceed to Checkout
+            </a>
+            <a href="https://wa.me/919677596136" target="_blank" rel="noopener noreferrer" class="btn-whatsapp w-full py-3 text-center text-xs justify-center">
+              Order via WhatsApp
+            </a>
+          </div>
+
+          <div class="pt-4 border-t border-[#F3ECE2] space-y-2 text-[11px] text-ink-muted">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-maroon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>100% Genuine Handloom Quality Guarantee</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-maroon flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+              <span>30-Day Hassle-Free Returns & Exchange</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div id="cartEmptyState" class="hidden py-20 text-center max-w-md mx-auto">
+      <div class="w-20 h-20 rounded-full bg-[#F3ECE2] text-maroon flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+      </div>
+      <h2 class="font-heading text-3xl text-ink font-light mb-2">Your Bag is Empty</h2>
+      <p class="text-xs sm:text-sm text-ink-muted mb-6">Explore our authentic pure cotton and handloom soft silk collections from Pattukkottai.</p>
+      <a href="shop.html" class="btn-primary text-xs">Explore All Products</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-maroon-deep text-paper-warm border-t border-maroon-light/30 pt-16 pb-12 mt-auto">
+    <div class="site-container">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-white/10">
+        <div class="md:col-span-2">
+          <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-10 w-auto object-contain brightness-0 invert opacity-95 mb-4">
+          <p class="text-xs text-blush-soft/80 leading-relaxed max-w-sm">
+            Handcrafted Indian ethnic wear celebrating authentic pure cotton weaves and celebratory soft silks in Pattukkottai, Tamil Nadu.
+          </p>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-xs text-blush-soft/80">
+            <li><a href="index.html" class="hover:text-white">Home</a></li>
+            <li><a href="shop.html" class="hover:text-white">Shop All</a></li>
+            <li><a href="category-churidars.html" class="hover:text-white">Churidars</a></li>
+            <li><a href="about.html" class="hover:text-white">About Us</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="font-heading text-lg font-medium text-white mb-4">Contact</h4>
+          <p class="text-xs text-blush-soft/80 leading-relaxed">
+            Pattukkottai, Tamil Nadu<br>
+            Phone: +91 96775 96136
+          </p>
+        </div>
+      </div>
+      <div class="pt-8 text-center sm:text-left text-[11px] text-blush-soft/60">
+        © <span class="current-year">2026</span> Aruvi Fabrics. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- CART DRAWER & SCRIPTS -->
+  <div id="cartOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="cartDrawer" class="fixed top-0 right-0 bottom-0 w-full max-w-md bg-white z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <div class="flex items-center gap-2">
+        <h3 class="font-heading text-xl font-medium text-ink">Shopping Bag</h3>
+        <span class="cart-count-badge text-xs font-semibold px-2 py-0.5 rounded-full bg-maroon text-white">0</span>
+      </div>
+      <button id="closeCartDrawer" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div id="cartDrawerItems" class="flex-1 overflow-y-auto p-5 space-y-4"></div>
+  </div>
+
+  <div id="mobileMenuOverlay" class="fixed inset-0 bg-black/50 z-50 hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="mobileMenuDrawer" class="fixed top-0 left-0 bottom-0 w-4/5 max-w-sm bg-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-[#E5DDD3] flex items-center justify-between bg-paper-surface">
+      <img src="assets/logo/aruvi-logo-primary.png" alt="Aruvi Fabrics" class="h-8 w-auto">
+      <button id="closeMobileMenuBtn" type="button" class="p-1.5 text-ink-muted hover:text-maroon transition-colors"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></button>
+    </div>
+    <div class="flex-1 overflow-y-auto py-4">
+      <ul class="space-y-1 text-sm font-medium tracking-wide">
+        <li><a href="index.html" class="block px-6 py-3 text-ink">Home</a></li>
+        <li><a href="shop.html" class="block px-6 py-3 text-ink">Shop All</a></li>
+        <li><a href="category-churidars.html" class="block px-6 py-3 text-ink">Churidars</a></li>
+        <li><a href="category-maxi.html" class="block px-6 py-3 text-ink">Maxi</a></li>
+        <li><a href="about.html" class="block px-6 py-3 text-ink">Our Story</a></li>
+        <li><a href="contact.html" class="block px-6 py-3 text-ink">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/navigation.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function renderFullCartPage() {
+      const items = Cart.getItems();
+      const totals = Cart.getTotals();
+      const listEl = document.getElementById("cartPageItemsList");
+      const summaryEl = document.getElementById("cartPageSummary");
+      const emptyEl = document.getElementById("cartEmptyState");
+      const headerCount = document.getElementById("cartItemCountHeader");
+
+      if (items.length === 0) {
+        if (listEl) listEl.innerHTML = "";
+        if (summaryEl) summaryEl.classList.add("hidden");
+        if (emptyEl) emptyEl.classList.remove("hidden");
+        if (headerCount) headerCount.textContent = "0 Items";
+        return;
+      }
+
+      if (emptyEl) emptyEl.classList.add("hidden");
+      if (summaryEl) summaryEl.classList.remove("hidden");
+      if (headerCount) headerCount.textContent = `${totals.totalCount} Item${totals.totalCount === 1 ? '' : 's'}`;
+
+      if (listEl) {
+        listEl.innerHTML = items.map(item => `
+          <div class="p-4 sm:p-5 rounded-lg bg-white border border-[#E5DDD3] shadow-sm flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <a href="product.html?id=${item.id}" class="w-20 h-24 bg-[#F3ECE2] rounded overflow-hidden flex-shrink-0">
+                <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover">
+              </a>
+              <div>
+                <a href="product.html?id=${item.id}" class="font-heading text-lg font-semibold text-ink hover:text-maroon">${item.name}</a>
+                <div class="text-xs text-ink-muted mt-0.5">Size: <span class="font-semibold text-ink uppercase">${item.size}</span></div>
+                <div class="text-xs font-semibold text-maroon mt-1">
+                  ${item.hasPrice ? `₹${item.price.toLocaleString('en-IN')} each` : `<span class="italic font-normal text-ink-muted">Price available in store</span>`}
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between w-full sm:w-auto sm:justify-end gap-6 pt-3 sm:pt-0 border-t sm:border-0 border-[#F3ECE2]">
+              <!-- Quantity Controls -->
+              <div class="inline-flex items-center border border-[#E5DDD3] rounded bg-white">
+                <button onclick="Cart.updateQuantity('${item.id}', '${item.size}', -1); renderFullCartPage();" class="w-8 h-8 flex items-center justify-center text-ink hover:bg-paper-surface" aria-label="Decrease quantity">−</button>
+                <span class="w-8 text-center text-xs font-semibold text-ink">${item.quantity}</span>
+                <button onclick="Cart.updateQuantity('${item.id}', '${item.size}', 1); renderFullCartPage();" class="w-8 h-8 flex items-center justify-center text-ink hover:bg-paper-surface" aria-label="Increase quantity">+</button>
+              </div>
+
+              <!-- Subtotal -->
+              <div class="text-right min-w-[80px]">
+                <div class="text-sm font-semibold text-ink">
+                  ${item.hasPrice ? `₹${(item.price * item.quantity).toLocaleString('en-IN')}` : `—`}
+                </div>
+              </div>
+
+              <!-- Remove -->
+              <button onclick="Cart.removeItem('${item.id}', '${item.size}'); renderFullCartPage();" class="text-ink-light hover:text-maroon p-1.5 transition-colors" aria-label="Remove item">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              </button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const subtotalEl = document.getElementById("cartPageSubtotal");
+      const totalEl = document.getElementById("cartPageTotal");
+      if (subtotalEl) subtotalEl.textContent = `₹${totals.subtotal.toLocaleString('en-IN')}`;
+      if (totalEl) totalEl.textContent = `₹${totals.total.toLocaleString('en-IN')}`;
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      renderFullCartPage();
+      window.addEventListener("aruvi:cartUpdated", renderFullCartPage);
+    });
+  </script>
+</body>
+</html>
