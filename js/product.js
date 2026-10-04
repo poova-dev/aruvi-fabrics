@@ -11,8 +11,8 @@ const ProductDetail = {
 
   init() {
     const params = new URLSearchParams(window.location.search);
-    const productId = params.get("id") || "arv-cotton-short-top-1";
-    this.currentProduct = ARUVI_PRODUCTS.find(p => p.id === productId) || ARUVI_PRODUCTS[0];
+    const productId = params.get("id") || "3723";
+    this.currentProduct = ARUVI_PRODUCTS.find(p => String(p.id) === String(productId) || p.legacyId === productId) || ARUVI_PRODUCTS[0];
 
     if (!this.currentProduct) return;
 

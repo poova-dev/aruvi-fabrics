@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "Aruvi Fabrics — Handcrafted Indian Fashion, Churidars & Handloom Weaves",
   "main": "index.html",
+  "type": "module",
   "scripts": {
-    "deploy": "wrangler deploy"
+    "deploy": "firebase deploy --only hosting",
+    "deploy:all": "firebase deploy",
+    "seed": "node scripts/seed-firestore.mjs"
   },
   "keywords": [
     "aruvi-fabrics",

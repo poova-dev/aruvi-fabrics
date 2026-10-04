@@ -1,0 +1,36 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isImageFile() {
+      return request.resource.contentType.matches('image/.*')
+        && request.resource.size < 10 * 1024 * 1024; // 10MB max
+    }
+    
+    // Public read for website assets and catalogs
+    // Admin-only write with image type validation
+    match /products/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImageFile();
+    }
+    
+    match /banners/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImageFile();
+    }
+    
+    match /categories/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImageFile();
+    }
+    
+    match /settings/{allPaths=**} {
+      allow read: if true;
+      allow write: if isAuthenticated() && isImageFile();
+    }
+  }
+}

@@ -29,7 +29,7 @@ const Cart = {
   },
 
   addItem(productId, size = "M", quantity = 1) {
-    const product = ARUVI_PRODUCTS.find(p => p.id === productId);
+    const product = ARUVI_PRODUCTS.find(p => String(p.id) === String(productId) || p.legacyId === productId);
     if (!product) return false;
 
     const items = this.getItems();

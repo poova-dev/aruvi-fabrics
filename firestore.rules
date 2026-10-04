@@ -1,0 +1,109 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // ========================================================
+    // HELPER FUNCTIONS
+    // ========================================================
+    
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && (
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin') ||
+        request.auth.token.role == 'admin'
+      );
+    }
+    
+    // ========================================================
+    // PRODUCTS COLLECTION
+    // Public can view catalog; strictly admins can create/edit/delete
+    // ========================================================
+    match /products/{productId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // ========================================================
+    // CATEGORIES COLLECTION
+    // Public can view categories; strictly admins can manage
+    // ========================================================
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // ========================================================
+    // STORE SETTINGS & CONFIGURATION
+    // Public can view store details (WhatsApp, address, etc.)
+    // Strictly admins can modify
+    // ========================================================
+    match /settings/{settingId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // ========================================================
+    // PROMOTIONAL BANNERS
+    // Public can view active banners; strictly admins can edit
+    // ========================================================
+    match /banners/{bannerId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+    
+    // ========================================================
+    // ORDERS COLLECTION
+    // Guests/Customers can submit orders (status strictly 'pending'/'inquiry')
+    // Customers cannot overwrite existing orders or tamper with totals
+    // Only admins can view all orders, change status, or delete
+    // ========================================================
+    match /orders/{orderId} {
+      allow read: if isAdmin() || (isAuthenticated() && resource.data.customerId == request.auth.uid);
+      allow create: if request.resource.data.status in ['pending', 'inquiry']
+                    && request.resource.data.items is list
+                    && request.resource.data.items.size() > 0
+                    && request.resource.data.customer is map
+                    && request.resource.data.customer.phone is string;
+      allow update, delete: if isAdmin();
+    }
+    
+    // ========================================================
+    // REVIEWS COLLECTION
+    // Public can only view approved reviews
+    // Customers can submit reviews strictly with 'pending' moderation status
+    // Only admins can moderate (approve/reject) or delete reviews
+    // ========================================================
+    match /reviews/{reviewId} {
+      allow read: if (resource != null && resource.data.status == 'approved') || isAdmin();
+      allow create: if request.resource.data.status == 'pending'
+                    && request.resource.data.productId is string
+                    && request.resource.data.rating is number
+                    && request.resource.data.rating >= 1
+                    && request.resource.data.rating <= 5
+                    && request.resource.data.customerName is string
+                    && request.resource.data.customerName.size() >= 2
+                    && request.resource.data.reviewText is string
+                    && request.resource.data.reviewText.size() >= 5;
+      allow update, delete: if isAdmin();
+    }
+    
+    // ========================================================
+    // USERS & ADMIN ACCOUNTS
+    // Authenticated users can read their own profile; admins can read all
+    // Only existing admins can assign the admin role
+    // ========================================================
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isAuthenticated() && (request.auth.uid == userId && !('role' in request.resource.data)) || isAdmin();
+      allow update, delete: if isAdmin();
+    }
+  }
+}

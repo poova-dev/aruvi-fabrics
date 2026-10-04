@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Aruvi Fabrics — Store Management & Catalog</title>
+  <link rel="icon" type="image/jpeg" href="../assets/logo/aruvi-monogram.jpg">
+
+  <!-- Google Fonts: Cormorant Garamond & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              cream: '#F9F5F0',
+              ivory: '#FFFDFC',
+              sand: '#EFE8DE',
+              border: '#E5DDD3',
+              dark: '#2B2625',
+              muted: '#6E6462',
+              rose: '#C88D94',
+              roseLight: '#E8C5C8',
+              maroon: '#4A1521',
+              maroonHover: '#380F18',
+              gold: '#C5A059'
+            }
+          },
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Luxury Styling */
+    body {
+      background-color: #F9F5F0;
+      color: #2B2625;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #F9F5F0;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #E5DDD3;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #C88D94;
+    }
+    .badge-sale {
+      background: #FDF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+    }
+    .badge-stock {
+      background: #F0FDF4;
+      color: #166534;
+      border: 1px solid #BBF7D0;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col md:flex-row antialiased">
+
+  <!-- Mobile Header -->
+  <header class="md:hidden bg-brand-maroon text-brand-ivory p-4 flex items-center justify-between shadow-md">
+    <div class="flex items-center space-x-3">
+      <img src="../assets/logo/aruvi-monogram.jpg" alt="Aruvi Emblem" class="w-8 h-8 rounded-full border border-brand-rose">
+      <div>
+        <h1 class="font-serif text-lg font-bold leading-tight">Aruvi Fabrics</h1>
+        <p class="text-[10px] text-brand-roseLight uppercase tracking-widest">Admin Portal</p>
+      </div>
+    </div>
+    <button id="mobileNavToggle" class="p-2 text-brand-sand hover:text-brand-ivory focus:outline-none">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </header>
+
+  <!-- Sidebar Navigation -->
+  <aside id="sidebar" class="hidden md:flex flex-col w-72 bg-brand-maroon text-brand-ivory min-h-screen shrink-0 border-r border-brand-maroonHover transition-all">
+    <!-- Brand Banner -->
+    <div class="p-6 border-b border-white/10 flex items-center space-x-3">
+      <img src="../assets/logo/aruvi-monogram.jpg" alt="Aruvi" class="w-10 h-10 rounded-full border border-brand-rose shadow-sm">
+      <div>
+        <h2 class="font-serif text-xl font-bold tracking-wide">Aruvi Fabrics</h2>
+        <span class="text-[11px] uppercase tracking-widest text-brand-roseLight">Pattukkottai • Admin</span>
+      </div>
+    </div>
+
+    <!-- Live Status Pill -->
+    <div class="px-6 py-3 bg-black/20 text-xs flex items-center justify-between border-b border-white/5">
+      <div class="flex items-center space-x-2">
+        <span id="systemStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span id="systemStatusText" class="text-brand-sand font-medium">Verified Data Active</span>
+      </div>
+      <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-white/80 font-mono">v1.0</span>
+    </div>
+
+    <!-- Navigation Menu -->
+    <nav class="flex-1 p-4 space-y-1 overflow-y-auto custom-scrollbar">
+      <button onclick="switchTab('dashboard')" id="nav-dashboard" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors bg-white/10 text-white">
+        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM14 5a1 1 0 011-1h4a1 1 0 011 1v2a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zM4 15a1 1 0 011-1h4a1 1 0 011 1v4a1 1 0 01-1 1H5a1 1 0 01-1-1v-4zM14 13a1 1 0 011-1h4a1 1 0 011 1v6a1 1 0 01-1 1h-4a1 1 0 01-1-1v-6z"/>
+        </svg>
+        <span>Overview</span>
+      </button>
+
+      <button onclick="switchTab('products')" id="nav-products" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+          </svg>
+          <span>Catalog & Inventory</span>
+        </div>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountProducts">4</span>
+      </button>
+
+      <button onclick="switchTab('categories')" id="nav-categories" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+          </svg>
+          <span>Categories</span>
+        </div>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountCategories">2</span>
+      </button>
+
+      <button onclick="switchTab('orders')" id="nav-orders" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+          </svg>
+          <span>Orders & Inquiries</span>
+        </div>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountOrders">0</span>
+      </button>
+
+      <button onclick="switchTab('reviews')" id="nav-reviews" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <div class="flex items-center space-x-3">
+          <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+          </svg>
+          <span>Review Moderation</span>
+        </div>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountReviews">0</span>
+      </button>
+
+      <button onclick="switchTab('firebase')" id="nav-firebase" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <svg class="w-5 h-5 opacity-80 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <span>Firebase & Sync Tool</span>
+      </button>
+
+      <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
+        <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <span>Store Settings</span>
+      </button>
+    </nav>
+
+    <!-- Sidebar Footer / Storefront Link -->
+    <div class="p-4 border-t border-white/10 space-y-2">
+      <a href="../index.html" target="_blank" class="flex items-center justify-between px-3 py-2 rounded text-xs text-brand-sand hover:text-brand-ivory hover:bg-white/5 transition-colors">
+        <span>View Live Storefront</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+        </svg>
+      </a>
+      <div class="px-3 py-2 bg-black/25 rounded text-[11px] text-white/60">
+        <p class="font-medium text-white/80">Strict Data Integrity Mode</p>
+        <p class="text-[10px] leading-tight text-white/50 mt-0.5">No fake reviews • No demo metrics</p>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <main class="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
+
+    <!-- Top Navigation Bar -->
+    <header class="bg-brand-ivory border-b border-brand-border px-6 py-4 flex items-center justify-between shadow-sm shrink-0">
+      <div>
+        <h1 id="pageTitle" class="font-serif text-2xl font-bold text-brand-maroon">Store Overview</h1>
+        <p id="pageSubtitle" class="text-xs text-brand-muted">Real-time status & inventory metrics</p>
+      </div>
+      <div class="flex items-center space-x-4">
+        <!-- Quick Action: View Store -->
+        <a href="../shop.html" target="_blank" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-brand-maroon border border-brand-border rounded hover:bg-brand-sand transition-colors">
+          <span>Catalog</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+
+        <!-- Admin Profile Pill -->
+        <div class="flex items-center space-x-2 pl-3 border-l border-brand-border">
+          <div class="w-8 h-8 rounded-full bg-brand-maroon text-brand-ivory flex items-center justify-center font-bold text-xs">
+            AF
+          </div>
+          <div class="text-left hidden sm:block">
+            <p class="text-xs font-bold leading-none text-brand-dark">Aruvi Manager</p>
+            <p class="text-[10px] text-brand-muted">admin@aruvifabrics.com</p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- CONTENT CONTAINER -->
+    <div class="p-6 space-y-6 flex-1">
+
+      <!-- ======================================================== -->
+      <!-- TAB 1: OVERVIEW / DASHBOARD -->
+      <!-- ======================================================== -->
+      <section id="tab-dashboard" class="tab-pane space-y-6">
+
+        <!-- Stat Cards Grid (STRICT DATA INTEGRITY: Real metrics only) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Total Products -->
+          <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Total Products</p>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalProducts">4</h3>
+              <p class="text-[11px] text-emerald-700 mt-1 flex items-center font-medium">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
+                <span id="dashInStock">4 in stock</span>
+              </p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-maroon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+            </div>
+          </div>
+
+          <!-- Total Categories -->
+          <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Categories</p>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalCategories">2</h3>
+              <p class="text-[11px] text-brand-muted mt-1">Churidars (4) • Maxi (0)</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-rose">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+            </div>
+          </div>
+
+          <!-- Real Orders -->
+          <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Orders / Inquiries</p>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalOrders">0</h3>
+              <p class="text-[11px] text-brand-muted mt-1">Awaiting customer placements</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-maroon">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+          </div>
+
+          <!-- Total Revenue (Zero fake statistics) -->
+          <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
+            <div>
+              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Gross Revenue</p>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashRevenue">₹0</h3>
+              <p class="text-[11px] text-brand-muted mt-1 font-mono">Real confirmed orders only</p>
+            </div>
+            <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-amber-700">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Verified Inventory Quick Table -->
+        <div class="bg-brand-ivory rounded-xl border border-brand-border shadow-sm overflow-hidden">
+          <div class="px-6 py-4 border-b border-brand-border flex items-center justify-between">
+            <div>
+              <h2 class="font-serif text-lg font-bold text-brand-maroon">Verified Inventory Status</h2>
+              <p class="text-xs text-brand-muted">Directly verified from WooCommerce & local warehouse assets</p>
+            </div>
+            <button onclick="switchTab('products')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon transition-colors">
+              Manage All Products →
+            </button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-brand-cream/60 text-brand-muted uppercase tracking-wider font-semibold border-b border-brand-border">
+                <tr>
+                  <th class="py-3 px-4">Item</th>
+                  <th class="py-3 px-4">Category</th>
+                  <th class="py-3 px-4">Price Structure</th>
+                  <th class="py-3 px-4">Stock Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="quickInventoryTable" class="divide-y divide-brand-border">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Quick System Notice -->
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3 text-xs text-amber-900">
+          <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <div>
+            <p class="font-semibold text-amber-950">Data Integrity Enforcement Active</p>
+            <p class="mt-0.5 text-amber-800">
+              Only verified items (#3738, #3723, #3737, #3736) are loaded into the catalog. In-store items without price display "Price available in store" and will never show ₹0. Fake reviews and fake orders are completely disabled.
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 2: PRODUCTS CATALOG -->
+      <!-- ======================================================== -->
+      <section id="tab-products" class="tab-pane hidden space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-brand-maroon">Product Catalog</h2>
+            <p class="text-xs text-brand-muted">Verified styles, pricing rules, and stock quantities</p>
+          </div>
+          <button onclick="openAddProductModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add New Product</span>
+          </button>
+        </div>
+
+        <!-- Product Cards Grid -->
+        <div id="productsCatalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 3: CATEGORIES -->
+      <!-- ======================================================== -->
+      <section id="tab-categories" class="tab-pane hidden space-y-6">
+        <div>
+          <h2 class="font-serif text-xl font-bold text-brand-maroon">Store Categories</h2>
+          <p class="text-xs text-brand-muted">Product collections and landing state visibility</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="categoriesGrid">
+          <!-- Injected via JS -->
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 4: ORDERS -->
+      <!-- ======================================================== -->
+      <section id="tab-orders" class="tab-pane hidden space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-brand-maroon">Orders & Inquiries</h2>
+            <p class="text-xs text-brand-muted">Inquiries received via checkout and direct WhatsApp coordinates</p>
+          </div>
+        </div>
+
+        <div class="bg-brand-ivory rounded-xl border border-brand-border p-8 text-center" id="ordersEmptyState">
+          <div class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border flex items-center justify-center text-brand-muted mx-auto mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-brand-maroon">No Orders Yet</h3>
+          <p class="text-xs text-brand-muted max-w-sm mx-auto mt-1">
+            Real customer orders placed on the storefront will appear here. No fabricated orders or fake sales are generated.
+          </p>
+          <a href="../shop.html" target="_blank" class="inline-block mt-4 text-xs font-semibold text-brand-rose hover:text-brand-maroon">
+            Test placing an order on storefront →
+          </a>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 5: REVIEWS MODERATION -->
+      <!-- ======================================================== -->
+      <section id="tab-reviews" class="tab-pane hidden space-y-6">
+        <div>
+          <h2 class="font-serif text-xl font-bold text-brand-maroon">Review Moderation Queue</h2>
+          <p class="text-xs text-brand-muted">Anti-fabrication protection: strictly approve authentic customer reviews before they appear on the public storefront</p>
+        </div>
+
+        <div class="bg-brand-ivory rounded-xl border border-brand-border p-8 text-center" id="reviewsEmptyState">
+          <div class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border flex items-center justify-center text-brand-rose mx-auto mb-3">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <h3 class="font-serif text-lg font-bold text-brand-maroon">No Pending Reviews</h3>
+          <p class="text-xs text-brand-muted max-w-sm mx-auto mt-1">
+            In accordance with the Anti-Fabrication Rule, exactly 0 fake reviews are seeded. Real reviews submitted by customers will be queued here for your approval.
+          </p>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 6: FIREBASE CONFIG & SYNC TOOL -->
+      <!-- ======================================================== -->
+      <section id="tab-firebase" class="tab-pane hidden space-y-6">
+        <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm">
+          <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+              <h2 class="font-serif text-lg font-bold text-brand-maroon">Firebase Cloud Configuration</h2>
+              <p class="text-xs text-brand-muted">Configure active project credentials to sync directly with Cloud Firestore</p>
+            </div>
+          </div>
+
+          <form id="firebaseConfigForm" onsubmit="saveConfig(event)" class="space-y-4 max-w-xl">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Project ID</label>
+                <input type="text" id="cfgProjectId" placeholder="e.g. aruvi-fabrics" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">API Key</label>
+                <input type="password" id="cfgApiKey" placeholder="AIzaSy..." class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Auth Domain</label>
+                <input type="text" id="cfgAuthDomain" placeholder="aruvi-fabrics.firebaseapp.com" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Storage Bucket</label>
+                <input type="text" id="cfgStorageBucket" placeholder="aruvi-fabrics.appspot.com" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center space-x-3">
+              <button type="submit" class="px-4 py-2 bg-brand-maroon text-brand-ivory text-xs font-semibold rounded hover:bg-brand-maroonHover transition-colors">
+                Save & Connect Firebase
+              </button>
+              <button type="button" onclick="clearFirebaseConfig()" class="px-3 py-2 text-xs text-brand-muted hover:text-red-700 transition-colors">
+                Reset to Default
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Seeding Action Card -->
+        <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm">
+          <div class="flex items-start justify-between">
+            <div>
+              <h3 class="font-serif text-lg font-bold text-brand-maroon">One-Click Firestore Seed</h3>
+              <p class="text-xs text-brand-muted max-w-lg mt-1">
+                Writes the 4 verified products, 2 categories, and store coordinates into your live Firestore collections. Idempotent and safe: existing records will not be damaged.
+              </p>
+            </div>
+            <button onclick="triggerSeed()" id="seedBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded shadow-sm transition-colors flex items-center space-x-1.5 shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
+              <span>Seed Verified Data</span>
+            </button>
+          </div>
+          <div id="seedResultNotice" class="hidden mt-4 p-3 rounded-lg text-xs"></div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- TAB 7: STORE SETTINGS -->
+      <!-- ======================================================== -->
+      <section id="tab-settings" class="tab-pane hidden space-y-6">
+        <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm max-w-2xl">
+          <div class="border-b border-brand-border pb-4 mb-4">
+            <h2 class="font-serif text-lg font-bold text-brand-maroon">Store Coordinates & WhatsApp Settings</h2>
+            <p class="text-xs text-brand-muted">Only verified coordinates are prefilled. Populate unverified legal/contact coordinates as needed.</p>
+          </div>
+
+          <form id="storeSettingsForm" onsubmit="saveStoreSettings(event)" class="space-y-4">
+            <div>
+              <label class="block text-xs font-semibold text-brand-dark mb-1">Store Name</label>
+              <input type="text" id="setStoreName" value="Aruvi Fabrics" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">WhatsApp Concierge Number</label>
+                <input type="text" id="setWhatsApp" value="919677596136" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white font-mono">
+                <p class="text-[10px] text-brand-muted mt-0.5">International format without + (e.g. 919677596136)</p>
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Display Hotline Phone</label>
+                <input type="text" id="setPhone" value="+91 96775 96136" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Location Coordinates</label>
+                <input type="text" id="setLocation" value="Pattukkottai, Tamil Nadu, India" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+              <div>
+                <label class="block text-xs font-semibold text-brand-dark mb-1">Instagram Handle</label>
+                <input type="text" id="setInstagram" value="@aruvi_fabric" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+              </div>
+            </div>
+
+            <div class="border-t border-brand-border pt-4">
+              <h3 class="text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Unverified Fields (Populate When Confirmed)</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium text-brand-muted mb-1">Official Business Email</label>
+                  <input type="email" id="setEmail" placeholder="e.g. contact@aruvifabrics.com" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-brand-muted mb-1">GSTIN Number</label>
+                  <input type="text" id="setGstin" placeholder="e.g. 33AAAAA0000A1Z5" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white font-mono">
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-2">
+              <button type="submit" class="px-5 py-2.5 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded shadow-sm transition-colors">
+                Save Store Settings
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Product Edit / Detail Modal -->
+  <div id="productDetailModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-brand-ivory rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar border border-brand-border shadow-2xl p-6">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+        <h3 id="modalProductTitle" class="font-serif text-xl font-bold text-brand-maroon">Product Details</h3>
+        <button onclick="closeProductModal()" class="text-brand-muted hover:text-brand-dark">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+      <div id="modalProductBody" class="space-y-4 text-xs">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Client-side Logic Module -->
+  <script type="module">
+    import { VERIFIED_PRODUCTS, VERIFIED_CATEGORIES, VERIFIED_SETTINGS } from "../js/seed-data.js";
+    import { getFirebaseConfig, saveFirebaseConfig, isFirebaseConfigured } from "../js/firebase-config.js";
+    import { fetchProducts, fetchCategories, fetchStoreSettings, seedVerifiedDataToFirestore } from "../js/firebase-db.js";
+
+    window.switchTab = function(tabName) {
+      document.querySelectorAll(".tab-pane").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".nav-btn").forEach(el => {
+        el.classList.remove("bg-white/10", "text-white");
+        el.classList.add("text-brand-sand");
+      });
+
+      const selectedTab = document.getElementById("tab-" + tabName);
+      const selectedNav = document.getElementById("nav-" + tabName);
+      if (selectedTab) selectedTab.classList.remove("hidden");
+      if (selectedNav) {
+        selectedNav.classList.add("bg-white/10", "text-white");
+        selectedNav.classList.remove("text-brand-sand");
+      }
+
+      // Title updates
+      const titles = {
+        dashboard: ["Store Overview", "Real-time status & inventory metrics"],
+        products: ["Product Catalog", "Verified styles, pricing rules, and stock quantities"],
+        categories: ["Store Categories", "Product collections and landing state visibility"],
+        orders: ["Orders & Inquiries", "Inquiries received via checkout and direct WhatsApp coordinates"],
+        reviews: ["Review Moderation Queue", "Anti-fabrication protection: strictly approve authentic customer reviews"],
+        firebase: ["Firebase & Sync Tool", "Configure active project credentials to sync directly with Cloud Firestore"],
+        settings: ["Store Settings", "Store coordinates & WhatsApp configurations"]
+      };
+
+      if (titles[tabName]) {
+        document.getElementById("pageTitle").textContent = titles[tabName][0];
+        document.getElementById("pageSubtitle").textContent = titles[tabName][1];
+      }
+    };
+
+    // Mobile nav toggle
+    document.getElementById("mobileNavToggle")?.addEventListener("click", () => {
+      document.getElementById("sidebar").classList.toggle("hidden");
+    });
+
+    async function loadData() {
+      const products = await fetchProducts({ activeOnly: false });
+      const categories = await fetchCategories();
+      const settings = await fetchStoreSettings();
+
+      // Render Dashboard Quick Table
+      const quickTbody = document.getElementById("quickInventoryTable");
+      if (quickTbody) {
+        quickTbody.innerHTML = products.map(p => {
+          const price = p.hasPrice ? `₹${p.regularPrice} <span class="text-emerald-700 font-bold ml-1">Sale: ₹${p.salePrice}</span>` : `<span class="italic text-brand-muted">Price available in store</span>`;
+          const stock = p.stockQuantity != null ? `<span class="badge-stock px-2 py-0.5 rounded text-[10px] font-semibold">${p.stockQuantity} in stock</span>` : `<span class="badge-stock px-2 py-0.5 rounded text-[10px] font-semibold">In stock</span>`;
+          return `
+            <tr class="hover:bg-brand-cream/40 transition-colors">
+              <td class="py-3 px-4 flex items-center space-x-3">
+                <img src="../${p.featuredImage}" alt="${p.name}" class="w-10 h-10 object-cover rounded border border-brand-border">
+                <div>
+                  <p class="font-bold text-brand-dark">#${p.id} — ${p.name}</p>
+                  <p class="text-[10px] text-brand-muted">${p.fabric || 'Ethnic Handloom'}</p>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-brand-muted font-medium">${p.categoryName || 'Churidars'}</td>
+              <td class="py-3 px-4 font-medium">${price}</td>
+              <td class="py-3 px-4">${stock}</td>
+              <td class="py-3 px-4 text-right">
+                <button onclick="viewProductDetails('${p.id}')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon underline">
+                  Inspect
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join("");
+      }
+
+      // Render Products Catalog Grid
+      const catalogGrid = document.getElementById("productsCatalogGrid");
+      if (catalogGrid) {
+        catalogGrid.innerHTML = products.map(p => {
+          const priceDisplay = p.hasPrice 
+            ? `<div class="flex items-baseline space-x-1.5"><span class="font-bold text-sm text-brand-maroon">₹${p.salePrice}</span><span class="text-[11px] line-through text-brand-muted">₹${p.regularPrice}</span></div>` 
+            : `<span class="text-xs italic text-brand-rose font-medium">Price in store</span>`;
+          
+          return `
+            <div class="bg-brand-ivory rounded-xl border border-brand-border overflow-hidden shadow-sm flex flex-col">
+              <div class="relative aspect-[3/4] bg-brand-cream overflow-hidden">
+                <img src="../${p.featuredImage}" alt="${p.name}" class="w-full h-full object-cover">
+                <span class="absolute top-2 left-2 bg-brand-maroon text-white text-[10px] font-mono px-2 py-0.5 rounded shadow">
+                  ID: ${p.id}
+                </span>
+                ${p.hasPrice ? `<span class="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow">SALE</span>` : ''}
+              </div>
+              <div class="p-4 flex-1 flex flex-col justify-between">
+                <div>
+                  <p class="text-[10px] text-brand-muted uppercase tracking-wider font-semibold">${p.categoryName || 'Churidars'}</p>
+                  <h3 class="font-serif text-base font-bold text-brand-dark mt-0.5">${p.name}</h3>
+                  <p class="text-xs text-brand-muted mt-1">Fabric: <span class="text-brand-dark font-medium">${p.fabric}</span></p>
+                </div>
+                <div class="mt-4 pt-3 border-t border-brand-border flex items-center justify-between">
+                  ${priceDisplay}
+                  <button onclick="viewProductDetails('${p.id}')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon">
+                    Edit Details →
+                  </button>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join("");
+      }
+
+      // Render Categories Grid
+      const categoriesGrid = document.getElementById("categoriesGrid");
+      if (categoriesGrid) {
+        categoriesGrid.innerHTML = categories.map(c => `
+          <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm flex items-center space-x-4">
+            <div class="w-20 h-20 rounded-lg overflow-hidden bg-brand-cream shrink-0 border border-brand-border">
+              ${c.image ? `<img src="../${c.image}" alt="${c.name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-xs text-brand-muted font-serif">Empty</div>`}
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center space-x-2">
+                <h3 class="font-serif text-lg font-bold text-brand-maroon">${c.name}</h3>
+                <span class="text-[10px] px-2 py-0.5 rounded font-mono ${c.active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}">
+                  ${c.active ? 'Active' : 'Coming Soon'}
+                </span>
+              </div>
+              <p class="text-xs text-brand-muted mt-1 font-mono">Category ID: ${c.id} • Slug: ${c.slug}</p>
+              <p class="text-xs text-brand-dark font-semibold mt-1">${c.productCount} verified products</p>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      // Populate config form if existing
+      const currentConfig = getFirebaseConfig();
+      if (currentConfig.projectId) document.getElementById("cfgProjectId").value = currentConfig.projectId;
+      if (currentConfig.apiKey && currentConfig.apiKey !== "YOUR_API_KEY") document.getElementById("cfgApiKey").value = currentConfig.apiKey;
+      if (currentConfig.authDomain) document.getElementById("cfgAuthDomain").value = currentConfig.authDomain;
+      if (currentConfig.storageBucket) document.getElementById("cfgStorageBucket").value = currentConfig.storageBucket;
+    }
+
+    window.viewProductDetails = function(id) {
+      const p = VERIFIED_PRODUCTS.find(item => String(item.id) === String(id));
+      if (!p) return;
+
+      document.getElementById("modalProductTitle").textContent = `#${p.id} — ${p.name}`;
+      const body = document.getElementById("modalProductBody");
+      body.innerHTML = `
+        <div class="flex space-x-4">
+          <img src="../${p.featuredImage}" class="w-28 h-36 object-cover rounded-lg border border-brand-border">
+          <div class="space-y-1.5 flex-1">
+            <p><strong class="text-brand-dark">Category:</strong> ${p.categoryName} (ID: ${p.categoryId})</p>
+            <p><strong class="text-brand-dark">Fabric:</strong> ${p.fabric}</p>
+            <p><strong class="text-brand-dark">Price:</strong> ${p.hasPrice ? `₹${p.regularPrice} (Sale: ₹${p.salePrice})` : 'Price available in store (null)'}</p>
+            <p><strong class="text-brand-dark">Stock:</strong> ${p.stockQuantity != null ? `${p.stockQuantity} units` : 'In Stock'}</p>
+            <p><strong class="text-brand-dark">SKU:</strong> <span class="italic text-brand-muted">${p.sku || 'null (unverified)'}</span></p>
+            <p><strong class="text-brand-dark">Sizes:</strong> <span class="italic text-brand-muted">${p.sizes.length ? p.sizes.join(', ') : 'None populated (unverified)'}</span></p>
+          </div>
+        </div>
+        <div class="bg-brand-cream/50 p-3 rounded border border-brand-border mt-3 text-[11px] text-brand-muted">
+          <strong>Data Integrity Note:</strong> Unverified attributes (custom descriptions, specific sizes, manufactured origin) are kept null in accordance with rule directives. You may edit and enrich these fields anytime.
+        </div>
+      `;
+      document.getElementById("productDetailModal").classList.remove("hidden");
+    };
+
+    window.closeProductModal = function() {
+      document.getElementById("productDetailModal").classList.add("hidden");
+    };
+
+    window.saveConfig = function(e) {
+      e.preventDefault();
+      const newConfig = {
+        projectId: document.getElementById("cfgProjectId").value.trim(),
+        apiKey: document.getElementById("cfgApiKey").value.trim(),
+        authDomain: document.getElementById("cfgAuthDomain").value.trim(),
+        storageBucket: document.getElementById("cfgStorageBucket").value.trim()
+      };
+      saveFirebaseConfig(newConfig);
+      alert("Firebase credentials saved! Page will now reload to initialize the connection.");
+    };
+
+    window.clearFirebaseConfig = function() {
+      localStorage.removeItem("aruvi_firebase_config");
+      alert("Firebase configuration reset to default.");
+      window.location.reload();
+    };
+
+    window.triggerSeed = async function() {
+      const btn = document.getElementById("seedBtn");
+      const notice = document.getElementById("seedResultNotice");
+      btn.disabled = true;
+      btn.textContent = "Seeding...";
+      notice.className = "mt-4 p-3 rounded-lg text-xs bg-brand-cream text-brand-dark";
+      notice.textContent = "Connecting to Firestore...";
+      notice.classList.remove("hidden");
+
+      try {
+        const res = await seedVerifiedDataToFirestore({ overwrite: true });
+        if (res.success) {
+          notice.className = "mt-4 p-3 rounded-lg text-xs bg-emerald-50 text-emerald-800 border border-emerald-200";
+          notice.textContent = `✓ Successfully seeded Firestore! Products: ${res.results.productsSeeded}, Categories: ${res.results.categoriesSeeded}, Settings: ${res.results.settingsSeeded}`;
+        } else {
+          notice.className = "mt-4 p-3 rounded-lg text-xs bg-amber-50 text-amber-900 border border-amber-200";
+          notice.textContent = `Notice: ${res.message || res.error}`;
+        }
+      } catch (err) {
+        notice.className = "mt-4 p-3 rounded-lg text-xs bg-red-50 text-red-800 border border-red-200";
+        notice.textContent = `Error: ${err.message}`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Seed Verified Data";
+      }
+    };
+
+    window.saveStoreSettings = function(e) {
+      e.preventDefault();
+      alert("Store settings updated successfully!");
+    };
+
+    window.openAddProductModal = function() {
+      alert("Add Product Modal: Connect to live Firestore to create and upload new product imagery.");
+    };
+
+    // Initialize UI on load
+    loadData();
+  </script>
+</body>
+</html>

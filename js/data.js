@@ -36,8 +36,10 @@ const ARUVI_CONFIG = {
 
 const ARUVI_PRODUCTS = [
   {
-    id: "arv-soft-silk",
+    id: "3738",
+    legacyId: "arv-soft-silk",
     name: "Soft Silk",
+    categoryId: "20",
     category: "Churidars",
     categorySlug: "churidars",
     hasPrice: true,
@@ -46,6 +48,8 @@ const ARUVI_PRODUCTS = [
     badge: "Sale",
     featured: true,
     newArrival: true,
+    stockStatus: "in_stock",
+    stockQuantity: null,
     image: "assets/images/product-soft-silk.jpg",
     gallery: [
       "assets/images/product-soft-silk.jpg",
@@ -65,8 +69,10 @@ const ARUVI_PRODUCTS = [
     ]
   },
   {
-    id: "arv-cotton-short-top-1",
+    id: "3723",
+    legacyId: "arv-cotton-short-top-1",
     name: "Cotton Short Top",
+    categoryId: "20",
     category: "Churidars",
     categorySlug: "churidars",
     hasPrice: true,
@@ -75,6 +81,8 @@ const ARUVI_PRODUCTS = [
     badge: "Sale",
     featured: true,
     newArrival: true,
+    stockStatus: "in_stock",
+    stockQuantity: 3,
     image: "assets/images/product-cotton-short-top-1.jpg",
     gallery: [
       "assets/images/product-cotton-short-top-1.jpg",
@@ -94,15 +102,21 @@ const ARUVI_PRODUCTS = [
     ]
   },
   {
-    id: "arv-cotton-short-top-2",
+    id: "3737",
+    legacyId: "arv-cotton-short-top-2",
     name: "Cotton Short Top (Rose Peach)",
+    categoryId: "20",
     category: "Churidars",
     categorySlug: "churidars",
     hasPrice: false,
+    regularPrice: null,
+    salePrice: null,
     priceNote: "Price available in store",
     badge: "Exclusive",
     featured: false,
     newArrival: true,
+    stockStatus: "in_stock",
+    stockQuantity: null,
     image: "assets/images/product-cotton-short-top-2.jpg",
     gallery: [
       "assets/images/product-cotton-short-top-2.jpg",
@@ -120,15 +134,21 @@ const ARUVI_PRODUCTS = [
     ]
   },
   {
-    id: "arv-cotton-short-top-3",
+    id: "3736",
+    legacyId: "arv-cotton-short-top-3",
     name: "Cotton Short Top (Indigo Print)",
+    categoryId: "20",
     category: "Churidars",
     categorySlug: "churidars",
     hasPrice: false,
+    regularPrice: null,
+    salePrice: null,
     priceNote: "Price available in store",
     badge: "Handcrafted",
     featured: false,
     newArrival: false,
+    stockStatus: "in_stock",
+    stockQuantity: null,
     image: "assets/images/product-cotton-short-top-3.jpg",
     gallery: [
       "assets/images/product-cotton-short-top-3.jpg",
@@ -149,7 +169,8 @@ const ARUVI_PRODUCTS = [
 
 const ARUVI_CATEGORIES = [
   {
-    id: "churidars",
+    id: "20",
+    slug: "churidars",
     name: "Churidars",
     tagline: "Pure Cotton, Ikkat Weaves & Soft Silks",
     image: "assets/images/category-churidars.jpg",
@@ -158,7 +179,8 @@ const ARUVI_CATEGORIES = [
     active: true
   },
   {
-    id: "maxi",
+    id: "23",
+    slug: "maxi",
     name: "Maxi",
     tagline: "Flowing silhouettes & timeless comfort",
     image: "assets/images/promo-banner-new-arrivals.png",
