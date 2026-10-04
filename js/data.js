@@ -34,7 +34,7 @@ const ARUVI_CONFIG = {
   ]
 };
 
-const ARUVI_PRODUCTS = [
+const DEFAULT_ARUVI_PRODUCTS = [
   {
     id: "3738",
     legacyId: "arv-soft-silk",
@@ -167,7 +167,7 @@ const ARUVI_PRODUCTS = [
   }
 ];
 
-const ARUVI_CATEGORIES = [
+const DEFAULT_ARUVI_CATEGORIES = [
   {
     id: "20",
     slug: "churidars",
@@ -190,6 +190,53 @@ const ARUVI_CATEGORIES = [
     emptyMessage: "New styles are coming soon. Stay connected on WhatsApp for launch alerts."
   }
 ];
+
+function getLiveProducts() {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const saved = localStorage.getItem("aruvi_products");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(p => ({
+            ...p,
+            image: p.image || p.featuredImage || "assets/images/product-soft-silk.jpg",
+            featuredImage: p.featuredImage || p.image || "assets/images/product-soft-silk.jpg",
+            category: p.category || p.categoryName || "Churidars",
+            categoryName: p.categoryName || p.category || "Churidars",
+            sizes: (p.sizes && p.sizes.length > 0) ? p.sizes : ["M", "L", "XL"]
+          }));
+        }
+      } catch (e) {}
+    }
+  }
+  return DEFAULT_ARUVI_PRODUCTS;
+}
+
+function getLiveCategories() {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const saved = localStorage.getItem("aruvi_categories");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+  }
+  return DEFAULT_ARUVI_CATEGORIES;
+}
+
+const ARUVI_PRODUCTS = getLiveProducts();
+const ARUVI_CATEGORIES = getLiveCategories();
+
+// Global namespace helper
+if (typeof window !== "undefined") {
+  window.AruviData = {
+    getProducts: getLiveProducts,
+    getCategories: getLiveCategories,
+    getConfig: () => ARUVI_CONFIG
+  };
+}
 
 const ARUVI_SIZE_CHART = [
   { size: "XS", bust: "34", waist: "30", hips: "36", shoulder: "13" },

@@ -42,7 +42,6 @@
   </script>
 
   <style>
-    /* Custom Luxury Styling */
     body {
       background-color: #F9F5F0;
       color: #2B2625;
@@ -72,12 +71,29 @@
       color: #166534;
       border: 1px solid #BBF7D0;
     }
+    .badge-outstock {
+      background: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FCA5A5;
+    }
+    .chip-active {
+      background-color: #4A1521 !important;
+      color: #FFFDFC !important;
+      border-color: #4A1521 !important;
+    }
+    @keyframes slideInUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .animate-toast {
+      animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col md:flex-row antialiased">
 
   <!-- Mobile Header -->
-  <header class="md:hidden bg-brand-maroon text-brand-ivory p-4 flex items-center justify-between shadow-md">
+  <header class="md:hidden bg-brand-maroon text-brand-ivory p-4 flex items-center justify-between shadow-md sticky top-0 z-40">
     <div class="flex items-center space-x-3">
       <img src="../assets/logo/aruvi-monogram.jpg" alt="Aruvi Emblem" class="w-8 h-8 rounded-full border border-brand-rose">
       <div>
@@ -85,11 +101,16 @@
         <p class="text-[10px] text-brand-roseLight uppercase tracking-widest">Admin Portal</p>
       </div>
     </div>
-    <button id="mobileNavToggle" class="p-2 text-brand-sand hover:text-brand-ivory focus:outline-none">
-      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </button>
+    <div class="flex items-center space-x-2">
+      <button onclick="openProductModal()" class="px-2.5 py-1 bg-brand-gold text-brand-dark rounded text-xs font-bold shadow">
+        + Add
+      </button>
+      <button id="mobileNavToggle" class="p-2 text-brand-sand hover:text-brand-ivory focus:outline-none">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
   </header>
 
   <!-- Sidebar Navigation -->
@@ -107,9 +128,17 @@
     <div class="px-6 py-3 bg-black/20 text-xs flex items-center justify-between border-b border-white/5">
       <div class="flex items-center space-x-2">
         <span id="systemStatusDot" class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span id="systemStatusText" class="text-brand-sand font-medium">Verified Data Active</span>
+        <span id="systemStatusText" class="text-brand-sand font-medium">Local Storage Ready</span>
       </div>
-      <span class="text-[10px] px-1.5 py-0.5 rounded bg-white/10 text-white/80 font-mono">v1.0</span>
+      <span id="firebaseStatusBadge" class="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono">Offline-Ready</span>
+    </div>
+
+    <!-- Quick Action in Sidebar -->
+    <div class="p-4 border-b border-white/10">
+      <button onclick="openProductModal()" class="w-full flex items-center justify-center space-x-2 py-2.5 bg-brand-gold hover:bg-amber-400 text-brand-dark font-bold text-xs rounded-lg shadow transition-all">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M12 4v16m8-8H4"/></svg>
+        <span>+ Add New Product</span>
+      </button>
     </div>
 
     <!-- Navigation Menu -->
@@ -128,7 +157,7 @@
           </svg>
           <span>Catalog & Inventory</span>
         </div>
-        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountProducts">4</span>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountProducts">0</span>
       </button>
 
       <button onclick="switchTab('categories')" id="nav-categories" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
@@ -138,7 +167,7 @@
           </svg>
           <span>Categories</span>
         </div>
-        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountCategories">2</span>
+        <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountCategories">0</span>
       </button>
 
       <button onclick="switchTab('orders')" id="nav-orders" class="nav-btn w-full flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
@@ -146,7 +175,7 @@
           <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
           </svg>
-          <span>Orders & Inquiries</span>
+          <span>Orders & WhatsApp</span>
         </div>
         <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountOrders">0</span>
       </button>
@@ -156,7 +185,7 @@
           <svg class="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
           </svg>
-          <span>Review Moderation</span>
+          <span>Reviews Moderation</span>
         </div>
         <span class="text-xs bg-white/10 px-2 py-0.5 rounded-full font-mono" id="navCountReviews">0</span>
       </button>
@@ -165,7 +194,7 @@
         <svg class="w-5 h-5 opacity-80 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M13 10V3L4 14h7v7l9-11h-7z"/>
         </svg>
-        <span>Firebase & Sync Tool</span>
+        <span>Firebase Cloud Sync</span>
       </button>
 
       <button onclick="switchTab('settings')" id="nav-settings" class="nav-btn w-full flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors hover:bg-white/5 text-brand-sand hover:text-white">
@@ -179,15 +208,15 @@
 
     <!-- Sidebar Footer / Storefront Link -->
     <div class="p-4 border-t border-white/10 space-y-2">
-      <a href="../index.html" target="_blank" class="flex items-center justify-between px-3 py-2 rounded text-xs text-brand-sand hover:text-brand-ivory hover:bg-white/5 transition-colors">
+      <a href="../shop.html" target="_blank" class="flex items-center justify-between px-3 py-2 rounded text-xs text-brand-sand hover:text-brand-ivory hover:bg-white/5 transition-colors">
         <span>View Live Storefront</span>
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
         </svg>
       </a>
-      <div class="px-3 py-2 bg-black/25 rounded text-[11px] text-white/60">
-        <p class="font-medium text-white/80">Strict Data Integrity Mode</p>
-        <p class="text-[10px] leading-tight text-white/50 mt-0.5">No fake reviews • No demo metrics</p>
+      <div class="px-3 py-2 bg-black/25 rounded text-[11px] text-white/70">
+        <p class="font-medium text-white/90">Autonomous Admin Engine</p>
+        <p class="text-[10px] leading-tight text-white/50 mt-0.5">Dual-Mode: Local Storage & Cloud Firestore</p>
       </div>
     </div>
   </aside>
@@ -196,14 +225,20 @@
   <main class="flex-1 flex flex-col min-w-0 overflow-y-auto custom-scrollbar">
 
     <!-- Top Navigation Bar -->
-    <header class="bg-brand-ivory border-b border-brand-border px-6 py-4 flex items-center justify-between shadow-sm shrink-0">
+    <header class="bg-brand-ivory border-b border-brand-border px-6 py-4 flex items-center justify-between shadow-sm shrink-0 sticky top-0 z-30">
       <div>
         <h1 id="pageTitle" class="font-serif text-2xl font-bold text-brand-maroon">Store Overview</h1>
         <p id="pageSubtitle" class="text-xs text-brand-muted">Real-time status & inventory metrics</p>
       </div>
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-3">
+        <!-- Add Product Button in Top Bar -->
+        <button onclick="openProductModal()" class="inline-flex items-center space-x-1.5 px-3.5 py-1.5 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow transition-colors">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+          <span class="hidden sm:inline">Add Product</span>
+        </button>
+
         <!-- Quick Action: View Store -->
-        <a href="../shop.html" target="_blank" class="hidden sm:inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-brand-maroon border border-brand-border rounded hover:bg-brand-sand transition-colors">
+        <a href="../shop.html" target="_blank" class="inline-flex items-center space-x-1.5 px-3 py-1.5 text-xs font-medium text-brand-maroon border border-brand-border rounded hover:bg-brand-sand transition-colors">
           <span>Catalog</span>
           <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
         </a>
@@ -215,7 +250,7 @@
           </div>
           <div class="text-left hidden sm:block">
             <p class="text-xs font-bold leading-none text-brand-dark">Aruvi Manager</p>
-            <p class="text-[10px] text-brand-muted">admin@aruvifabrics.com</p>
+            <p class="text-[10px] text-brand-muted">Pattukkottai Store</p>
           </div>
         </div>
       </div>
@@ -229,16 +264,16 @@
       <!-- ======================================================== -->
       <section id="tab-dashboard" class="tab-pane space-y-6">
 
-        <!-- Stat Cards Grid (STRICT DATA INTEGRITY: Real metrics only) -->
+        <!-- Stat Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- Total Products -->
           <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
             <div>
               <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Total Products</p>
-              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalProducts">4</h3>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalProducts">0</h3>
               <p class="text-[11px] text-emerald-700 mt-1 flex items-center font-medium">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-1.5"></span>
-                <span id="dashInStock">4 in stock</span>
+                <span id="dashInStock">0 in stock</span>
               </p>
             </div>
             <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-maroon">
@@ -250,8 +285,8 @@
           <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
             <div>
               <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Categories</p>
-              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalCategories">2</h3>
-              <p class="text-[11px] text-brand-muted mt-1">Churidars (4) • Maxi (0)</p>
+              <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalCategories">0</h3>
+              <p class="text-[11px] text-brand-muted mt-1" id="dashCategoryBreakdown">Loading...</p>
             </div>
             <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-rose">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
@@ -261,21 +296,21 @@
           <!-- Real Orders -->
           <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
             <div>
-              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Orders / Inquiries</p>
+              <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Orders & Inquiries</p>
               <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashTotalOrders">0</h3>
-              <p class="text-[11px] text-brand-muted mt-1">Awaiting customer placements</p>
+              <p class="text-[11px] text-brand-muted mt-1" id="dashOrdersSubtitle">Awaiting customer placements</p>
             </div>
             <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-brand-maroon">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
             </div>
           </div>
 
-          <!-- Total Revenue (Zero fake statistics) -->
+          <!-- Total Revenue -->
           <div class="bg-brand-ivory p-5 rounded-xl border border-brand-border shadow-sm flex items-center justify-between">
             <div>
               <p class="text-xs font-semibold text-brand-muted uppercase tracking-wider">Gross Revenue</p>
               <h3 class="font-serif text-3xl font-bold text-brand-maroon mt-1" id="dashRevenue">₹0</h3>
-              <p class="text-[11px] text-brand-muted mt-1 font-mono">Real confirmed orders only</p>
+              <p class="text-[11px] text-brand-muted mt-1 font-mono">Confirmed sales only</p>
             </div>
             <div class="w-12 h-12 rounded-lg bg-brand-cream border border-brand-border flex items-center justify-center text-amber-700">
               <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
@@ -283,24 +318,43 @@
           </div>
         </div>
 
+        <!-- Quick Actions Row -->
+        <div class="flex flex-wrap gap-3">
+          <button onclick="openProductModal()" class="px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory rounded-lg text-xs font-semibold shadow-sm flex items-center space-x-2 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>Add New Product</span>
+          </button>
+          <button onclick="openCategoryModal()" class="px-4 py-2 bg-brand-cream hover:bg-brand-sand text-brand-dark border border-brand-border rounded-lg text-xs font-semibold shadow-sm flex items-center space-x-2 transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg>
+            <span>Add Category</span>
+          </button>
+          <button onclick="openManualOrderModal()" class="px-4 py-2 bg-brand-cream hover:bg-brand-sand text-brand-dark border border-brand-border rounded-lg text-xs font-semibold shadow-sm flex items-center space-x-2 transition-colors">
+            <svg class="w-4 h-4 text-emerald-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            <span>Record Offline / WhatsApp Order</span>
+          </button>
+        </div>
+
         <!-- Verified Inventory Quick Table -->
         <div class="bg-brand-ivory rounded-xl border border-brand-border shadow-sm overflow-hidden">
-          <div class="px-6 py-4 border-b border-brand-border flex items-center justify-between">
+          <div class="px-6 py-4 border-b border-brand-border flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div>
-              <h2 class="font-serif text-lg font-bold text-brand-maroon">Verified Inventory Status</h2>
-              <p class="text-xs text-brand-muted">Directly verified from WooCommerce & local warehouse assets</p>
+              <h2 class="font-serif text-lg font-bold text-brand-maroon">Store Inventory & Catalog</h2>
+              <p class="text-xs text-brand-muted">Click any item to edit, change pricing, or toggle stock</p>
             </div>
-            <button onclick="switchTab('products')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon transition-colors">
-              Manage All Products →
-            </button>
+            <div class="flex items-center space-x-2">
+              <input type="text" id="quickTableSearch" placeholder="Search catalog..." oninput="filterQuickTable(this.value)" class="px-3 py-1.5 text-xs border border-brand-border rounded-lg focus:outline-none focus:border-brand-maroon bg-white w-48">
+              <button onclick="switchTab('products')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon transition-colors shrink-0">
+                Grid View →
+              </button>
+            </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left text-xs">
               <thead class="bg-brand-cream/60 text-brand-muted uppercase tracking-wider font-semibold border-b border-brand-border">
                 <tr>
-                  <th class="py-3 px-4">Item</th>
+                  <th class="py-3 px-4">Item Details</th>
                   <th class="py-3 px-4">Category</th>
-                  <th class="py-3 px-4">Price Structure</th>
+                  <th class="py-3 px-4">Price</th>
                   <th class="py-3 px-4">Stock Status</th>
                   <th class="py-3 px-4 text-right">Actions</th>
                 </tr>
@@ -312,13 +366,13 @@
           </div>
         </div>
 
-        <!-- Quick System Notice -->
+        <!-- Offline-Ready Notice -->
         <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start space-x-3 text-xs text-amber-900">
           <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
           <div>
-            <p class="font-semibold text-amber-950">Data Integrity Enforcement Active</p>
+            <p class="font-semibold text-amber-950">Local Storage Mode Active — Zero Dependency Required</p>
             <p class="mt-0.5 text-amber-800">
-              Only verified items (#3738, #3723, #3737, #3736) are loaded into the catalog. In-store items without price display "Price available in store" and will never show ₹0. Fake reviews and fake orders are completely disabled.
+              You can create, edit, upload photos, and organize products right now. All changes save directly to your browser storage and instantly reflect on your live website storefront. Whenever you add your Firebase credentials in Tab 6, click "Sync to Cloud Firestore" to backup everything seamlessly!
             </p>
           </div>
         </div>
@@ -332,16 +386,37 @@
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
             <h2 class="font-serif text-xl font-bold text-brand-maroon">Product Catalog</h2>
-            <p class="text-xs text-brand-muted">Verified styles, pricing rules, and stock quantities</p>
+            <p class="text-xs text-brand-muted">Verified styles, pricing rules, images, and inventory counts</p>
           </div>
-          <button onclick="openAddProductModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow-sm transition-colors">
+          <button onclick="openProductModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow-sm transition-colors">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-            <span>Add New Product</span>
+            <span>+ Add New Product</span>
           </button>
         </div>
 
+        <!-- Search & Filter Controls -->
+        <div class="bg-brand-ivory p-4 rounded-xl border border-brand-border flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+            <div class="relative flex-1 min-w-[200px]">
+              <input type="text" id="catalogSearchInput" placeholder="Search by name, ID, or fabric..." oninput="filterCatalogGrid()" class="w-full pl-8 pr-3 py-2 border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <svg class="w-4 h-4 text-brand-muted absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            </div>
+            <select id="catalogCategoryFilter" onchange="filterCatalogGrid()" class="py-2 px-3 border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <option value="all">All Categories</option>
+            </select>
+            <select id="catalogStockFilter" onchange="filterCatalogGrid()" class="py-2 px-3 border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <option value="all">All Stock Status</option>
+              <option value="in_stock">In Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
+            </select>
+          </div>
+          <div class="text-xs text-brand-muted font-medium">
+            Showing <span id="filteredProductsCount" class="font-bold text-brand-maroon">0</span> products
+          </div>
+        </div>
+
         <!-- Product Cards Grid -->
-        <div id="productsCatalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div id="productsCatalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           <!-- Injected via JS -->
         </div>
       </section>
@@ -350,9 +425,15 @@
       <!-- TAB 3: CATEGORIES -->
       <!-- ======================================================== -->
       <section id="tab-categories" class="tab-pane hidden space-y-6">
-        <div>
-          <h2 class="font-serif text-xl font-bold text-brand-maroon">Store Categories</h2>
-          <p class="text-xs text-brand-muted">Product collections and landing state visibility</p>
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-brand-maroon">Store Categories</h2>
+            <p class="text-xs text-brand-muted">Product collections and landing page visibility</p>
+          </div>
+          <button onclick="openCategoryModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Add Category</span>
+          </button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="categoriesGrid">
@@ -361,27 +442,47 @@
       </section>
 
       <!-- ======================================================== -->
-      <!-- TAB 4: ORDERS -->
+      <!-- TAB 4: ORDERS & WHATSAPP INQUIRIES -->
       <!-- ======================================================== -->
       <section id="tab-orders" class="tab-pane hidden space-y-6">
-        <div class="flex items-center justify-between">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <h2 class="font-serif text-xl font-bold text-brand-maroon">Orders & Inquiries</h2>
-            <p class="text-xs text-brand-muted">Inquiries received via checkout and direct WhatsApp coordinates</p>
+            <h2 class="font-serif text-xl font-bold text-brand-maroon">Orders & Customer Inquiries</h2>
+            <p class="text-xs text-brand-muted">Online checkout requests, manual store bookings, and direct WhatsApp inquiries</p>
           </div>
+          <button onclick="openManualOrderModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg shadow-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Record Offline / WhatsApp Order</span>
+          </button>
         </div>
 
-        <div class="bg-brand-ivory rounded-xl border border-brand-border p-8 text-center" id="ordersEmptyState">
-          <div class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border flex items-center justify-center text-brand-muted mx-auto mb-3">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        <div class="bg-brand-ivory rounded-xl border border-brand-border shadow-sm overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs">
+              <thead class="bg-brand-cream/60 text-brand-muted uppercase tracking-wider font-semibold border-b border-brand-border">
+                <tr>
+                  <th class="py-3 px-4">Order Ref</th>
+                  <th class="py-3 px-4">Customer</th>
+                  <th class="py-3 px-4">Items</th>
+                  <th class="py-3 px-4">Total</th>
+                  <th class="py-3 px-4">Status</th>
+                  <th class="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersTableBody" class="divide-y divide-brand-border">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
           </div>
-          <h3 class="font-serif text-lg font-bold text-brand-maroon">No Orders Yet</h3>
-          <p class="text-xs text-brand-muted max-w-sm mx-auto mt-1">
-            Real customer orders placed on the storefront will appear here. No fabricated orders or fake sales are generated.
-          </p>
-          <a href="../shop.html" target="_blank" class="inline-block mt-4 text-xs font-semibold text-brand-rose hover:text-brand-maroon">
-            Test placing an order on storefront →
-          </a>
+          <div id="ordersEmptyState" class="p-8 text-center hidden">
+            <div class="w-14 h-14 rounded-full bg-brand-cream border border-brand-border flex items-center justify-center text-brand-muted mx-auto mb-3">
+              <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            </div>
+            <h3 class="font-serif text-lg font-bold text-brand-maroon">No Orders Yet</h3>
+            <p class="text-xs text-brand-muted max-w-sm mx-auto mt-1">
+              Customer orders placed on the storefront or recorded via WhatsApp will appear here.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -389,19 +490,39 @@
       <!-- TAB 5: REVIEWS MODERATION -->
       <!-- ======================================================== -->
       <section id="tab-reviews" class="tab-pane hidden space-y-6">
-        <div>
-          <h2 class="font-serif text-xl font-bold text-brand-maroon">Review Moderation Queue</h2>
-          <p class="text-xs text-brand-muted">Anti-fabrication protection: strictly approve authentic customer reviews before they appear on the public storefront</p>
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <h2 class="font-serif text-xl font-bold text-brand-maroon">Review Moderation Queue</h2>
+            <p class="text-xs text-brand-muted">Strict verification: approve genuine customer feedback before publishing to the live storefront</p>
+          </div>
+          <button onclick="openManualReviewModal()" class="inline-flex items-center space-x-2 px-4 py-2 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory text-xs font-semibold rounded-lg shadow-sm transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+            <span>+ Add Verified Review</span>
+          </button>
         </div>
 
-        <div class="bg-brand-ivory rounded-xl border border-brand-border p-8 text-center" id="reviewsEmptyState">
-          <div class="w-16 h-16 rounded-full bg-brand-cream border border-brand-border flex items-center justify-center text-brand-rose mx-auto mb-3">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Pending Reviews Queue -->
+          <div class="bg-brand-ivory rounded-xl border border-brand-border p-5 shadow-sm space-y-4">
+            <h3 class="font-serif text-base font-bold text-brand-maroon flex items-center justify-between">
+              <span>Pending Moderation Queue</span>
+              <span id="pendingReviewsCountBadge" class="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-mono">0 pending</span>
+            </h3>
+            <div id="pendingReviewsList" class="space-y-3">
+              <!-- Injected via JS -->
+            </div>
           </div>
-          <h3 class="font-serif text-lg font-bold text-brand-maroon">No Pending Reviews</h3>
-          <p class="text-xs text-brand-muted max-w-sm mx-auto mt-1">
-            In accordance with the Anti-Fabrication Rule, exactly 0 fake reviews are seeded. Real reviews submitted by customers will be queued here for your approval.
-          </p>
+
+          <!-- Approved Reviews -->
+          <div class="bg-brand-ivory rounded-xl border border-brand-border p-5 shadow-sm space-y-4">
+            <h3 class="font-serif text-base font-bold text-brand-maroon flex items-center justify-between">
+              <span>Live Approved Reviews</span>
+              <span id="approvedReviewsCountBadge" class="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-mono">0 live</span>
+            </h3>
+            <div id="approvedReviewsList" class="space-y-3">
+              <!-- Injected via JS -->
+            </div>
+          </div>
         </div>
       </section>
 
@@ -409,6 +530,19 @@
       <!-- TAB 6: FIREBASE CONFIG & SYNC TOOL -->
       <!-- ======================================================== -->
       <section id="tab-firebase" class="tab-pane hidden space-y-6">
+        <!-- Status Banner -->
+        <div id="firebaseConnectionBanner" class="bg-emerald-50 border border-emerald-200 rounded-xl p-5 flex items-start space-x-3 text-xs text-emerald-900">
+          <div class="w-8 h-8 rounded-lg bg-emerald-100 flex items-center justify-center text-emerald-700 shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div class="flex-1">
+            <p class="font-bold text-sm text-emerald-950">Dual Mode Storage Engine</p>
+            <p class="mt-0.5 text-emerald-800 leading-relaxed">
+              Your catalog is currently running with full local persistence. You can add as many products as you want right now. When you're ready to connect your Firebase Project, paste your API credentials below and click <strong>"Sync All Local Data to Firestore"</strong>. Everything will instantly replicate to Google Cloud!
+            </p>
+          </div>
+        </div>
+
         <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm">
           <div class="flex items-center space-x-3 mb-4">
             <div class="w-10 h-10 rounded-lg bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-600">
@@ -416,7 +550,7 @@
             </div>
             <div>
               <h2 class="font-serif text-lg font-bold text-brand-maroon">Firebase Cloud Configuration</h2>
-              <p class="text-xs text-brand-muted">Configure active project credentials to sync directly with Cloud Firestore</p>
+              <p class="text-xs text-brand-muted">Enter your Firebase project API keys here whenever available</p>
             </div>
           </div>
 
@@ -442,7 +576,7 @@
 
             <div class="pt-2 flex items-center space-x-3">
               <button type="submit" class="px-4 py-2 bg-brand-maroon text-brand-ivory text-xs font-semibold rounded hover:bg-brand-maroonHover transition-colors">
-                Save & Connect Firebase
+                Save Firebase Credentials
               </button>
               <button type="button" onclick="clearFirebaseConfig()" class="px-3 py-2 text-xs text-brand-muted hover:text-red-700 transition-colors">
                 Reset to Default
@@ -451,21 +585,21 @@
           </form>
         </div>
 
-        <!-- Seeding Action Card -->
+        <!-- Sync Local Data to Firestore Action Card -->
         <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm">
-          <div class="flex items-start justify-between">
+          <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
             <div>
-              <h3 class="font-serif text-lg font-bold text-brand-maroon">One-Click Firestore Seed</h3>
+              <h3 class="font-serif text-lg font-bold text-brand-maroon">One-Click Cloud Sync</h3>
               <p class="text-xs text-brand-muted max-w-lg mt-1">
-                Writes the 4 verified products, 2 categories, and store coordinates into your live Firestore collections. Idempotent and safe: existing records will not be damaged.
+                Transfers all newly added products, modified pricing, categories, and settings from local storage into your live Cloud Firestore database.
               </p>
             </div>
-            <button onclick="triggerSeed()" id="seedBtn" class="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded shadow-sm transition-colors flex items-center space-x-1.5 shrink-0">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
-              <span>Seed Verified Data</span>
+            <button onclick="triggerCloudSync()" id="syncBtn" class="px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold rounded-lg shadow transition-colors flex items-center space-x-2 shrink-0">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+              <span>Sync All Data to Firestore</span>
             </button>
           </div>
-          <div id="seedResultNotice" class="hidden mt-4 p-3 rounded-lg text-xs"></div>
+          <div id="syncResultNotice" class="hidden mt-4 p-3 rounded-lg text-xs"></div>
         </div>
       </section>
 
@@ -476,10 +610,10 @@
         <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm max-w-2xl">
           <div class="border-b border-brand-border pb-4 mb-4">
             <h2 class="font-serif text-lg font-bold text-brand-maroon">Store Coordinates & WhatsApp Settings</h2>
-            <p class="text-xs text-brand-muted">Only verified coordinates are prefilled. Populate unverified legal/contact coordinates as needed.</p>
+            <p class="text-xs text-brand-muted">Store details, phone numbers, and WhatsApp concierge settings</p>
           </div>
 
-          <form id="storeSettingsForm" onsubmit="saveStoreSettings(event)" class="space-y-4">
+          <form id="storeSettingsForm" onsubmit="handleSaveStoreSettings(event)" class="space-y-4">
             <div>
               <label class="block text-xs font-semibold text-brand-dark mb-1">Store Name</label>
               <input type="text" id="setStoreName" value="Aruvi Fabrics" class="w-full px-3 py-2 text-xs border border-brand-border rounded focus:outline-none focus:border-brand-maroon bg-white">
@@ -509,7 +643,7 @@
             </div>
 
             <div class="border-t border-brand-border pt-4">
-              <h3 class="text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Unverified Fields (Populate When Confirmed)</h3>
+              <h3 class="text-xs font-bold text-brand-dark uppercase tracking-wider mb-2">Business & Contact Info</h3>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label class="block text-xs font-medium text-brand-muted mb-1">Official Business Email</label>
@@ -534,27 +668,458 @@
     </div>
   </main>
 
-  <!-- Product Edit / Detail Modal -->
-  <div id="productDetailModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-brand-ivory rounded-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto custom-scrollbar border border-brand-border shadow-2xl p-6">
-      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
-        <h3 id="modalProductTitle" class="font-serif text-xl font-bold text-brand-maroon">Product Details</h3>
-        <button onclick="closeProductModal()" class="text-brand-muted hover:text-brand-dark">
+  <!-- ============================================================ -->
+  <!-- MODAL 1: ADD / EDIT PRODUCT -->
+  <!-- ============================================================ -->
+  <div id="productModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-brand-ivory rounded-2xl max-w-2xl w-full max-h-[92vh] overflow-y-auto custom-scrollbar border border-brand-border shadow-2xl p-6">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-5">
+        <div>
+          <h3 id="productModalHeading" class="font-serif text-2xl font-bold text-brand-maroon">Add New Product</h3>
+          <p class="text-xs text-brand-muted mt-0.5">Populate catalog information and photos</p>
+        </div>
+        <button onclick="closeProductModal()" class="text-brand-muted hover:text-brand-dark p-1 rounded-full hover:bg-brand-sand transition-colors">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <div id="modalProductBody" class="space-y-4 text-xs">
-        <!-- Injected via JS -->
-      </div>
+
+      <form id="productForm" onsubmit="handleProductFormSubmit(event)" class="space-y-5 text-xs">
+        <input type="hidden" id="prodEditId" value="">
+
+        <!-- Basic Info Row -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="sm:col-span-2">
+            <label class="block font-semibold text-brand-dark mb-1">Product Title / Name *</label>
+            <input type="text" id="prodName" required placeholder="e.g. Pure Cotton Short Top" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1 flex items-center justify-between">
+              <span>Item ID / SKU</span>
+              <button type="button" onclick="generateProdId()" class="text-[10px] text-brand-rose hover:underline">Auto</button>
+            </label>
+            <input type="text" id="prodId" placeholder="e.g. 3740" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white font-mono focus:outline-none focus:border-brand-maroon">
+          </div>
+        </div>
+
+        <!-- Category & Fabric -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1 flex items-center justify-between">
+              <span>Category *</span>
+              <button type="button" onclick="openCategoryModal()" class="text-[10px] text-brand-rose hover:underline">+ New Category</button>
+            </label>
+            <select id="prodCategory" required class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <!-- Dynamically populated -->
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Fabric / Material *</label>
+            <input type="text" id="prodFabric" required list="fabricSuggestions" placeholder="e.g. Pure Cotton, Soft Silk" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+            <datalist id="fabricSuggestions">
+              <option value="Pure Cotton"></option>
+              <option value="Soft Silk"></option>
+              <option value="Ikkat Handloom"></option>
+              <option value="Rayon Slub"></option>
+              <option value="Linen Blend"></option>
+              <option value="Chanderi"></option>
+              <option value="Georgette"></option>
+            </datalist>
+          </div>
+        </div>
+
+        <!-- Pricing Option & Amounts -->
+        <div class="bg-brand-cream/60 p-4 rounded-xl border border-brand-border space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="font-semibold text-brand-dark">Pricing Rule</span>
+            <div class="flex items-center space-x-2">
+              <label class="flex items-center space-x-1.5 cursor-pointer">
+                <input type="radio" name="prodPriceType" value="fixed" checked onchange="togglePriceFields()" class="text-brand-maroon">
+                <span class="text-xs font-medium">Fixed & Offer Price</span>
+              </label>
+              <label class="flex items-center space-x-1.5 cursor-pointer ml-3">
+                <input type="radio" name="prodPriceType" value="instore" onchange="togglePriceFields()" class="text-brand-maroon">
+                <span class="text-xs font-medium">In-Store Inquiry Only</span>
+              </label>
+            </div>
+          </div>
+
+          <div id="priceInputsRow" class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[11px] font-semibold text-brand-dark mb-1">Regular Price (₹)</label>
+              <input type="number" id="prodRegularPrice" min="0" placeholder="e.g. 1200" oninput="updateDiscountPreview()" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-brand-dark mb-1">Sale / Offer Price (₹)</label>
+              <input type="number" id="prodSalePrice" min="0" placeholder="e.g. 1000" oninput="updateDiscountPreview()" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+            </div>
+            <div class="flex items-end pb-1.5">
+              <span id="discountBadgePreview" class="text-xs font-bold text-emerald-800 bg-emerald-100 px-2.5 py-1.5 rounded-lg border border-emerald-200 hidden">
+                0% OFF
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Stock Status & Quantity -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Stock Availability</label>
+            <select id="prodStockStatus" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <option value="in_stock">In Stock</option>
+              <option value="low_stock">Low Stock</option>
+              <option value="out_of_stock">Out of Stock</option>
+            </select>
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Units Quantity (Optional)</label>
+            <input type="number" id="prodStockQuantity" min="0" placeholder="Leave blank if unlimited" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+          </div>
+        </div>
+
+        <!-- Available Sizes -->
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1.5">Available Sizes</label>
+          <div class="flex flex-wrap gap-2" id="sizeChipsContainer">
+            <button type="button" onclick="toggleSizeChip(this, 'Free Size')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">Free Size</button>
+            <button type="button" onclick="toggleSizeChip(this, 'XS')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">XS</button>
+            <button type="button" onclick="toggleSizeChip(this, 'S')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">S</button>
+            <button type="button" onclick="toggleSizeChip(this, 'M')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">M</button>
+            <button type="button" onclick="toggleSizeChip(this, 'L')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">L</button>
+            <button type="button" onclick="toggleSizeChip(this, 'XL')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">XL</button>
+            <button type="button" onclick="toggleSizeChip(this, '2XL')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">2XL</button>
+            <button type="button" onclick="toggleSizeChip(this, '3XL')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">3XL</button>
+            <button type="button" onclick="toggleSizeChip(this, '4XL')" class="size-chip px-3 py-1.5 border border-brand-border rounded-lg font-medium text-xs bg-white hover:bg-brand-sand transition-colors">4XL</button>
+          </div>
+        </div>
+
+        <!-- Badges & Features -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Card Badge</label>
+            <select id="prodBadge" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              <option value="">None</option>
+              <option value="Sale">Sale</option>
+              <option value="New Arrival">New Arrival</option>
+              <option value="Best Seller">Best Seller</option>
+              <option value="Handloom Heritage">Handloom Heritage</option>
+              <option value="Trending">Trending</option>
+            </select>
+          </div>
+          <div class="flex items-center space-x-4 pt-5">
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <input type="checkbox" id="prodFeatured" class="w-4 h-4 text-brand-maroon rounded border-brand-border">
+              <span class="font-medium text-brand-dark">Feature on Homepage</span>
+            </label>
+            <label class="flex items-center space-x-2 cursor-pointer">
+              <input type="checkbox" id="prodActive" checked class="w-4 h-4 text-brand-maroon rounded border-brand-border">
+              <span class="font-medium text-brand-dark">Active in Store</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Product Image Section -->
+        <div class="border border-brand-border rounded-xl p-4 bg-brand-cream/40 space-y-3">
+          <label class="block font-semibold text-brand-dark">Product Photo *</label>
+
+          <div class="flex flex-col sm:flex-row gap-4 items-start">
+            <!-- Image Preview Box -->
+            <div class="w-32 h-40 rounded-lg overflow-hidden border border-brand-border bg-white flex items-center justify-center shrink-0 relative group">
+              <img id="imagePreviewEl" src="../assets/images/product-soft-silk.jpg" alt="Preview" class="w-full h-full object-cover">
+              <span class="absolute bottom-1 right-1 text-[9px] bg-black/60 text-white px-1.5 py-0.5 rounded">Preview</span>
+            </div>
+
+            <!-- Upload Options -->
+            <div class="flex-1 space-y-3 w-full">
+              <!-- File Upload (Base64) -->
+              <div>
+                <label class="block text-[11px] font-medium text-brand-muted mb-1">Option 1: Upload Image from Computer</label>
+                <input type="file" id="imageFileInput" accept="image/*" onchange="handleImageFilePick(event)" class="w-full text-xs text-brand-muted file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-brand-maroon file:text-brand-ivory hover:file:bg-brand-maroonHover cursor-pointer">
+              </div>
+
+              <!-- Or Select from Catalog Assets -->
+              <div>
+                <label class="block text-[11px] font-medium text-brand-muted mb-1">Option 2: Pick from Brand Catalog Assets</label>
+                <div class="flex flex-wrap gap-2" id="presetImagesContainer">
+                  <!-- Populated via JS -->
+                </div>
+              </div>
+
+              <!-- Or Direct Path -->
+              <div>
+                <label class="block text-[11px] font-medium text-brand-muted mb-1">Option 3: Custom Image Path / Web URL</label>
+                <input type="text" id="prodImageUrl" placeholder="assets/images/product-soft-silk.jpg" oninput="setImagePreview(this.value)" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Descriptions -->
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Short Description (for product card & snippet)</label>
+          <textarea id="prodShortDesc" rows="2" placeholder="e.g. Traditional handloom soft silk crafted with luminous sheen and fine zari touches." class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Full Description & Craft Story</label>
+          <textarea id="prodFullDesc" rows="3" placeholder="e.g. Woven using authentic heritage handloom practices rooted in Pattukkottai..." class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon"></textarea>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Specifications (1 per line)</label>
+          <textarea id="prodSpecs" rows="3" placeholder="Fabric: 100% Pure Natural Cotton&#10;Care: Dry clean recommended&#10;Origin: Pattukkottai, Tamil Nadu" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon"></textarea>
+        </div>
+
+        <!-- Submit & Cancel -->
+        <div class="pt-3 border-t border-brand-border flex items-center justify-end space-x-3">
+          <button type="button" onclick="closeProductModal()" class="px-4 py-2 border border-brand-border text-brand-muted hover:text-brand-dark rounded-lg text-xs font-semibold transition-colors">
+            Cancel
+          </button>
+          <button type="submit" id="saveProductBtn" class="px-6 py-2.5 bg-brand-maroon hover:bg-brand-maroonHover text-brand-ivory rounded-lg text-xs font-semibold shadow-md transition-colors flex items-center space-x-1.5">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+            <span id="saveProductBtnText">Save Product</span>
+          </button>
+        </div>
+      </form>
     </div>
   </div>
 
-  <!-- Client-side Logic Module -->
+  <!-- ============================================================ -->
+  <!-- MODAL 2: ADD / EDIT CATEGORY -->
+  <!-- ============================================================ -->
+  <div id="categoryModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-brand-ivory rounded-2xl max-w-md w-full border border-brand-border shadow-2xl p-6">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+        <h3 id="categoryModalHeading" class="font-serif text-xl font-bold text-brand-maroon">Add Category</h3>
+        <button onclick="closeCategoryModal()" class="text-brand-muted hover:text-brand-dark p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="categoryForm" onsubmit="handleCategoryFormSubmit(event)" class="space-y-4 text-xs">
+        <input type="hidden" id="catEditId" value="">
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Category Name *</label>
+          <input type="text" id="catName" required placeholder="e.g. Feeding Nighties, Silk Sarees" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Slug (URL friendly)</label>
+          <input type="text" id="catSlug" placeholder="e.g. feeding-nighties" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white font-mono focus:outline-none focus:border-brand-maroon">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Category Tagline</label>
+          <input type="text" id="catTagline" placeholder="e.g. Soft breathable fabrics for nursing mothers" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Cover Image Path</label>
+          <input type="text" id="catImage" placeholder="assets/images/category-churidars.jpg" class="w-full px-3 py-2 text-xs border border-brand-border rounded-lg bg-white focus:outline-none focus:border-brand-maroon">
+        </div>
+
+        <div class="flex items-center space-x-2 pt-1">
+          <input type="checkbox" id="catActive" checked class="w-4 h-4 text-brand-maroon rounded">
+          <label for="catActive" class="font-medium text-brand-dark">Active Collection (visible in store)</label>
+        </div>
+
+        <div class="pt-3 border-t border-brand-border flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeCategoryModal()" class="px-4 py-2 border border-brand-border text-brand-muted rounded-lg font-semibold">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-brand-maroon text-brand-ivory rounded-lg font-semibold shadow">Save Category</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL 3: MANUAL ORDER / INQUIRY -->
+  <!-- ============================================================ -->
+  <div id="manualOrderModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-brand-ivory rounded-2xl max-w-lg w-full border border-brand-border shadow-2xl p-6">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+        <h3 class="font-serif text-xl font-bold text-brand-maroon">Record Offline / WhatsApp Order</h3>
+        <button onclick="closeManualOrderModal()" class="text-brand-muted hover:text-brand-dark p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="manualOrderForm" onsubmit="handleManualOrderSubmit(event)" class="space-y-4 text-xs">
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Customer Name *</label>
+            <input type="text" id="ordCustomerName" required placeholder="e.g. Priya Sundaram" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Phone Number (WhatsApp) *</label>
+            <input type="text" id="ordCustomerPhone" required placeholder="919876543210" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white font-mono">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Select Catalog Item</label>
+          <select id="ordProductSelect" onchange="autoFillOrderItem()" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Size</label>
+            <input type="text" id="ordSize" value="M" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white font-mono">
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Qty</label>
+            <input type="number" id="ordQty" value="1" min="1" oninput="recalcOrderTotal()" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+          </div>
+          <div>
+            <label class="block font-semibold text-brand-dark mb-1">Total (₹) *</label>
+            <input type="number" id="ordTotal" required placeholder="1000" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white font-bold text-brand-maroon">
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Payment / Inquiry Type</label>
+          <select id="ordPayment" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+            <option value="direct_whatsapp">WhatsApp Booking</option>
+            <option value="instore_cash">In-Store Cash</option>
+            <option value="upi">UPI / GPay / PhonePe</option>
+            <option value="cod">Cash on Delivery</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Internal Notes</label>
+          <input type="text" id="ordNotes" placeholder="e.g. In-store pickup promised on Wednesday" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+        </div>
+
+        <div class="pt-3 border-t border-brand-border flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeManualOrderModal()" class="px-4 py-2 border border-brand-border text-brand-muted rounded font-semibold">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-emerald-700 hover:bg-emerald-800 text-white rounded font-semibold shadow">Confirm Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- MODAL 4: MANUAL REVIEW SUBMISSION -->
+  <!-- ============================================================ -->
+  <div id="manualReviewModal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-brand-ivory rounded-2xl max-w-md w-full border border-brand-border shadow-2xl p-6">
+      <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+        <h3 class="font-serif text-xl font-bold text-brand-maroon">Add Verified Customer Feedback</h3>
+        <button onclick="closeManualReviewModal()" class="text-brand-muted hover:text-brand-dark p-1">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <form id="manualReviewForm" onsubmit="handleManualReviewSubmit(event)" class="space-y-4 text-xs">
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Product</label>
+          <select id="revProductSelect" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Customer Name *</label>
+          <input type="text" id="revCustomerName" required placeholder="e.g. Ananya R." class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white">
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Rating</label>
+          <select id="revRating" class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white font-bold text-amber-600">
+            <option value="5">★★★★★ (5 Stars - Exceptional)</option>
+            <option value="4">★★★★☆ (4 Stars - Very Good)</option>
+            <option value="3">★★★☆☆ (3 Stars - Average)</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-brand-dark mb-1">Review Content *</label>
+          <textarea id="revText" required rows="3" placeholder="e.g. Excellent handloom finish, pure cotton is very soft and comfortable..." class="w-full px-3 py-2 text-xs border border-brand-border rounded bg-white"></textarea>
+        </div>
+
+        <div class="pt-3 border-t border-brand-border flex items-center justify-end space-x-2">
+          <button type="button" onclick="closeManualReviewModal()" class="px-4 py-2 border border-brand-border text-brand-muted rounded font-semibold">Cancel</button>
+          <button type="submit" class="px-5 py-2 bg-brand-maroon text-brand-ivory rounded font-semibold shadow">Approve & Publish</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none"></div>
+
+  <!-- ============================================================ -->
+  <!-- JAVASCRIPT APPLICATION CONTROLLER -->
+  <!-- ============================================================ -->
   <script type="module">
     import { VERIFIED_PRODUCTS, VERIFIED_CATEGORIES, VERIFIED_SETTINGS } from "../js/seed-data.js";
     import { getFirebaseConfig, saveFirebaseConfig, isFirebaseConfigured } from "../js/firebase-config.js";
-    import { fetchProducts, fetchCategories, fetchStoreSettings, seedVerifiedDataToFirestore } from "../js/firebase-db.js";
+    import {
+      fetchProducts,
+      fetchProductById,
+      saveProduct,
+      deleteProduct,
+      fetchCategories,
+      saveCategory,
+      deleteCategory,
+      fetchStoreSettings,
+      saveStoreSettings,
+      fetchOrders,
+      updateOrderStatus,
+      createManualOrder,
+      fetchPendingReviews,
+      fetchApprovedReviews,
+      submitReview,
+      moderateReview,
+      fetchRealDashboardStats,
+      syncLocalDataToFirestore
+    } from "../js/firebase-db.js";
 
+    // Global in-memory cache
+    let currentProducts = [];
+    let currentCategories = [];
+    let currentOrders = [];
+    let pendingReviews = [];
+    let approvedReviews = [];
+
+    // Pre-set gallery assets for 1-click photo selection
+    const PRESET_ASSETS = [
+      { name: "Soft Silk", path: "assets/images/product-soft-silk.jpg" },
+      { name: "Cotton Top 1", path: "assets/images/product-cotton-short-top-1.jpg" },
+      { name: "Cotton Top 2", path: "assets/images/product-cotton-short-top-2.jpg" },
+      { name: "Cotton Top 3", path: "assets/images/product-cotton-short-top-3.jpg" },
+      { name: "Ikkat Weave 2", path: "assets/images/collection-ikkat-2.jpg" },
+      { name: "Ikkat Weave 3", path: "assets/images/collection-ikkat-3.jpg" },
+      { name: "Editorial Look", path: "assets/images/editorial-look-1.jpg" },
+      { name: "Handloom Texture", path: "assets/images/editorial-fabric.jpg" }
+    ];
+
+    // Show floating toast
+    window.showToast = function(message, type = "success") {
+      const container = document.getElementById("toastContainer");
+      if (!container) return;
+
+      const toast = document.createElement("div");
+      const isSuccess = type === "success";
+      toast.className = `animate-toast pointer-events-auto flex items-center space-x-2 px-4 py-3 rounded-xl shadow-xl text-xs font-semibold ${
+        isSuccess ? "bg-brand-maroon text-white border border-brand-gold/40" : "bg-red-800 text-white"
+      }`;
+      toast.innerHTML = `
+        <span>${isSuccess ? "✓" : "⚠"}</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = "0";
+        toast.style.transition = "opacity 0.3s ease";
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    };
+
+    // Tab Navigation
     window.switchTab = function(tabName) {
       document.querySelectorAll(".tab-pane").forEach(el => el.classList.add("hidden"));
       document.querySelectorAll(".nav-btn").forEach(el => {
@@ -570,15 +1135,14 @@
         selectedNav.classList.remove("text-brand-sand");
       }
 
-      // Title updates
       const titles = {
         dashboard: ["Store Overview", "Real-time status & inventory metrics"],
-        products: ["Product Catalog", "Verified styles, pricing rules, and stock quantities"],
-        categories: ["Store Categories", "Product collections and landing state visibility"],
-        orders: ["Orders & Inquiries", "Inquiries received via checkout and direct WhatsApp coordinates"],
-        reviews: ["Review Moderation Queue", "Anti-fabrication protection: strictly approve authentic customer reviews"],
-        firebase: ["Firebase & Sync Tool", "Configure active project credentials to sync directly with Cloud Firestore"],
-        settings: ["Store Settings", "Store coordinates & WhatsApp configurations"]
+        products: ["Product Catalog", "Manage styles, prices, photos, and stock counts"],
+        categories: ["Store Categories", "Collections and customer navigation"],
+        orders: ["Orders & Inquiries", "Customer orders and direct WhatsApp links"],
+        reviews: ["Reviews Moderation", "Strict verification queue for authentic customer feedback"],
+        firebase: ["Firebase Cloud Sync", "Connect cloud credentials and backup local catalog"],
+        settings: ["Store Settings", "Store phone, WhatsApp concierge, and business info"]
       };
 
       if (titles[tabName]) {
@@ -592,133 +1156,452 @@
       document.getElementById("sidebar").classList.toggle("hidden");
     });
 
-    async function loadData() {
-      const products = await fetchProducts({ activeOnly: false });
-      const categories = await fetchCategories();
-      const settings = await fetchStoreSettings();
+    // Populate Category Dropdowns
+    function populateCategoryDropdowns() {
+      const prodCatSelect = document.getElementById("prodCategory");
+      const catalogFilter = document.getElementById("catalogCategoryFilter");
 
-      // Render Dashboard Quick Table
-      const quickTbody = document.getElementById("quickInventoryTable");
-      if (quickTbody) {
-        quickTbody.innerHTML = products.map(p => {
-          const price = p.hasPrice ? `₹${p.regularPrice} <span class="text-emerald-700 font-bold ml-1">Sale: ₹${p.salePrice}</span>` : `<span class="italic text-brand-muted">Price available in store</span>`;
-          const stock = p.stockQuantity != null ? `<span class="badge-stock px-2 py-0.5 rounded text-[10px] font-semibold">${p.stockQuantity} in stock</span>` : `<span class="badge-stock px-2 py-0.5 rounded text-[10px] font-semibold">In stock</span>`;
-          return `
-            <tr class="hover:bg-brand-cream/40 transition-colors">
-              <td class="py-3 px-4 flex items-center space-x-3">
-                <img src="../${p.featuredImage}" alt="${p.name}" class="w-10 h-10 object-cover rounded border border-brand-border">
-                <div>
-                  <p class="font-bold text-brand-dark">#${p.id} — ${p.name}</p>
-                  <p class="text-[10px] text-brand-muted">${p.fabric || 'Ethnic Handloom'}</p>
-                </div>
-              </td>
-              <td class="py-3 px-4 text-brand-muted font-medium">${p.categoryName || 'Churidars'}</td>
-              <td class="py-3 px-4 font-medium">${price}</td>
-              <td class="py-3 px-4">${stock}</td>
-              <td class="py-3 px-4 text-right">
-                <button onclick="viewProductDetails('${p.id}')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon underline">
-                  Inspect
-                </button>
-              </td>
-            </tr>
-          `;
-        }).join("");
-      }
-
-      // Render Products Catalog Grid
-      const catalogGrid = document.getElementById("productsCatalogGrid");
-      if (catalogGrid) {
-        catalogGrid.innerHTML = products.map(p => {
-          const priceDisplay = p.hasPrice 
-            ? `<div class="flex items-baseline space-x-1.5"><span class="font-bold text-sm text-brand-maroon">₹${p.salePrice}</span><span class="text-[11px] line-through text-brand-muted">₹${p.regularPrice}</span></div>` 
-            : `<span class="text-xs italic text-brand-rose font-medium">Price in store</span>`;
-          
-          return `
-            <div class="bg-brand-ivory rounded-xl border border-brand-border overflow-hidden shadow-sm flex flex-col">
-              <div class="relative aspect-[3/4] bg-brand-cream overflow-hidden">
-                <img src="../${p.featuredImage}" alt="${p.name}" class="w-full h-full object-cover">
-                <span class="absolute top-2 left-2 bg-brand-maroon text-white text-[10px] font-mono px-2 py-0.5 rounded shadow">
-                  ID: ${p.id}
-                </span>
-                ${p.hasPrice ? `<span class="absolute top-2 right-2 bg-red-600 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shadow">SALE</span>` : ''}
-              </div>
-              <div class="p-4 flex-1 flex flex-col justify-between">
-                <div>
-                  <p class="text-[10px] text-brand-muted uppercase tracking-wider font-semibold">${p.categoryName || 'Churidars'}</p>
-                  <h3 class="font-serif text-base font-bold text-brand-dark mt-0.5">${p.name}</h3>
-                  <p class="text-xs text-brand-muted mt-1">Fabric: <span class="text-brand-dark font-medium">${p.fabric}</span></p>
-                </div>
-                <div class="mt-4 pt-3 border-t border-brand-border flex items-center justify-between">
-                  ${priceDisplay}
-                  <button onclick="viewProductDetails('${p.id}')" class="text-xs font-semibold text-brand-rose hover:text-brand-maroon">
-                    Edit Details →
-                  </button>
-                </div>
-              </div>
-            </div>
-          `;
-        }).join("");
-      }
-
-      // Render Categories Grid
-      const categoriesGrid = document.getElementById("categoriesGrid");
-      if (categoriesGrid) {
-        categoriesGrid.innerHTML = categories.map(c => `
-          <div class="bg-brand-ivory rounded-xl border border-brand-border p-6 shadow-sm flex items-center space-x-4">
-            <div class="w-20 h-20 rounded-lg overflow-hidden bg-brand-cream shrink-0 border border-brand-border">
-              ${c.image ? `<img src="../${c.image}" alt="${c.name}" class="w-full h-full object-cover">` : `<div class="w-full h-full flex items-center justify-center text-xs text-brand-muted font-serif">Empty</div>`}
-            </div>
-            <div class="flex-1">
-              <div class="flex items-center space-x-2">
-                <h3 class="font-serif text-lg font-bold text-brand-maroon">${c.name}</h3>
-                <span class="text-[10px] px-2 py-0.5 rounded font-mono ${c.active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}">
-                  ${c.active ? 'Active' : 'Coming Soon'}
-                </span>
-              </div>
-              <p class="text-xs text-brand-muted mt-1 font-mono">Category ID: ${c.id} • Slug: ${c.slug}</p>
-              <p class="text-xs text-brand-dark font-semibold mt-1">${c.productCount} verified products</p>
-            </div>
-          </div>
+      if (prodCatSelect) {
+        prodCatSelect.innerHTML = currentCategories.map(c => `
+          <option value="${c.slug}">${c.name}</option>
         `).join("");
       }
 
-      // Populate config form if existing
-      const currentConfig = getFirebaseConfig();
-      if (currentConfig.projectId) document.getElementById("cfgProjectId").value = currentConfig.projectId;
-      if (currentConfig.apiKey && currentConfig.apiKey !== "YOUR_API_KEY") document.getElementById("cfgApiKey").value = currentConfig.apiKey;
-      if (currentConfig.authDomain) document.getElementById("cfgAuthDomain").value = currentConfig.authDomain;
-      if (currentConfig.storageBucket) document.getElementById("cfgStorageBucket").value = currentConfig.storageBucket;
+      if (catalogFilter) {
+        const savedVal = catalogFilter.value;
+        catalogFilter.innerHTML = `<option value="all">All Categories</option>` + currentCategories.map(c => `
+          <option value="${c.slug}">${c.name}</option>
+        `).join("");
+        catalogFilter.value = savedVal;
+      }
     }
 
-    window.viewProductDetails = function(id) {
-      const p = VERIFIED_PRODUCTS.find(item => String(item.id) === String(id));
-      if (!p) return;
+    // Populate Preset Images in Modal
+    function populatePresetAssets() {
+      const container = document.getElementById("presetImagesContainer");
+      if (!container) return;
 
-      document.getElementById("modalProductTitle").textContent = `#${p.id} — ${p.name}`;
-      const body = document.getElementById("modalProductBody");
-      body.innerHTML = `
-        <div class="flex space-x-4">
-          <img src="../${p.featuredImage}" class="w-28 h-36 object-cover rounded-lg border border-brand-border">
-          <div class="space-y-1.5 flex-1">
-            <p><strong class="text-brand-dark">Category:</strong> ${p.categoryName} (ID: ${p.categoryId})</p>
-            <p><strong class="text-brand-dark">Fabric:</strong> ${p.fabric}</p>
-            <p><strong class="text-brand-dark">Price:</strong> ${p.hasPrice ? `₹${p.regularPrice} (Sale: ₹${p.salePrice})` : 'Price available in store (null)'}</p>
-            <p><strong class="text-brand-dark">Stock:</strong> ${p.stockQuantity != null ? `${p.stockQuantity} units` : 'In Stock'}</p>
-            <p><strong class="text-brand-dark">SKU:</strong> <span class="italic text-brand-muted">${p.sku || 'null (unverified)'}</span></p>
-            <p><strong class="text-brand-dark">Sizes:</strong> <span class="italic text-brand-muted">${p.sizes.length ? p.sizes.join(', ') : 'None populated (unverified)'}</span></p>
-          </div>
-        </div>
-        <div class="bg-brand-cream/50 p-3 rounded border border-brand-border mt-3 text-[11px] text-brand-muted">
-          <strong>Data Integrity Note:</strong> Unverified attributes (custom descriptions, specific sizes, manufactured origin) are kept null in accordance with rule directives. You may edit and enrich these fields anytime.
-        </div>
-      `;
-      document.getElementById("productDetailModal").classList.remove("hidden");
+      container.innerHTML = PRESET_ASSETS.map(asset => `
+        <button type="button" onclick="setImagePreview('${asset.path}')" class="flex items-center space-x-1.5 p-1 rounded border border-brand-border bg-white hover:border-brand-maroon transition-colors text-[10px]">
+          <img src="../${asset.path}" class="w-6 h-6 object-cover rounded">
+          <span class="text-brand-dark font-medium">${asset.name}</span>
+        </button>
+      `).join("");
+    }
+
+    // Image file handler (reads as base64 for instant preview & persistence)
+    window.handleImageFilePick = function(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith("image/")) {
+        alert("Please select a valid image file.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const dataUrl = e.target.result;
+        setImagePreview(dataUrl);
+      };
+      reader.readAsDataURL(file);
+    };
+
+    window.setImagePreview = function(url) {
+      const input = document.getElementById("prodImageUrl");
+      const img = document.getElementById("imagePreviewEl");
+      if (input) input.value = url;
+      if (img) {
+        img.src = url.startsWith("data:") || url.startsWith("http") ? url : `../${url}`;
+      }
+    };
+
+    // Size chip selection
+    window.toggleSizeChip = function(el, size) {
+      el.classList.toggle("chip-active");
+    };
+
+    window.getSelectedSizes = function() {
+      const chips = document.querySelectorAll("#sizeChipsContainer .size-chip.chip-active");
+      return Array.from(chips).map(c => c.textContent.trim());
+    };
+
+    window.setSelectedSizes = function(sizesArray = []) {
+      document.querySelectorAll("#sizeChipsContainer .size-chip").forEach(chip => {
+        if (sizesArray.includes(chip.textContent.trim())) {
+          chip.classList.add("chip-active");
+        } else {
+          chip.classList.remove("chip-active");
+        }
+      });
+    };
+
+    // Toggle Price Fields
+    window.togglePriceFields = function() {
+      const type = document.querySelector('input[name="prodPriceType"]:checked')?.value;
+      const row = document.getElementById("priceInputsRow");
+      if (type === "instore") {
+        row.classList.add("opacity-40", "pointer-events-none");
+      } else {
+        row.classList.remove("opacity-40", "pointer-events-none");
+      }
+      updateDiscountPreview();
+    };
+
+    window.updateDiscountPreview = function() {
+      const reg = parseFloat(document.getElementById("prodRegularPrice")?.value || 0);
+      const sale = parseFloat(document.getElementById("prodSalePrice")?.value || 0);
+      const badge = document.getElementById("discountBadgePreview");
+
+      if (reg > 0 && sale > 0 && sale < reg) {
+        const pct = Math.round(((reg - sale) / reg) * 100);
+        badge.textContent = `${pct}% OFF (Save ₹${reg - sale})`;
+        badge.classList.remove("hidden");
+      } else {
+        badge.classList.add("hidden");
+      }
+    };
+
+    // Auto-generate Product ID
+    window.generateProdId = function() {
+      const idInput = document.getElementById("prodId");
+      const randomNum = Math.floor(3740 + Math.random() * 900);
+      idInput.value = String(randomNum);
+    };
+
+    // Open Add Product Modal
+    window.openProductModal = function(editId = null) {
+      document.getElementById("productForm").reset();
+      populateCategoryDropdowns();
+      populatePresetAssets();
+
+      const heading = document.getElementById("productModalHeading");
+      const btnText = document.getElementById("saveProductBtnText");
+      const editInput = document.getElementById("prodEditId");
+
+      if (editId) {
+        const p = currentProducts.find(item => String(item.id) === String(editId));
+        if (!p) return;
+
+        heading.textContent = `Edit Product #${p.id}`;
+        btnText.textContent = "Update Product";
+        editInput.value = p.id;
+
+        document.getElementById("prodName").value = p.name || "";
+        document.getElementById("prodId").value = p.id;
+        document.getElementById("prodCategory").value = p.categorySlug || p.category || "churidars";
+        document.getElementById("prodFabric").value = p.fabric || "";
+
+        if (p.hasPrice) {
+          document.querySelector('input[name="prodPriceType"][value="fixed"]').checked = true;
+          document.getElementById("prodRegularPrice").value = p.regularPrice || "";
+          document.getElementById("prodSalePrice").value = p.salePrice || "";
+        } else {
+          document.querySelector('input[name="prodPriceType"][value="instore"]').checked = true;
+        }
+
+        document.getElementById("prodStockStatus").value = p.stockStatus || "in_stock";
+        document.getElementById("prodStockQuantity").value = p.stockQuantity || "";
+        document.getElementById("prodBadge").value = p.badge || "";
+        document.getElementById("prodFeatured").checked = Boolean(p.featured);
+        document.getElementById("prodActive").checked = p.active !== false;
+
+        setImagePreview(p.featuredImage || p.image || "assets/images/product-soft-silk.jpg");
+        setSelectedSizes(p.sizes || []);
+
+        document.getElementById("prodShortDesc").value = p.shortDescription || "";
+        document.getElementById("prodFullDesc").value = p.fullDescription || "";
+        document.getElementById("prodSpecs").value = (p.details || []).join("\n");
+
+        togglePriceFields();
+      } else {
+        heading.textContent = "Add New Product";
+        btnText.textContent = "Save Product";
+        editInput.value = "";
+        generateProdId();
+        setImagePreview("assets/images/product-soft-silk.jpg");
+        setSelectedSizes(["M", "L", "XL"]);
+        document.querySelector('input[name="prodPriceType"][value="fixed"]').checked = true;
+        togglePriceFields();
+      }
+
+      document.getElementById("productModal").classList.remove("hidden");
     };
 
     window.closeProductModal = function() {
-      document.getElementById("productDetailModal").classList.add("hidden");
+      document.getElementById("productModal").classList.add("hidden");
     };
 
+    // Save Product Form Handler
+    window.handleProductFormSubmit = async function(e) {
+      e.preventDefault();
+      const saveBtn = document.getElementById("saveProductBtn");
+      saveBtn.disabled = true;
+
+      const editId = document.getElementById("prodEditId").value;
+      const id = editId ? String(editId).trim() : (document.getElementById("prodId").value.trim() || String(Date.now()));
+      const name = document.getElementById("prodName").value.trim();
+      const categorySlug = document.getElementById("prodCategory").value;
+      const catObj = currentCategories.find(c => c.slug === categorySlug);
+      const fabric = document.getElementById("prodFabric").value.trim();
+      const priceType = document.querySelector('input[name="prodPriceType"]:checked')?.value;
+      const hasPrice = priceType === "fixed";
+      const regularPrice = hasPrice ? parseFloat(document.getElementById("prodRegularPrice").value || 0) : null;
+      const salePrice = hasPrice ? parseFloat(document.getElementById("prodSalePrice").value || regularPrice) : null;
+      const stockStatus = document.getElementById("prodStockStatus").value;
+      const stockQuantity = document.getElementById("prodStockQuantity").value ? parseInt(document.getElementById("prodStockQuantity").value, 10) : null;
+      const badge = document.getElementById("prodBadge").value || null;
+      const featured = document.getElementById("prodFeatured").checked;
+      const active = document.getElementById("prodActive").checked;
+      const image = document.getElementById("prodImageUrl").value.trim() || "assets/images/product-soft-silk.jpg";
+      const sizes = getSelectedSizes();
+      const shortDescription = document.getElementById("prodShortDesc").value.trim() || null;
+      const fullDescription = document.getElementById("prodFullDesc").value.trim() || null;
+      const details = document.getElementById("prodSpecs").value.split("\n").map(s => s.trim()).filter(Boolean);
+
+      const productPayload = {
+        id,
+        name,
+        slug: `${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${id.toLowerCase()}`,
+        categoryId: catObj ? catObj.id : "20",
+        categorySlug,
+        categoryName: catObj ? catObj.name : "Churidars",
+        category: catObj ? catObj.name : "Churidars",
+        fabric,
+        hasPrice,
+        regularPrice,
+        salePrice,
+        priceNote: hasPrice ? null : "Price available in store",
+        stockStatus,
+        stockQuantity,
+        badge,
+        featured,
+        active,
+        image,
+        featuredImage: image,
+        gallery: [image],
+        sizes: sizes.length > 0 ? sizes : ["Free Size"],
+        shortDescription,
+        fullDescription,
+        details
+      };
+
+      try {
+        await saveProduct(productPayload);
+        closeProductModal();
+        showToast(editId ? `Product #${id} updated!` : `Product #${id} added successfully!`);
+        await loadAllData();
+      } catch (err) {
+        alert("Failed to save product: " + err.message);
+      } finally {
+        saveBtn.disabled = false;
+      }
+    };
+
+    // Delete Product
+    window.handleDeleteProduct = async function(id) {
+      if (!confirm(`Are you sure you want to permanently remove Product #${id} from the catalog?`)) {
+        return;
+      }
+      try {
+        await deleteProduct(id);
+        showToast(`Product #${id} deleted from store catalog.`);
+        await loadAllData();
+      } catch (err) {
+        alert("Error deleting product: " + err.message);
+      }
+    };
+
+    // Toggle Stock Status Inline
+    window.toggleStockInline = async function(id) {
+      const p = currentProducts.find(item => String(item.id) === String(id));
+      if (!p) return;
+
+      const nextStatus = p.stockStatus === "in_stock" ? "out_of_stock" : "in_stock";
+      p.stockStatus = nextStatus;
+      await saveProduct(p);
+      showToast(`Stock updated to ${nextStatus === 'in_stock' ? 'In Stock' : 'Out of Stock'}`);
+      await loadAllData();
+    };
+
+    // Category Management
+    window.openCategoryModal = function(editId = null) {
+      document.getElementById("categoryForm").reset();
+      const editInput = document.getElementById("catEditId");
+      const heading = document.getElementById("categoryModalHeading");
+
+      if (editId) {
+        const cat = currentCategories.find(c => String(c.id) === String(editId) || c.slug === editId);
+        if (!cat) return;
+        editInput.value = cat.id || cat.slug;
+        heading.textContent = `Edit Category: ${cat.name}`;
+        document.getElementById("catName").value = cat.name;
+        document.getElementById("catSlug").value = cat.slug;
+        document.getElementById("catTagline").value = cat.tagline || "";
+        document.getElementById("catImage").value = cat.image || "";
+        document.getElementById("catActive").checked = cat.active !== false;
+      } else {
+        editInput.value = "";
+        heading.textContent = "Add Category";
+        document.getElementById("catActive").checked = true;
+      }
+      document.getElementById("categoryModal").classList.remove("hidden");
+    };
+
+    window.closeCategoryModal = function() {
+      document.getElementById("categoryModal").classList.add("hidden");
+    };
+
+    window.handleCategoryFormSubmit = async function(e) {
+      e.preventDefault();
+      const editId = document.getElementById("catEditId").value;
+      const name = document.getElementById("catName").value.trim();
+      const slug = document.getElementById("catSlug").value.trim() || name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+      const tagline = document.getElementById("catTagline").value.trim();
+      const image = document.getElementById("catImage").value.trim() || "assets/images/category-churidars.jpg";
+      const active = document.getElementById("catActive").checked;
+
+      const catPayload = {
+        id: editId || String(Date.now()),
+        name,
+        slug,
+        tagline,
+        image,
+        url: `category-${slug}.html`,
+        active,
+        count: 0
+      };
+
+      await saveCategory(catPayload);
+      closeCategoryModal();
+      showToast(`Category ${name} saved!`);
+      await loadAllData();
+    };
+
+    window.handleDeleteCategory = async function(id) {
+      if (!confirm("Are you sure you want to delete this category?")) return;
+      await deleteCategory(id);
+      showToast("Category removed.");
+      await loadAllData();
+    };
+
+    // Manual Orders
+    window.openManualOrderModal = function() {
+      document.getElementById("manualOrderForm").reset();
+      const select = document.getElementById("ordProductSelect");
+      select.innerHTML = currentProducts.map(p => `
+        <option value="${p.id}" data-price="${p.salePrice || p.regularPrice || 0}">${p.name} (#${p.id}) — ₹${p.salePrice || p.regularPrice || 0}</option>
+      `).join("");
+      autoFillOrderItem();
+      document.getElementById("manualOrderModal").classList.remove("hidden");
+    };
+
+    window.closeManualOrderModal = function() {
+      document.getElementById("manualOrderModal").classList.add("hidden");
+    };
+
+    window.autoFillOrderItem = function() {
+      const select = document.getElementById("ordProductSelect");
+      const opt = select.options[select.selectedIndex];
+      const price = parseFloat(opt?.getAttribute("data-price") || 0);
+      const qty = parseInt(document.getElementById("ordQty").value, 10) || 1;
+      document.getElementById("ordTotal").value = price * qty;
+    };
+
+    window.recalcOrderTotal = function() {
+      autoFillOrderItem();
+    };
+
+    window.handleManualOrderSubmit = async function(e) {
+      e.preventDefault();
+      const select = document.getElementById("ordProductSelect");
+      const prodId = select.value;
+      const prodObj = currentProducts.find(p => String(p.id) === String(prodId));
+
+      const payload = {
+        customerName: document.getElementById("ordCustomerName").value.trim(),
+        customerPhone: document.getElementById("ordCustomerPhone").value.trim(),
+        total: parseFloat(document.getElementById("ordTotal").value || 0),
+        paymentMethod: document.getElementById("ordPayment").value,
+        notes: document.getElementById("ordNotes").value.trim(),
+        status: "confirmed",
+        items: [
+          {
+            id: prodId,
+            name: prodObj ? prodObj.name : "Custom Item",
+            size: document.getElementById("ordSize").value.trim(),
+            quantity: parseInt(document.getElementById("ordQty").value, 10) || 1,
+            unitPrice: parseFloat(document.getElementById("ordTotal").value || 0)
+          }
+        ]
+      };
+
+      await createManualOrder(payload);
+      closeManualOrderModal();
+      showToast("Order logged successfully!");
+      await loadAllData();
+    };
+
+    // Order Status Update
+    window.handleOrderStatusChange = async function(orderId, status) {
+      await updateOrderStatus(orderId, status);
+      showToast(`Order status updated to ${status}`);
+      await loadAllData();
+    };
+
+    // Manual Review Modal
+    window.openManualReviewModal = function() {
+      document.getElementById("manualReviewForm").reset();
+      const select = document.getElementById("revProductSelect");
+      select.innerHTML = currentProducts.map(p => `
+        <option value="${p.id}">${p.name} (#${p.id})</option>
+      `).join("");
+      document.getElementById("manualReviewModal").classList.remove("hidden");
+    };
+
+    window.closeManualReviewModal = function() {
+      document.getElementById("manualReviewModal").classList.add("hidden");
+    };
+
+    window.handleManualReviewSubmit = async function(e) {
+      e.preventDefault();
+      const payload = {
+        productId: document.getElementById("revProductSelect").value,
+        customerName: document.getElementById("revCustomerName").value.trim(),
+        rating: parseInt(document.getElementById("revRating").value, 10),
+        reviewText: document.getElementById("revText").value.trim(),
+        status: "approved"
+      };
+
+      await submitReview(payload);
+      closeManualReviewModal();
+      showToast("Review approved and saved!");
+      await loadAllData();
+    };
+
+    window.handleReviewModeration = async function(revId, status) {
+      await moderateReview(revId, status);
+      showToast(`Review ${status}`);
+      await loadAllData();
+    };
+
+    // Store Settings
+    window.handleSaveStoreSettings = async function(e) {
+      e.preventDefault();
+      const payload = {
+        storeName: document.getElementById("setStoreName").value.trim(),
+        whatsappNumber: document.getElementById("setWhatsApp").value.trim(),
+        phone: document.getElementById("setPhone").value.trim(),
+        location: document.getElementById("setLocation").value.trim(),
+        instagramHandle: document.getElementById("setInstagram").value.trim(),
+        email: document.getElementById("setEmail").value.trim(),
+        gstin: document.getElementById("setGstin").value.trim()
+      };
+      await saveStoreSettings(payload);
+      showToast("Store settings saved successfully!");
+    };
+
+    // Firebase Credentials Form
     window.saveConfig = function(e) {
       e.preventDefault();
       const newConfig = {
@@ -728,53 +1611,384 @@
         storageBucket: document.getElementById("cfgStorageBucket").value.trim()
       };
       saveFirebaseConfig(newConfig);
-      alert("Firebase credentials saved! Page will now reload to initialize the connection.");
+      alert("Firebase credentials saved! Reloading page to initialize cloud connection...");
     };
 
     window.clearFirebaseConfig = function() {
       localStorage.removeItem("aruvi_firebase_config");
-      alert("Firebase configuration reset to default.");
+      alert("Firebase configuration reset to default offline mode.");
       window.location.reload();
     };
 
-    window.triggerSeed = async function() {
-      const btn = document.getElementById("seedBtn");
-      const notice = document.getElementById("seedResultNotice");
+    // One-Click Cloud Sync
+    window.triggerCloudSync = async function() {
+      const btn = document.getElementById("syncBtn");
+      const notice = document.getElementById("syncResultNotice");
       btn.disabled = true;
-      btn.textContent = "Seeding...";
+      btn.innerHTML = `<span>Syncing to Cloud...</span>`;
       notice.className = "mt-4 p-3 rounded-lg text-xs bg-brand-cream text-brand-dark";
       notice.textContent = "Connecting to Firestore...";
       notice.classList.remove("hidden");
 
       try {
-        const res = await seedVerifiedDataToFirestore({ overwrite: true });
+        const res = await syncLocalDataToFirestore();
         if (res.success) {
           notice.className = "mt-4 p-3 rounded-lg text-xs bg-emerald-50 text-emerald-800 border border-emerald-200";
-          notice.textContent = `✓ Successfully seeded Firestore! Products: ${res.results.productsSeeded}, Categories: ${res.results.categoriesSeeded}, Settings: ${res.results.settingsSeeded}`;
+          notice.textContent = `✓ Cloud Sync Successful! Synced ${res.results.productsSynced} products, ${res.results.categoriesSynced} categories, and settings to live Firestore.`;
         } else {
           notice.className = "mt-4 p-3 rounded-lg text-xs bg-amber-50 text-amber-900 border border-amber-200";
-          notice.textContent = `Notice: ${res.message || res.error}`;
+          notice.textContent = `Sync completed with notices: ${res.results.errors.join(", ")}`;
         }
       } catch (err) {
         notice.className = "mt-4 p-3 rounded-lg text-xs bg-red-50 text-red-800 border border-red-200";
         notice.textContent = `Error: ${err.message}`;
       } finally {
         btn.disabled = false;
-        btn.textContent = "Seed Verified Data";
+        btn.innerHTML = `<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg><span>Sync All Data to Firestore</span>`;
       }
     };
 
-    window.saveStoreSettings = function(e) {
-      e.preventDefault();
-      alert("Store settings updated successfully!");
+    // Filter Quick Inventory Table
+    window.filterQuickTable = function(query) {
+      const q = (query || "").toLowerCase();
+      const rows = document.querySelectorAll("#quickInventoryTable tr");
+      rows.forEach(r => {
+        const text = r.textContent.toLowerCase();
+        r.style.display = text.includes(q) ? "" : "none";
+      });
     };
 
-    window.openAddProductModal = function() {
-      alert("Add Product Modal: Connect to live Firestore to create and upload new product imagery.");
+    // Filter Catalog Grid
+    window.filterCatalogGrid = function() {
+      const q = (document.getElementById("catalogSearchInput")?.value || "").toLowerCase();
+      const cat = document.getElementById("catalogCategoryFilter")?.value || "all";
+      const stock = document.getElementById("catalogStockFilter")?.value || "all";
+
+      const filtered = currentProducts.filter(p => {
+        const matchesQ = !q || (p.name || "").toLowerCase().includes(q) || String(p.id).includes(q) || (p.fabric || "").toLowerCase().includes(q);
+        const matchesCat = cat === "all" || p.categorySlug === cat;
+        const matchesStock = stock === "all" || p.stockStatus === stock;
+        return matchesQ && matchesCat && matchesStock;
+      });
+
+      document.getElementById("filteredProductsCount").textContent = filtered.length;
+      renderCatalogGrid(filtered);
     };
 
-    // Initialize UI on load
-    loadData();
+    // Render Quick Inventory Table
+    function renderQuickTable(products) {
+      const quickTbody = document.getElementById("quickInventoryTable");
+      if (!quickTbody) return;
+
+      if (products.length === 0) {
+        quickTbody.innerHTML = `<tr><td colspan="5" class="py-8 text-center text-brand-muted">No products found. Click "+ Add New Product" to create one.</td></tr>`;
+        return;
+      }
+
+      quickTbody.innerHTML = products.map(p => {
+        const price = p.hasPrice
+          ? `<div class="font-medium text-brand-dark">₹${p.salePrice || p.regularPrice} ${p.salePrice && p.salePrice < p.regularPrice ? `<span class="text-[10px] line-through text-brand-muted ml-1">₹${p.regularPrice}</span>` : ''}</div>`
+          : `<span class="italic text-brand-rose">Price in store</span>`;
+
+        const isInStock = p.stockStatus === "in_stock";
+        const stockBadge = isInStock
+          ? `<span class="badge-stock px-2 py-0.5 rounded text-[10px] font-semibold">${p.stockQuantity ? p.stockQuantity + ' in stock' : 'In stock'}</span>`
+          : `<span class="badge-outstock px-2 py-0.5 rounded text-[10px] font-semibold">Out of stock</span>`;
+
+        const imgSrc = p.featuredImage || p.image || "assets/images/product-soft-silk.jpg";
+        const cleanImg = imgSrc.startsWith("data:") || imgSrc.startsWith("http") ? imgSrc : `../${imgSrc}`;
+
+        return `
+          <tr class="hover:bg-brand-cream/40 transition-colors">
+            <td class="py-3 px-4 flex items-center space-x-3">
+              <img src="${cleanImg}" alt="${p.name}" class="w-10 h-10 object-cover rounded border border-brand-border">
+              <div>
+                <p class="font-bold text-brand-dark">#${p.id} — ${p.name}</p>
+                <p class="text-[10px] text-brand-muted">${p.fabric || 'Ethnic Handloom'}</p>
+              </div>
+            </td>
+            <td class="py-3 px-4 text-brand-muted font-medium">${p.categoryName || p.category || 'Churidars'}</td>
+            <td class="py-3 px-4">${price}</td>
+            <td class="py-3 px-4">
+              <button onclick="toggleStockInline('${p.id}')" title="Click to toggle stock status" class="hover:opacity-80 transition-opacity">
+                ${stockBadge}
+              </button>
+            </td>
+            <td class="py-3 px-4 text-right space-x-2">
+              <button onclick="openProductModal('${p.id}')" class="text-xs font-semibold text-brand-maroon hover:underline">
+                Edit
+              </button>
+              <button onclick="handleDeleteProduct('${p.id}')" class="text-xs font-semibold text-red-700 hover:underline">
+                Delete
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // Render Catalog Grid
+    function renderCatalogGrid(products) {
+      const catalogGrid = document.getElementById("productsCatalogGrid");
+      if (!catalogGrid) return;
+
+      if (products.length === 0) {
+        catalogGrid.innerHTML = `
+          <div class="col-span-full py-12 text-center bg-brand-ivory rounded-xl border border-brand-border p-8">
+            <p class="font-serif text-lg font-bold text-brand-maroon">No matching items found</p>
+            <p class="text-xs text-brand-muted mt-1">Try resetting your search query or add a new product style.</p>
+            <button onclick="openProductModal()" class="mt-4 px-4 py-2 bg-brand-maroon text-white text-xs font-semibold rounded-lg shadow">
+              + Add New Product
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      catalogGrid.innerHTML = products.map(p => {
+        const priceDisplay = p.hasPrice
+          ? `<div class="flex items-baseline space-x-1.5"><span class="font-bold text-sm text-brand-maroon">₹${p.salePrice || p.regularPrice}</span>${p.salePrice && p.salePrice < p.regularPrice ? `<span class="text-[10px] line-through text-brand-muted">₹${p.regularPrice}</span>` : ''}</div>`
+          : `<span class="text-xs italic text-brand-rose font-medium">Price in store</span>`;
+
+        const imgSrc = p.featuredImage || p.image || "assets/images/product-soft-silk.jpg";
+        const cleanImg = imgSrc.startsWith("data:") || imgSrc.startsWith("http") ? imgSrc : `../${imgSrc}`;
+        const isInStock = p.stockStatus === "in_stock";
+
+        return `
+          <div class="bg-brand-ivory rounded-xl border border-brand-border overflow-hidden shadow-sm flex flex-col group hover:shadow-md transition-shadow">
+            <div class="relative aspect-[3/4] bg-brand-cream overflow-hidden">
+              <img src="${cleanImg}" alt="${p.name}" class="w-full h-full object-cover">
+              <span class="absolute top-2 left-2 bg-brand-maroon/90 text-white text-[10px] font-mono px-2 py-0.5 rounded shadow">
+                #${p.id}
+              </span>
+              ${p.badge ? `<span class="absolute top-2 right-2 bg-brand-gold text-brand-dark text-[10px] font-bold px-1.5 py-0.5 rounded shadow uppercase">${p.badge}</span>` : ''}
+              ${!isInStock ? `<div class="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center text-white font-bold text-xs uppercase tracking-wider">Out of Stock</div>` : ''}
+            </div>
+            <div class="p-4 flex-1 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between">
+                  <p class="text-[10px] text-brand-muted uppercase tracking-wider font-semibold">${p.categoryName || p.category || 'Churidars'}</p>
+                  <button onclick="toggleStockInline('${p.id}')" class="text-[10px] font-semibold ${isInStock ? 'text-emerald-700' : 'text-red-700'} hover:underline">
+                    ${isInStock ? '● In Stock' : '○ Out of Stock'}
+                  </button>
+                </div>
+                <h3 class="font-serif text-base font-bold text-brand-dark mt-0.5">${p.name}</h3>
+                <p class="text-xs text-brand-muted mt-1">Fabric: <span class="text-brand-dark font-medium">${p.fabric || 'Cotton'}</span></p>
+                ${p.sizes && p.sizes.length > 0 ? `<p class="text-[11px] text-brand-muted mt-0.5 truncate">Sizes: ${p.sizes.join(', ')}</p>` : ''}
+              </div>
+              <div class="mt-4 pt-3 border-t border-brand-border flex items-center justify-between">
+                ${priceDisplay}
+                <div class="flex items-center space-x-2">
+                  <button onclick="openProductModal('${p.id}')" class="text-xs font-semibold text-brand-maroon hover:underline">
+                    Edit
+                  </button>
+                  <button onclick="handleDeleteProduct('${p.id}')" class="text-xs font-semibold text-red-700 hover:underline">
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Render Categories
+    function renderCategories() {
+      const categoriesGrid = document.getElementById("categoriesGrid");
+      if (!categoriesGrid) return;
+
+      categoriesGrid.innerHTML = currentCategories.map(c => {
+        const prodCount = currentProducts.filter(p => p.categorySlug === c.slug).length;
+        const imgSrc = c.image || "assets/images/category-churidars.jpg";
+        const cleanImg = imgSrc.startsWith("data:") || imgSrc.startsWith("http") ? imgSrc : `../${imgSrc}`;
+
+        return `
+          <div class="bg-brand-ivory rounded-xl border border-brand-border p-5 shadow-sm flex items-center space-x-4">
+            <div class="w-20 h-20 rounded-lg overflow-hidden bg-brand-cream shrink-0 border border-brand-border">
+              <img src="${cleanImg}" alt="${c.name}" class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h3 class="font-serif text-lg font-bold text-brand-maroon">${c.name}</h3>
+                <span class="text-[10px] px-2 py-0.5 rounded font-mono ${c.active ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-amber-50 text-amber-800 border border-amber-200'}">
+                  ${c.active ? 'Active' : 'Coming Soon'}
+                </span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">${c.tagline || 'Heritage Collection'}</p>
+              <div class="flex items-center justify-between mt-2 pt-2 border-t border-brand-border">
+                <span class="text-xs font-bold text-brand-dark">${prodCount} products</span>
+                <div class="space-x-2">
+                  <button onclick="openCategoryModal('${c.id || c.slug}')" class="text-xs font-semibold text-brand-maroon hover:underline">Edit</button>
+                  <button onclick="handleDeleteCategory('${c.id || c.slug}')" class="text-xs font-semibold text-red-700 hover:underline">Delete</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // Render Orders
+    function renderOrders() {
+      const tbody = document.getElementById("ordersTableBody");
+      const emptyState = document.getElementById("ordersEmptyState");
+      if (!tbody) return;
+
+      if (currentOrders.length === 0) {
+        tbody.innerHTML = "";
+        emptyState.classList.remove("hidden");
+        return;
+      }
+
+      emptyState.classList.add("hidden");
+      tbody.innerHTML = currentOrders.map(o => {
+        const phone = o.customer ? o.customer.phone : "";
+        const cleanPhone = phone.replace(/[^0-9]/g, "");
+        const waLink = cleanPhone ? `https://wa.me/${cleanPhone}?text=Hello%20${encodeURIComponent(o.customer?.name || 'Customer')}%2C%20regarding%20your%20Aruvi%20Fabrics%20order%20(${o.orderId || o.id})%3A` : "#";
+
+        const itemsSummary = (o.items || []).map(i => `${i.name} (x${i.quantity})`).join(", ") || "1x Store item";
+
+        return `
+          <tr class="hover:bg-brand-cream/40 transition-colors">
+            <td class="py-3 px-4 font-mono font-bold text-brand-maroon">
+              ${o.orderId || o.id}
+              <div class="text-[10px] text-brand-muted font-normal">${new Date(o.createdAt || Date.now()).toLocaleDateString()}</div>
+            </td>
+            <td class="py-3 px-4">
+              <p class="font-bold text-brand-dark">${o.customer?.name || 'Customer'}</p>
+              <a href="${waLink}" target="_blank" class="text-[11px] text-emerald-700 hover:underline flex items-center space-x-1">
+                <span>📱 ${phone}</span>
+              </a>
+            </td>
+            <td class="py-3 px-4 text-brand-muted max-w-xs truncate">${itemsSummary}</td>
+            <td class="py-3 px-4 font-bold text-brand-dark">₹${o.total || o.subtotal || 0}</td>
+            <td class="py-3 px-4">
+              <select onchange="handleOrderStatusChange('${o.orderId || o.id}', this.value)" class="py-1 px-2 text-[11px] border border-brand-border rounded bg-white font-medium focus:outline-none focus:border-brand-maroon">
+                <option value="pending" ${o.status === 'pending' ? 'selected' : ''}>Pending</option>
+                <option value="confirmed" ${o.status === 'confirmed' ? 'selected' : ''}>Confirmed</option>
+                <option value="processing" ${o.status === 'processing' ? 'selected' : ''}>Processing</option>
+                <option value="shipped" ${o.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                <option value="delivered" ${o.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                <option value="cancelled" ${o.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+              </select>
+            </td>
+            <td class="py-3 px-4 text-right">
+              <a href="${waLink}" target="_blank" class="px-2.5 py-1 bg-emerald-100 text-emerald-800 rounded font-semibold text-[11px] hover:bg-emerald-200 transition-colors inline-flex items-center space-x-1">
+                <span>WhatsApp</span>
+              </a>
+            </td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    // Render Reviews
+    function renderReviews() {
+      const pendingList = document.getElementById("pendingReviewsList");
+      const approvedList = document.getElementById("approvedReviewsList");
+      const pendingBadge = document.getElementById("pendingReviewsCountBadge");
+      const approvedBadge = document.getElementById("approvedReviewsCountBadge");
+
+      if (pendingBadge) pendingBadge.textContent = `${pendingReviews.length} pending`;
+      if (approvedBadge) approvedBadge.textContent = `${approvedReviews.length} live`;
+
+      if (pendingList) {
+        if (pendingReviews.length === 0) {
+          pendingList.innerHTML = `<p class="text-xs text-brand-muted italic py-4 text-center">No pending reviews requiring moderation.</p>`;
+        } else {
+          pendingList.innerHTML = pendingReviews.map(r => `
+            <div class="p-3 bg-brand-cream/60 rounded-lg border border-brand-border space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-brand-dark">${r.customerName}</span>
+                <span class="text-amber-600 font-bold">${'★'.repeat(r.rating || 5)}</span>
+              </div>
+              <p class="text-xs text-brand-muted leading-relaxed">"${r.reviewText}"</p>
+              <div class="flex items-center justify-end space-x-2 pt-1 border-t border-brand-border">
+                <button onclick="handleReviewModeration('${r.reviewId || r.id}', 'rejected')" class="px-2.5 py-1 text-red-700 hover:bg-red-50 rounded font-semibold">Reject</button>
+                <button onclick="handleReviewModeration('${r.reviewId || r.id}', 'approved')" class="px-3 py-1 bg-emerald-700 text-white rounded font-semibold">Approve</button>
+              </div>
+            </div>
+          `).join("");
+        }
+      }
+
+      if (approvedList) {
+        if (approvedReviews.length === 0) {
+          approvedList.innerHTML = `<p class="text-xs text-brand-muted italic py-4 text-center">No live reviews yet. Strictly zero fake reviews exist.</p>`;
+        } else {
+          approvedList.innerHTML = approvedReviews.map(r => `
+            <div class="p-3 bg-white rounded-lg border border-brand-border space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-brand-dark">${r.customerName}</span>
+                <span class="text-amber-600 font-bold">${'★'.repeat(r.rating || 5)}</span>
+              </div>
+              <p class="text-xs text-brand-muted">"${r.reviewText}"</p>
+              <span class="text-[10px] text-emerald-700 font-medium">✓ Verified Customer</span>
+            </div>
+          `).join("");
+        }
+      }
+    }
+
+    // Load All Data
+    async function loadAllData() {
+      currentProducts = await fetchProducts({ activeOnly: false });
+      currentCategories = await fetchCategories();
+      currentOrders = await fetchOrders();
+      pendingReviews = await fetchPendingReviews();
+      approvedReviews = await fetchApprovedReviews();
+      const settings = await fetchStoreSettings();
+
+      // Sidebar badges
+      document.getElementById("navCountProducts").textContent = currentProducts.length;
+      document.getElementById("navCountCategories").textContent = currentCategories.length;
+      document.getElementById("navCountOrders").textContent = currentOrders.length;
+      document.getElementById("navCountReviews").textContent = pendingReviews.length;
+
+      // Dashboard stats
+      document.getElementById("dashTotalProducts").textContent = currentProducts.length;
+      const inStockCount = currentProducts.filter(p => p.stockStatus === "in_stock").length;
+      document.getElementById("dashInStock").textContent = `${inStockCount} in stock`;
+      document.getElementById("dashTotalCategories").textContent = currentCategories.length;
+      document.getElementById("dashCategoryBreakdown").textContent = currentCategories.map(c => c.name).join(" • ");
+      document.getElementById("dashTotalOrders").textContent = currentOrders.length;
+      document.getElementById("dashOrdersSubtitle").textContent = currentOrders.length === 0 ? "Awaiting customer placements" : `${currentOrders.length} orders recorded`;
+
+      let totalRev = 0;
+      for (const o of currentOrders) {
+        totalRev += Number(o.total || 0);
+      }
+      document.getElementById("dashRevenue").textContent = `₹${totalRev.toLocaleString('en-IN')}`;
+
+      // Settings form fields
+      if (settings.storeName) document.getElementById("setStoreName").value = settings.storeName;
+      if (settings.whatsappNumber) document.getElementById("setWhatsApp").value = settings.whatsappNumber;
+      if (settings.phone) document.getElementById("setPhone").value = settings.phone;
+      if (settings.location) document.getElementById("setLocation").value = settings.location;
+      if (settings.instagramHandle) document.getElementById("setInstagram").value = settings.instagramHandle;
+      if (settings.email) document.getElementById("setEmail").value = settings.email;
+      if (settings.gstin) document.getElementById("setGstin").value = settings.gstin;
+
+      // Populate config fields
+      const cfg = getFirebaseConfig();
+      if (cfg.projectId) document.getElementById("cfgProjectId").value = cfg.projectId;
+      if (cfg.apiKey && cfg.apiKey !== "YOUR_API_KEY") document.getElementById("cfgApiKey").value = cfg.apiKey;
+      if (cfg.authDomain) document.getElementById("cfgAuthDomain").value = cfg.authDomain;
+      if (cfg.storageBucket) document.getElementById("cfgStorageBucket").value = cfg.storageBucket;
+
+      // Render components
+      renderQuickTable(currentProducts);
+      renderCatalogGrid(currentProducts);
+      document.getElementById("filteredProductsCount").textContent = currentProducts.length;
+      populateCategoryDropdowns();
+      renderCategories();
+      renderOrders();
+      renderReviews();
+    }
+
+    // Init
+    loadAllData();
   </script>
 </body>
 </html>

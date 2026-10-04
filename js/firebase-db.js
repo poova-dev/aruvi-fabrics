@@ -37,11 +37,43 @@ import { VERIFIED_PRODUCTS, VERIFIED_CATEGORIES, VERIFIED_SETTINGS } from "./see
 
 // ============================================================================
 // 1. PRODUCTS
-// ============================================================================
+// Helper to get local products from localStorage or seed
+function getStoredProducts() {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const saved = localStorage.getItem("aruvi_products");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      } catch (e) {
+        console.warn("Could not parse aruvi_products from localStorage:", e);
+      }
+    }
+    // Initialize with verified seed products
+    try {
+      localStorage.setItem("aruvi_products", JSON.stringify(VERIFIED_PRODUCTS));
+    } catch (e) {}
+  }
+  return [...VERIFIED_PRODUCTS];
+}
+
+function setStoredProducts(products) {
+  if (typeof window !== "undefined" && window.localStorage) {
+    try {
+      localStorage.setItem("aruvi_products", JSON.stringify(products));
+      // Dispatch custom event for real-time tab syncing
+      window.dispatchEvent(new CustomEvent("aruvi_catalog_updated", { detail: { count: products.length } }));
+    } catch (e) {
+      console.warn("Could not persist aruvi_products to localStorage:", e);
+    }
+  }
+}
 
 /**
  * Fetches products from Firestore with optional filtering.
- * Falls back to verified local catalog if Firestore is unconfigured or unavailable.
+ * Falls back seamlessly to local storage catalog if Firestore is unconfigured or awaiting credentials.
  */
 export async function fetchProducts(options = {}) {
   const { categorySlug = null, activeOnly = true, featuredOnly = false } = options;
@@ -67,16 +99,19 @@ export async function fetchProducts(options = {}) {
         snapshot.forEach((doc) => {
           products.push({ id: doc.id, ...doc.data() });
         });
+        // Cache to localStorage
+        setStoredProducts(products);
         return products;
       }
     } catch (err) {
-      console.warn("Firestore fetchProducts error, using verified fallback:", err);
+      console.warn("Firestore fetchProducts error, falling back to local dataset:", err);
     }
   }
 
-  // Verified Fallback
-  return VERIFIED_PRODUCTS.filter((p) => {
-    if (activeOnly && !p.active) return false;
+  // Local storage Fallback (with seed default)
+  const localList = getStoredProducts();
+  return localList.filter((p) => {
+    if (activeOnly && p.active === false) return false;
     if (featuredOnly && !p.featured) return false;
     if (categorySlug && p.categorySlug !== categorySlug) return false;
     return true;
@@ -97,53 +132,113 @@ export async function fetchProductById(id) {
         return { id: docSnap.id, ...docSnap.data() };
       }
     } catch (err) {
-      console.warn(`Firestore fetchProductById(${id}) error, using verified fallback:`, err);
+      console.warn(`Firestore fetchProductById(${id}) error, using local fallback:`, err);
     }
   }
 
-  return VERIFIED_PRODUCTS.find((p) => String(p.id) === String(id)) || null;
+  const localList = getStoredProducts();
+  return localList.find((p) => String(p.id) === String(id) || p.slug === String(id)) || null;
 }
 
 /**
- * Creates or updates a product in Firestore (Admin write).
+ * Creates or updates a product.
+ * Fully operational whether Firebase credentials are provided or running in local mode!
  */
 export async function saveProduct(productData) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured. Please configure your Firebase project credentials first.");
-  }
-
-  const id = productData.id ? String(productData.id) : String(Date.now());
-  const docRef = doc(db, "products", id);
-
+  const id = productData.id ? String(productData.id).trim() : `ARV-${Date.now().toString(36).toUpperCase()}`;
+  
   const payload = {
     ...productData,
     id,
-    updatedAt: serverTimestamp()
+    slug: productData.slug || `${(productData.name || 'product').toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${id.toLowerCase()}`,
+    featuredImage: productData.featuredImage || productData.image || "assets/images/product-soft-silk.jpg",
+    image: productData.featuredImage || productData.image || "assets/images/product-soft-silk.jpg",
+    gallery: (productData.gallery && productData.gallery.length > 0) 
+      ? productData.gallery 
+      : [productData.featuredImage || productData.image || "assets/images/product-soft-silk.jpg"],
+    stockStatus: productData.stockStatus || "in_stock",
+    active: productData.active !== undefined ? productData.active : true,
+    updatedAt: new Date().toISOString()
   };
 
-  if (!productData.createdAt) {
-    payload.createdAt = serverTimestamp();
+  if (!payload.createdAt) {
+    payload.createdAt = new Date().toISOString();
   }
 
-  await setDoc(docRef, payload, { merge: true });
-  return { id, ...payload };
+  // 1. Always update local storage for immediate offline/live response
+  const localList = getStoredProducts();
+  const existingIdx = localList.findIndex((p) => String(p.id) === String(id));
+  if (existingIdx >= 0) {
+    localList[existingIdx] = { ...localList[existingIdx], ...payload };
+  } else {
+    localList.unshift(payload);
+  }
+  setStoredProducts(localList);
+
+  // 2. Also write to Firestore if configured
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "products", id);
+      await setDoc(docRef, {
+        ...payload,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.error("Firestore saveProduct error (saved locally):", err);
+    }
+  }
+
+  return payload;
 }
 
 /**
- * Deletes a product from Firestore (Admin write).
+ * Deletes a product from both local storage and Firestore.
  */
 export async function deleteProduct(id) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured.");
+  const targetId = String(id).trim();
+
+  // 1. Delete from local storage
+  const localList = getStoredProducts();
+  const filtered = localList.filter((p) => String(p.id) !== targetId);
+  setStoredProducts(filtered);
+
+  // 2. Delete from Firestore if configured
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "products", targetId);
+      await deleteDoc(docRef);
+    } catch (err) {
+      console.warn("Firestore deleteProduct error:", err);
+    }
   }
-  const docRef = doc(db, "products", String(id));
-  await deleteDoc(docRef);
-  return { success: true, id };
+
+  return { success: true, id: targetId };
 }
 
-// ============================================================================
-// 2. CATEGORIES
-// ============================================================================
+// Helper to get local categories
+function getStoredCategories() {
+  if (typeof window !== "undefined" && window.localStorage) {
+    const saved = localStorage.getItem("aruvi_categories");
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    try {
+      localStorage.setItem("aruvi_categories", JSON.stringify(VERIFIED_CATEGORIES));
+    } catch (e) {}
+  }
+  return [...VERIFIED_CATEGORIES];
+}
+
+function setStoredCategories(cats) {
+  if (typeof window !== "undefined" && window.localStorage) {
+    try {
+      localStorage.setItem("aruvi_categories", JSON.stringify(cats));
+    } catch (e) {}
+  }
+}
 
 /**
  * Fetches all categories.
@@ -158,35 +253,73 @@ export async function fetchCategories() {
         snapshot.forEach((doc) => {
           categories.push({ id: doc.id, ...doc.data() });
         });
+        setStoredCategories(categories);
         return categories;
       }
     } catch (err) {
-      console.warn("Firestore fetchCategories error, using verified fallback:", err);
+      console.warn("Firestore fetchCategories error, using local fallback:", err);
     }
   }
 
-  return [...VERIFIED_CATEGORIES];
+  return getStoredCategories();
 }
 
 /**
- * Creates or updates a category (Admin write).
+ * Creates or updates a category.
  */
 export async function saveCategory(categoryData) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured.");
-  }
-
   const id = categoryData.id ? String(categoryData.id) : String(categoryData.slug || Date.now());
-  const docRef = doc(db, "categories", id);
-
   const payload = {
     ...categoryData,
     id,
-    updatedAt: serverTimestamp()
+    slug: categoryData.slug || (categoryData.name || 'category').toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+    updatedAt: new Date().toISOString()
   };
 
-  await setDoc(docRef, payload, { merge: true });
-  return { id, ...payload };
+  // Local storage
+  const cats = getStoredCategories();
+  const idx = cats.findIndex(c => String(c.id) === String(id) || c.slug === payload.slug);
+  if (idx >= 0) {
+    cats[idx] = { ...cats[idx], ...payload };
+  } else {
+    cats.push(payload);
+  }
+  setStoredCategories(cats);
+
+  // Firestore if configured
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "categories", id);
+      await setDoc(docRef, {
+        ...payload,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.warn("Firestore saveCategory error (saved locally):", err);
+    }
+  }
+
+  return payload;
+}
+
+/**
+ * Deletes a category.
+ */
+export async function deleteCategory(id) {
+  const targetId = String(id).trim();
+  const cats = getStoredCategories();
+  const filtered = cats.filter(c => String(c.id) !== targetId && c.slug !== targetId);
+  setStoredCategories(filtered);
+
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "categories", targetId);
+      await deleteDoc(docRef);
+    } catch (err) {
+      console.warn("Firestore deleteCategory error:", err);
+    }
+  }
+  return { success: true, id: targetId };
 }
 
 // ============================================================================
@@ -202,10 +335,23 @@ export async function fetchStoreSettings() {
       const docRef = doc(db, "settings", "store_config");
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
-        return { ...docSnap.data() };
+        const data = docSnap.data();
+        if (typeof window !== "undefined") {
+          localStorage.setItem("aruvi_store_settings", JSON.stringify(data));
+        }
+        return { ...data };
       }
     } catch (err) {
-      console.warn("Firestore fetchStoreSettings error, using verified fallback:", err);
+      console.warn("Firestore fetchStoreSettings error, using local fallback:", err);
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    const saved = localStorage.getItem("aruvi_store_settings");
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {}
     }
   }
 
@@ -213,20 +359,30 @@ export async function fetchStoreSettings() {
 }
 
 /**
- * Updates store settings (Admin write).
+ * Updates store settings.
  */
 export async function saveStoreSettings(settingsData) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured.");
-  }
-
-  const docRef = doc(db, "settings", "store_config");
   const payload = {
     ...settingsData,
-    updatedAt: serverTimestamp()
+    updatedAt: new Date().toISOString()
   };
 
-  await setDoc(docRef, payload, { merge: true });
+  if (typeof window !== "undefined") {
+    localStorage.setItem("aruvi_store_settings", JSON.stringify(payload));
+  }
+
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "settings", "store_config");
+      await setDoc(docRef, {
+        ...payload,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+    } catch (err) {
+      console.warn("Firestore saveStoreSettings error (saved locally):", err);
+    }
+  }
+
   return payload;
 }
 
@@ -363,20 +519,108 @@ export async function fetchOrders() {
  * Updates an order status (Admin only).
  */
 export async function updateOrderStatus(orderId, status) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured.");
+  const targetId = String(orderId);
+
+  // Update in localStorage
+  if (typeof window !== "undefined") {
+    try {
+      const localOrders = JSON.parse(localStorage.getItem("aruvi_local_orders") || "[]");
+      const idx = localOrders.findIndex(o => String(o.orderId) === targetId || String(o.id) === targetId);
+      if (idx >= 0) {
+        localOrders[idx].status = status;
+        localOrders[idx].updatedAt = new Date().toISOString();
+        localStorage.setItem("aruvi_local_orders", JSON.stringify(localOrders));
+      }
+    } catch (e) {
+      console.warn("Could not update local order status:", e);
+    }
   }
-  const docRef = doc(db, "orders", String(orderId));
-  await updateDoc(docRef, {
-    status,
-    updatedAt: serverTimestamp()
-  });
-  return { success: true, orderId, status };
+
+  // Update in Firestore if configured
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "orders", targetId);
+      await updateDoc(docRef, {
+        status,
+        updatedAt: serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore updateOrderStatus error (updated locally):", err);
+    }
+  }
+
+  return { success: true, orderId: targetId, status };
+}
+
+/**
+ * Creates a manual order or offline inquiry (Admin write).
+ */
+export async function createManualOrder(orderPayload) {
+  const orderId = orderPayload.orderId || `ARV-MAN-${Date.now().toString(36).toUpperCase()}`;
+  const orderDoc = {
+    orderId,
+    id: orderId,
+    customer: {
+      name: (orderPayload.customerName || "Customer").trim(),
+      phone: (orderPayload.customerPhone || "").trim(),
+      email: (orderPayload.customerEmail || "").trim() || null,
+      address: orderPayload.customerAddress || "In-store Walk-in",
+      city: orderPayload.city || "Pattukkottai",
+      pincode: orderPayload.pincode || null,
+      state: "Tamil Nadu"
+    },
+    items: orderPayload.items || [],
+    subtotal: Number(orderPayload.subtotal || orderPayload.total || 0),
+    shippingFee: Number(orderPayload.shippingFee || 0),
+    total: Number(orderPayload.total || 0),
+    paymentMethod: orderPayload.paymentMethod || "direct_whatsapp",
+    status: orderPayload.status || "confirmed",
+    notes: orderPayload.notes || "Admin recorded order",
+    createdAt: new Date().toISOString()
+  };
+
+  // Local storage
+  if (typeof window !== "undefined") {
+    const localOrders = JSON.parse(localStorage.getItem("aruvi_local_orders") || "[]");
+    localOrders.unshift(orderDoc);
+    localStorage.setItem("aruvi_local_orders", JSON.stringify(localOrders));
+  }
+
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "orders", orderId);
+      await setDoc(docRef, {
+        ...orderDoc,
+        createdAt: serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore createManualOrder error (saved locally):", err);
+    }
+  }
+
+  return { success: true, order: orderDoc };
 }
 
 // ============================================================================
 // 5. REVIEWS & ANTI-FABRICATION MODERATION
 // ============================================================================
+
+function getStoredReviews() {
+  if (typeof window !== "undefined" && window.localStorage) {
+    try {
+      return JSON.parse(localStorage.getItem("aruvi_local_reviews") || "[]");
+    } catch (e) {}
+  }
+  return [];
+}
+
+function setStoredReviews(reviews) {
+  if (typeof window !== "undefined" && window.localStorage) {
+    try {
+      localStorage.setItem("aruvi_local_reviews", JSON.stringify(reviews));
+    } catch (e) {}
+  }
+}
 
 /**
  * Fetches approved reviews. Returns strictly 0 reviews if none exist.
@@ -401,8 +645,9 @@ export async function fetchApprovedReviews(productId = null) {
     }
   }
 
-  // Strictly return empty array — NO fake reviews exist!
-  return [];
+  // Local storage approved reviews
+  const local = getStoredReviews();
+  return local.filter(r => r.status === "approved" && (!productId || String(r.productId) === String(productId)));
 }
 
 /**
@@ -410,31 +655,43 @@ export async function fetchApprovedReviews(productId = null) {
  * Status is strictly set to 'pending'.
  */
 export async function submitReview(reviewPayload) {
-  const { productId, customerName, rating, reviewText } = reviewPayload;
+  const { productId, customerName, rating, reviewText, status = "pending" } = reviewPayload;
 
   if (!productId) throw new Error("Product ID is required.");
-  if (!customerName || customerName.trim().length < 2) throw new Error("Please enter your name (at least 2 characters).");
+  if (!customerName || customerName.trim().length < 2) throw new Error("Please enter customer name (at least 2 characters).");
   if (!rating || rating < 1 || rating > 5) throw new Error("Rating must be between 1 and 5 stars.");
-  if (!reviewText || reviewText.trim().length < 5) throw new Error("Please enter your review (at least 5 characters).");
+  if (!reviewText || reviewText.trim().length < 5) throw new Error("Please enter review content (at least 5 characters).");
 
-  const reviewId = `REV-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
+  const reviewId = reviewPayload.reviewId || `REV-${Date.now().toString(36).toUpperCase()}-${Math.floor(100 + Math.random() * 900)}`;
 
   const reviewDoc = {
     reviewId,
+    id: reviewId,
     productId: String(productId),
     customerName: customerName.trim(),
     rating: Number(rating),
     reviewText: reviewText.trim(),
-    status: "pending", // Must be approved by Admin
-    createdAt: isFirebaseConfigured ? serverTimestamp() : new Date().toISOString()
+    status: status, // 'pending' or 'approved' (if added by admin directly)
+    createdAt: new Date().toISOString()
   };
 
+  const local = getStoredReviews();
+  local.unshift(reviewDoc);
+  setStoredReviews(local);
+
   if (isFirebaseConfigured && db) {
-    const docRef = doc(db, "reviews", reviewId);
-    await setDoc(docRef, reviewDoc);
+    try {
+      const docRef = doc(db, "reviews", reviewId);
+      await setDoc(docRef, {
+        ...reviewDoc,
+        createdAt: serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore submitReview error (saved locally):", err);
+    }
   }
 
-  return { success: true, reviewId, status: "pending" };
+  return { success: true, reviewId, status: reviewDoc.status };
 }
 
 /**
@@ -455,26 +712,41 @@ export async function fetchPendingReviews() {
       console.warn("Firestore fetchPendingReviews error:", err);
     }
   }
-  return [];
+
+  const local = getStoredReviews();
+  return local.filter(r => r.status === "pending");
 }
 
 /**
  * Moderates a review (Admin only: 'approved' or 'rejected').
  */
 export async function moderateReview(reviewId, status) {
-  if (!isFirebaseConfigured || !db) {
-    throw new Error("Firebase is not configured.");
-  }
   if (!["approved", "rejected"].includes(status)) {
     throw new Error("Status must be either 'approved' or 'rejected'.");
   }
 
-  const docRef = doc(db, "reviews", String(reviewId));
-  await updateDoc(docRef, {
-    status,
-    moderatedAt: serverTimestamp()
-  });
-  return { success: true, reviewId, status };
+  const targetId = String(reviewId);
+  const local = getStoredReviews();
+  const idx = local.findIndex(r => r.reviewId === targetId || r.id === targetId);
+  if (idx >= 0) {
+    local[idx].status = status;
+    local[idx].moderatedAt = new Date().toISOString();
+    setStoredReviews(local);
+  }
+
+  if (isFirebaseConfigured && db) {
+    try {
+      const docRef = doc(db, "reviews", targetId);
+      await updateDoc(docRef, {
+        status,
+        moderatedAt: serverTimestamp()
+      });
+    } catch (err) {
+      console.warn("Firestore moderateReview error:", err);
+    }
+  }
+
+  return { success: true, reviewId: targetId, status };
 }
 
 // ============================================================================
@@ -632,3 +904,70 @@ export async function seedVerifiedDataToFirestore(options = { overwrite: false }
     };
   }
 }
+
+/**
+ * Synchronizes all local data (including newly created products, categories, settings)
+ * to live Cloud Firestore once credentials are saved.
+ */
+export async function syncLocalDataToFirestore() {
+  if (!isFirebaseConfigured || !db) {
+    throw new Error("Firebase credentials are not configured yet. Please configure your API key first.");
+  }
+
+  const products = getStoredProducts();
+  const categories = getStoredCategories();
+  const settings = await fetchStoreSettings();
+
+  const results = {
+    productsSynced: 0,
+    categoriesSynced: 0,
+    settingsSynced: 0,
+    errors: []
+  };
+
+  // Sync Products
+  for (const prod of products) {
+    try {
+      const docRef = doc(db, "products", String(prod.id));
+      await setDoc(docRef, {
+        ...prod,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+      results.productsSynced++;
+    } catch (e) {
+      results.errors.push(`Product #${prod.id}: ${e.message}`);
+    }
+  }
+
+  // Sync Categories
+  for (const cat of categories) {
+    try {
+      const docRef = doc(db, "categories", String(cat.id));
+      await setDoc(docRef, {
+        ...cat,
+        updatedAt: serverTimestamp()
+      }, { merge: true });
+      results.categoriesSynced++;
+    } catch (e) {
+      results.errors.push(`Category ${cat.name}: ${e.message}`);
+    }
+  }
+
+  // Sync Settings
+  try {
+    const settingsRef = doc(db, "settings", "store_config");
+    await setDoc(settingsRef, {
+      ...settings,
+      updatedAt: serverTimestamp()
+    }, { merge: true });
+    results.settingsSynced++;
+  } catch (e) {
+    results.errors.push(`Settings: ${e.message}`);
+  }
+
+  return {
+    success: results.errors.length === 0,
+    results
+  };
+}
+
